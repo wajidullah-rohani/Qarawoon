@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ps" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>د مدیر ډشبورډ — کړاوونه</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>د مدیر ډشبورډ</h1>
+
+    <section id="login-box">
+      <h2>ننوتل</h2>
+      <form id="login-form">
+        <input type="email" id="admin-email" placeholder="ایمیل" required />
+        <input type="password" id="admin-password" placeholder="پاسورډ" required />
+        <button type="submit">ننوتل</button>
+      </form>
+      <p id="auth-status"></p>
+    </section>
+
+    <section id="dashboard-box" style="display: none;">
+      <button id="logout-btn" type="button">وتل</button>
+
+      <h2>نوی شعر زیاتول</h2>
+      <form id="poem-form">
+        <input type="text" id="poem-title" placeholder="د شعر سرلیک" required />
+        <textarea id="poem-body" placeholder="د شعر متن..." required></textarea>
+        <button type="submit">شعر خوندي کول</button>
+      </form>
+
+      <h2>شعرونه</h2>
+      <div id="admin-poems-list"></div>
+
+      <h2>پروفایل او ټولنیزې رسنۍ</h2>
+      <form id="settings-form">
+        <textarea id="settings-about" placeholder="زما په اړه..."></textarea>
+        <input type="text" id="settings-social" placeholder="د ټولنیزو رسنیو لینکونه" />
+        <button type="submit">تنظیمات خوندي کول</button>
+      </form>
+
+      <h2>راغلي نظرونه</h2>
+      <div id="feedback-list"></div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html> 
