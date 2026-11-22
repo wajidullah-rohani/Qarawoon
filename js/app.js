@@ -1,3 +1,11 @@
+function getSupabaseClient() {
+  if (window.supabaseClient) return window.supabaseClient;
+  if (window.supabase && typeof window.supabase.from === "function") {
+    return window.supabase;
+  }
+  return null;
+}
+
 function escapeHtml(text) {
   if (!text) return "";
   const div = document.createElement("div");
@@ -28,23 +36,23 @@ async function loadPoems() {
   const poemsListEl = document.getElementById("poems-list");
   if (!poemsListEl) return;
 
-  if (!window.supabaseClient) {
+  const client = getSupabaseClient();
+  if (!client) {
     poemsListEl.innerHTML =
-      '<p>د ډیټابیس اتصال نه دی جوړ شوی. مهرباني وکړئ supabase-config.js وګورئ.</p>';
+      "<p>د ډیټابیس اتصال پیدا نه شو. مهرباني وکړئ supabase-config.js وګورئ.</p>";
     return;
   }
 
   poemsListEl.innerHTML = "<p>شعرونه لودېږي...</p>";
 
   try {
-    const { data, error } = await window.supabaseClient
+    const { data, error } = await client
       .from("poems")
       .select("*")
       .order("created_at", { ascending: false });
 
     if (error) {
-      console.error("Error loading poems:", error);
-      poemsListEl.innerHTML = `<p>د شعرونو په راوړلو کې ستونزه راغله: ${escapeHtml(error.message)}</p>`;
+      poemsListEl.innerHTML = `<p>د شعرونو په راوړلو کې ستونزه: ${escapeHtml(error.message)}</p>`;
       return;
     }
 
@@ -69,7 +77,6 @@ async function loadPoems() {
       })
       .join("");
   } catch (err) {
-    console.error("Unexpected error loading poems:", err);
     poemsListEl.innerHTML = "<p>ناڅاپي ستونزه رامنځته شوه.</p>";
   }
 }
@@ -98,19 +105,16 @@ async function handleFeedbackSubmit(event) {
     message: message
   };
 
+  const client = getSupabaseClient();
+
   try {
-    if (window.supabaseClient) {
-      const { error } = await window.supabaseClient
-        .from("feedback")
-        .insert([payload]);
+    if (client) {
+      const { error } = await client.from("feedback").insert([payload]);
 
       if (error) {
-        console.error("Supabase feedback insert error:", error);
-        if (typeof saveFeedbackLocally === "function") {
-          saveFeedbackLocally(payload);
-        }
+        if (typeof saveFeedbackLocally === "function") saveFeedbackLocally(payload);
         if (statusEl) {
-          statusEl.textContent = `په ډیټابیس کې مستقیم ونه لېږل شو (${error.message})، خو ستاسو پیغام په موقت ډول خوندي شو.`;
+          statusEl.textContent = `مستقیم ونه لېږل شو (${error.message})، خو پیغام په موقت ډول خوندي شو.`;
         }
       } else {
         if (nameInput) nameInput.value = "";
@@ -118,18 +122,13 @@ async function handleFeedbackSubmit(event) {
         if (statusEl) statusEl.textContent = "ستاسو نظر په بریالیتوب ولېږل شو. مننه!";
       }
     } else {
-      if (typeof saveFeedbackLocally === "function") {
-        saveFeedbackLocally(payload);
-      }
+      if (typeof saveFeedbackLocally === "function") saveFeedbackLocally(payload);
       if (nameInput) nameInput.value = "";
       if (messageInput) messageInput.value = "";
       if (statusEl) statusEl.textContent = "پیغام په موقت ډول خوندي شو.";
     }
   } catch (err) {
-    console.error("Unexpected feedback error:", err);
-    if (typeof saveFeedbackLocally === "function") {
-      saveFeedbackLocally(payload);
-    }
+    if (typeof saveFeedbackLocally === "function") saveFeedbackLocally(payload);
     if (statusEl) {
       statusEl.textContent = "د لېږلو پر وخت ستونزه راغله، پیغام موقتاً خوندي شو.";
     }
