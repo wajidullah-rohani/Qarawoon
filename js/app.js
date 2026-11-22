@@ -9,7 +9,6 @@ function getSupabaseClient() {
 
   const urlMatch = rawUrl.match(/https:\/\/[a-zA-Z0-9-]+\.supabase\.co/);
   const cleanUrl = urlMatch ? urlMatch[0] : rawUrl.replace(/\/+$/, "");
-
   const cleanKey = rawKey.replace(/\s+/g, "");
 
   if (
@@ -51,6 +50,134 @@ function formatPoetName(poem) {
   return poem.poet || poem.author || "";
 }
 
+function formatPoemCategory(poem) {
+  return poem.category || poem.genre || "شعري ټولګه";
+}
+
+let allPoemsCache = [];
+let currentFontScale = 1;
+
+function renderPoemsList(poems) {
+  const poemsListEl = document.getElementById("poems-list");
+  if (!poemsListEl) return;
+
+  if (!poems || poems.length === 0) {
+    poemsListEl.innerHTML =
+      '<div class="empty-state"><p>د دې لټون یا ډول مطابق کوم شعر ونه موندل شو.</p></div>';
+    return;
+  }
+
+  poemsListEl.innerHTML = poems
+    .map((poem, index) => {
+      const title = escapeHtml(formatPoemTitle(poem));
+      const poet = escapeHtml(formatPoetName(poem));
+      const category = escapeHtml(formatPoemCategory(poem));
+      const rawBody = formatPoemBody(poem);
+      const content = escapeHtml(rawBody).replace(/\n/g, "<br>");
+      const isLong = rawBody.length > 360;
+
+      return `
+        <article class="poem-card" data-index="${index}">
+          <div class="poem-card-top">
+            <span class="poem-badge">${category}</span>
+            ${poet ? `<span class="poem-poet">${poet}</span>` : ""}
+          </div>
+          <h3 class="poem-title">${title}</h3>
+          <div class="poem-body ${isLong ? "poem-body--clamped" : ""}" id="poem-body-${index}">${content}</div>
+          <div class="poem-card-actions">
+            ${
+              isLong
+                ? `<button type="button" class="btn-ghost toggle-poem-btn" data-target="poem-body-${index}">بشپړ لوستل</button>`
+                : ""
+            }
+            <button type="button" class="btn-ghost copy-poem-btn" data-index="${index}">کاپي شعر</button>
+          </div>
+        </article>
+      `;
+    })
+    .join("");
+
+  poemsListEl.querySelectorAll(".toggle-poem-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const targetId = btn.getAttribute("data-target");
+      const bodyEl = document.getElementById(targetId);
+      if (!bodyEl) return;
+      const expanded = bodyEl.classList.toggle("poem-body--expanded");
+      bodyEl.classList.toggle("poem-body--clamped", !expanded);
+      btn.textContent = expanded ? "لنډول" : "بشپړ لوستل";
+    });
+  });
+
+  poemsListEl.querySelectorAll(".copy-poem-btn").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const idx = Number(btn.getAttribute("data-index"));
+      const item = poems[idx];
+      if (!item) return;
+      const shareText = `${formatPoemTitle(item)}${
+        formatPoetName(item) ? " — " + formatPoetName(item) : ""
+      }\n\n${formatPoemBody(item)}`;
+
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(shareText);
+          const oldLabel = btn.textContent;
+          btn.textContent = "کاپي شو ✓";
+          setTimeout(() => {
+            btn.textContent = oldLabel;
+          }, 1800);
+        }
+      } catch (_) {
+        // که براوزر کاپي اجازه ورنکړي، خاموش پاتې شي
+      }
+    });
+  });
+}
+
+function populateCategoryFilter(poems) {
+  const selectEl = document.getElementById("poem-category-filter");
+  if (!selectEl) return;
+
+  const categories = Array.from(
+    new Set(
+      poems
+        .map((p) => formatPoemCategory(p))
+        .filter((c) => c && c.trim().length > 0)
+    )
+  );
+
+  selectEl.innerHTML =
+    '<option value="ALL">ټولې برخې</option>' +
+    categories
+      .map((cat) => `<option value="${escapeHtml(cat)}">${escapeHtml(cat)}</option>`)
+      .join("");
+}
+
+function applyPoemFilters() {
+  const searchInput = document.getElementById("poem-search-input");
+  const categorySelect = document.getElementById("poem-category-filter");
+
+  const query = searchInput ? searchInput.value.trim().toLowerCase() : "";
+  const category = categorySelect ? categorySelect.value : "ALL";
+
+  const filtered = allPoemsCache.filter((poem) => {
+    const title = formatPoemTitle(poem).toLowerCase();
+    const poet = formatPoetName(poem).toLowerCase();
+    const body = formatPoemBody(poem).toLowerCase();
+    const cat = formatPoemCategory(poem);
+
+    const matchesCategory = category === "ALL" || cat === category;
+    const matchesQuery =
+      !query ||
+      title.includes(query) ||
+      poet.includes(query) ||
+      body.includes(query);
+
+    return matchesCategory && matchesQuery;
+  });
+
+  renderPoemsList(filtered);
+}
+
 async function loadPoems() {
   const poemsListEl = document.getElementById("poems-list");
   if (!poemsListEl) return;
@@ -58,11 +185,16 @@ async function loadPoems() {
   const client = getSupabaseClient();
   if (!client) {
     poemsListEl.innerHTML =
-      "<p>د ډیټابیس اتصال پیدا نه شو. مهرباني وکړئ supabase-config.js وګورئ.</p>";
+      '<div class="error-card"><p>د ډیټابیس اتصال پیدا نه شو. مهرباني وکړئ supabase-config.js وګورئ.</p></div>';
     return;
   }
 
-  poemsListEl.innerHTML = "<p>شعرونه لودېږي...</p>";
+  poemsListEl.innerHTML = `
+    <div class="skeleton-grid" aria-busy="true">
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+    </div>
+  `;
 
   try {
     const { data, error } = await client
@@ -71,34 +203,26 @@ async function loadPoems() {
       .order("created_at", { ascending: false });
 
     if (error) {
-      poemsListEl.innerHTML = `<p>د شعرونو په راوړلو کې ستونزه: ${escapeHtml(error.message)}</p>`;
+      poemsListEl.innerHTML = `<div class="error-card"><p>د شعرونو په راوړلو کې ستونزه: ${escapeHtml(error.message)}</p></div>`;
       return;
     }
 
-    if (!data || data.length === 0) {
-      poemsListEl.innerHTML = "<p>تر اوسه کوم شعر نه دی اضافه شوی.</p>";
+    allPoemsCache = Array.isArray(data) ? data : [];
+
+    if (allPoemsCache.length === 0) {
+      poemsListEl.innerHTML =
+        '<div class="empty-state"><p>تر اوسه کوم شعر نه دی اضافه شوی.</p></div>';
       return;
     }
 
-    poemsListEl.innerHTML = data
-      .map((poem) => {
-        const title = escapeHtml(formatPoemTitle(poem));
-        const poet = escapeHtml(formatPoetName(poem));
-        const content = escapeHtml(formatPoemBody(poem)).replace(/\n/g, "<br>");
-
-        return `
-          <article class="poem-card">
-            <h3>${title}</h3>
-            ${poet ? `<p class="poem-poet">${poet}</p>` : ""}
-            <div class="poem-body">${content}</div>
-          </article>
-        `;
-      })
-      .join("");
+    populateCategoryFilter(allPoemsCache);
+    renderPoemsList(allPoemsCache);
   } catch (err) {
-    poemsListEl.innerHTML = `<p>ناڅاپي ستونزه رامنځته شوه: ${escapeHtml(err && err.message ? err.message : "")}</p>`;
+    poemsListEl.innerHTML = `<div class="error-card"><p>ناڅاپي ستونزه رامنځته شوه: ${escapeHtml(err && err.message ? err.message : "")}</p></div>`;
   }
 }
+
+let lastFeedbackTime = 0;
 
 async function handleFeedbackSubmit(event) {
   event.preventDefault();
@@ -115,11 +239,19 @@ async function handleFeedbackSubmit(event) {
     form.querySelector("[id*='status'], .feedback-status");
   const submitBtn = form.querySelector('button[type="submit"]');
 
-  const name = nameInput ? nameInput.value.trim() : "";
-  const message = messageInput ? messageInput.value.trim() : "";
+  const name = nameInput ? nameInput.value.trim().slice(0, 80) : "";
+  const message = messageInput ? messageInput.value.trim().slice(0, 1500) : "";
 
   if (!message) {
     if (statusEl) statusEl.textContent = "مهرباني وکړئ خپل نظر یا پیغام ولیکئ.";
+    return;
+  }
+
+  const now = Date.now();
+  if (now - lastFeedbackTime < 4000) {
+    if (statusEl) {
+      statusEl.textContent = "مهرباني وکړئ څو شېبې صبر وکړئ او بیا پیغام ولېږئ.";
+    }
     return;
   }
 
@@ -143,6 +275,7 @@ async function handleFeedbackSubmit(event) {
           statusEl.textContent = `مستقیم ونه لېږل شو (${error.message})، خو پیغام په موقت ډول خوندي شو.`;
         }
       } else {
+        lastFeedbackTime = Date.now();
         if (nameInput) nameInput.value = "";
         if (messageInput) messageInput.value = "";
         if (statusEl) statusEl.textContent = "ستاسو نظر په بریالیتوب ولېږل شو. مننه!";
@@ -163,7 +296,57 @@ async function handleFeedbackSubmit(event) {
   }
 }
 
+function setupReaderControls() {
+  const fontIncreaseBtn = document.getElementById("font-increase-btn");
+  const fontDecreaseBtn = document.getElementById("font-decrease-btn");
+  const themeToggleBtn = document.getElementById("theme-toggle-btn");
+
+  const updateScale = () => {
+    document.documentElement.style.setProperty(
+      "--poem-font-scale",
+      String(currentFontScale.toFixed(2))
+    );
+  };
+
+  if (fontIncreaseBtn) {
+    fontIncreaseBtn.addEventListener("click", () => {
+      currentFontScale = Math.min(1.35, currentFontScale + 0.08);
+      updateScale();
+    });
+  }
+
+  if (fontDecreaseBtn) {
+    fontDecreaseBtn.addEventListener("click", () => {
+      currentFontScale = Math.max(0.88, currentFontScale - 0.08);
+      updateScale();
+    });
+  }
+
+  if (themeToggleBtn) {
+    const savedTheme = localStorage.getItem("qarawoon_theme");
+    if (savedTheme === "dark") {
+      document.body.classList.add("dark-theme");
+    }
+
+    themeToggleBtn.addEventListener("click", () => {
+      const isDark = document.body.classList.toggle("dark-theme");
+      localStorage.setItem("qarawoon_theme", isDark ? "dark" : "light");
+    });
+  }
+
+  const searchInput = document.getElementById("poem-search-input");
+  const categorySelect = document.getElementById("poem-category-filter");
+
+  if (searchInput) {
+    searchInput.addEventListener("input", applyPoemFilters);
+  }
+  if (categorySelect) {
+    categorySelect.addEventListener("change", applyPoemFilters);
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  setupReaderControls();
   loadPoems();
 
   const feedbackForm = document.getElementById("feedback-form");
