@@ -5,108 +5,119 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>کړاوونه — د پښتو شعرونو ټولګه</title>
 
+  <!-- PWA Manifest & Mobile App Settings -->
   <link rel="manifest" href="./manifest.json" />
   <meta name="theme-color" content="#1b4d40" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="کړاوونه" />
   <link rel="apple-touch-icon" href="./icons/icon-192.svg" />
   <link rel="icon" type="image/svg+xml" href="./icons/icon-192.svg" />
 
+  <!-- Pashto Literary Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- External Stylesheet (if present) -->
   <link rel="stylesheet" href="./css/style.css" />
 
   <style>
     :root {
-      --q-emerald: #1b4d40;
-      --q-emerald-dark: #0f2922;
-      --q-gold: #e6c373;
-      --q-cream: #fdf8ec;
+      --emerald: #1b4d40;
+      --emerald-deep: #0f2922;
+      --emerald-soft: #246151;
+      --gold: #e4be67;
+      --gold-bright: #f4d78e;
+      --gold-dark: #b8882e;
+      --cream: #fcf8ee;
+      --paper: #fffdf8;
+      --ink: #172722;
+      --muted: #556862;
+      --border: rgba(27, 77, 64, 0.16);
+      --shadow: 0 12px 30px rgba(15, 41, 34, 0.1);
+      --radius: 16px;
     }
 
-    .qarawoon-install-bar {
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      background: radial-gradient(circle at top, #f7f1e1 0%, #efe7d4 100%);
+      color: var(--ink);
+      font-family: "Noto Naskh Arabic", "Amiri", serif;
+      line-height: 1.9;
+    }
+
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    /* Install Banner */
+    .install-bar {
       display: none;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      margin: 12px auto;
-      padding: 12px 16px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, var(--q-emerald), var(--q-emerald-dark));
-      color: var(--q-cream);
-      border: 1px solid rgba(230, 195, 115, 0.45);
-      box-shadow: 0 8px 20px rgba(15, 41, 34, 0.25);
+      margin-bottom: 16px;
+      padding: 14px 18px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, var(--emerald), var(--emerald-deep));
+      color: var(--cream);
+      border: 1px solid rgba(228, 190, 103, 0.45);
+      box-shadow: var(--shadow);
     }
 
-    .qarawoon-install-bar.is-visible {
+    .install-bar.show {
       display: flex;
     }
 
-    .qarawoon-install-btn {
-      background: linear-gradient(135deg, #f3d48c, #c29238);
-      color: #0f2922;
+    .install-bar-title {
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--gold-bright);
+    }
+
+    .install-bar-sub {
+      font-size: 0.9rem;
+      color: rgba(252, 248, 238, 0.9);
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold-bright), var(--gold-dark));
+      color: var(--emerald-deep);
       border: none;
       border-radius: 10px;
-      padding: 9px 16px;
-      font-weight: 700;
+      padding: 10px 18px;
       font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
     }
-  </style>
-</head>
-<body>
-  <div id="qarawoonInstallBar" class="qarawoon-install-bar" role="region" aria-label="د اپلیکیشن نصبول">
-    <div>
-      <strong>کړاوونه اپلیکیشن نصب کړئ</strong>
-      <div style="font-size: 0.9rem; opacity: 0.9;">په وړیا ډول یې د خپل موبایل په سکرین کې وساتئ</div>
-    </div>
-    <button id="qarawoonInstallBtn" class="qarawoon-install-btn" type="button">نصبول</button>
-  </div>
 
-  <main id="app"></main>
-
-  <script src="./supabase-config.js"></script>
-  <script src="./js/app.js"></script>
-
-  <script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./sw.js").catch(() => {});
-      });
+    .btn-emerald {
+      background: linear-gradient(135deg, var(--emerald-soft), var(--emerald));
+      color: var(--cream);
+      border: none;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
     }
 
-    (function () {
-      let deferredPrompt = null;
-      const installBar = document.getElementById("qarawoonInstallBar");
-      const installBtn = document.getElementById("qarawoonInstallBtn");
-
-      window.addEventListener("beforeinstallprompt", (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        if (installBar) {
-          installBar.classList.add("is-visible");
-        }
-      });
-
-      if (installBtn) {
-        installBtn.addEventListener("click", async () => {
-          if (!deferredPrompt) return;
-          deferredPrompt.prompt();
-          await deferredPrompt.userChoice;
-          deferredPrompt = null;
-          if (installBar) {
-            installBar.classList.remove("is-visible");
-          }
-        });
-      }
-
-      window.addEventListener("appinstalled", () => {
-        deferredPrompt = null;
-        if (installBar) {
-          installBar.classList.remove("is-visible");
-        }
-      });
-    })();
-  </script>
-</body>
-</html> 
+    .btn-ghost {
+      background: transparent 
