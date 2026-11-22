@@ -9,13 +9,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;600;700&family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=2" />
+  <link rel="stylesheet" href="css/style.css?v=3" />
 </head>
 <body>
   <header class="site-header">
     <div class="container header-inner">
       <div class="brand">
-        <div class="brand-emblem">ک</div>
+        <div class="brand-emblem" aria-hidden="true">ک</div>
         <div>
           <h1 class="brand-title">د کړاوونه مدیریت</h1>
           <p class="brand-subtitle">د شعرونو او لوستونکو نظرونو کنټرول</p>
@@ -30,19 +30,19 @@
     <section id="auth-section" class="feedback-card">
       <div class="feedback-header">
         <h2>د مدیر ننوتل</h2>
-        <p>مهرباني وکړئ د خپل Supabase مدیر ایمیل او پټنوم دننه کړئ.</p>
+        <p>مهرباني وکړئ د خپل مدیر ایمیل او پټنوم دننه کړئ.</p>
       </div>
-      <form id="admin-login-form">
+      <form id="admin-login-form" novalidate>
         <div class="form-group">
           <label for="admin-email">ایمیل</label>
-          <input type="email" id="admin-email" required placeholder="admin@example.com" />
+          <input type="email" id="admin-email" autocomplete="email" required placeholder="rohaniwardak004@gmail.com" />
         </div>
         <div class="form-group">
           <label for="admin-password">پټنوم</label>
-          <input type="password" id="admin-password" required placeholder="••••••••" />
+          <input type="password" id="admin-password" autocomplete="current-password" required placeholder="••••••••" />
         </div>
-        <button type="submit" class="btn-primary">ننوتل</button>
-        <p id="auth-status" class="feedback-status"></p>
+        <button type="submit" id="login-submit-btn" class="btn-primary">ننوتل</button>
+        <p id="auth-status" class="feedback-status" role="status" aria-live="polite"></p>
       </form>
     </section>
 
@@ -50,32 +50,33 @@
     <section id="dashboard-section" style="display: none;">
       <div class="toolbar-card" style="grid-template-columns: 1fr auto; align-items: center;">
         <strong id="admin-user-label">ښه راغلاست، مدیر!</strong>
-        <button type="button" id="logout-btn" class="btn-ghost">وتل (Logout)</button>
+        <button type="button" id="logout-btn" class="btn-ghost">وتل</button>
       </div>
 
       <div class="feedback-card" style="margin-bottom: 2.2rem;">
         <div class="feedback-header">
           <h2>نوی شعر اضافه کول</h2>
+          <p>نوي شعرونه دلته ثبت کړئ تر څو په ژوندي ډول په اصلي پاڼه کې خپاره شي.</p>
         </div>
-        <form id="add-poem-form">
+        <form id="add-poem-form" novalidate>
           <div class="form-group">
             <label for="poem-title">د شعر سرلیک</label>
-            <input type="text" id="poem-title" required placeholder="مثلاً: د زړه آواز" />
+            <input type="text" id="poem-title" maxlength="160" required placeholder="مثلاً: د زړه آواز" />
           </div>
           <div class="form-group">
             <label for="poem-poet">د شاعر نوم</label>
-            <input type="text" id="poem-poet" placeholder="مثلاً: رحمان بابا" />
+            <input type="text" id="poem-poet" maxlength="120" placeholder="مثلاً: رحمان بابا" />
           </div>
           <div class="form-group">
             <label for="poem-category">کټګوري / ډول</label>
-            <input type="text" id="poem-category" placeholder="مثلاً: غزل، ټپیزه، نظم" />
+            <input type="text" id="poem-category" maxlength="80" placeholder="مثلاً: غزل، ټپیزه، نظم" />
           </div>
           <div class="form-group">
             <label for="poem-content">د شعر متن</label>
-            <textarea id="poem-content" rows="6" required placeholder="د شعر بیتونه دلته ولیکئ..."></textarea>
+            <textarea id="poem-content" rows="6" maxlength="15000" required placeholder="د شعر بیتونه دلته ولیکئ..."></textarea>
           </div>
-          <button type="submit" class="btn-primary">شعر خپرول</button>
-          <p id="poem-form-status" class="feedback-status"></p>
+          <button type="submit" id="add-poem-btn" class="btn-primary">شعر خپرول</button>
+          <p id="poem-form-status" class="feedback-status" role="status" aria-live="polite"></p>
         </form>
       </div>
 
@@ -98,16 +99,21 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase-config.js?v=2"></script>
+  <script src="supabase-config.js?v=3"></script>
   <script>
     function getClient() {
       if (window.supabaseClient) return window.supabaseClient;
+      if (window.supabase && typeof window.supabase.from === "function") {
+        return window.supabase;
+      }
+
       const rawUrl = typeof SUPABASE_URL === "string" ? SUPABASE_URL.trim() : "";
       const rawKey = typeof SUPABASE_ANON_KEY === "string" ? SUPABASE_ANON_KEY.trim() : "";
       const match = rawUrl.match(/https:\/\/[a-zA-Z0-9-]+\.supabase\.co/);
       const url = match ? match[0] : rawUrl.replace(/\/+$/, "");
       const key = rawKey.replace(/\s+/g, "");
-      if (url && key && window.supabase) {
+
+      if (url && key && window.supabase && typeof window.supabase.createClient === "function") {
         window.supabaseClient = window.supabase.createClient(url, key);
         return window.supabaseClient;
       }
@@ -124,13 +130,25 @@
     const authSection = document.getElementById("auth-section");
     const dashboardSection = document.getElementById("dashboard-section");
     const authStatus = document.getElementById("auth-status");
+    const loginBtn = document.getElementById("login-submit-btn");
 
     async function checkSession() {
-      if (!client) return;
-      const { data } = await client.auth.getSession();
-      if (data && data.session) {
-        showDashboard(data.session.user);
-      } else {
+      if (!client || !client.auth) {
+        if (authStatus) {
+          authStatus.textContent = "د ډیټابیس اتصال پیدا نه شو. مهرباني وکړئ supabase-config.js وګورئ.";
+        }
+        return;
+      }
+
+      try {
+        const { data } = await client.auth.getSession();
+        if (data && data.session) {
+          showDashboard(data.session.user);
+        } else {
+          authSection.style.display = "block";
+          dashboardSection.style.display = "none";
+        }
+      } catch (_) {
         authSection.style.display = "block";
         dashboardSection.style.display = "none";
       }
@@ -139,28 +157,45 @@
     function showDashboard(user) {
       authSection.style.display = "none";
       dashboardSection.style.display = "block";
-      document.getElementById("admin-user-label").textContent = "ننوتلی مدیر: " + (user.email || "");
+      const labelEl = document.getElementById("admin-user-label");
+      if (labelEl) {
+        labelEl.textContent = "ننوتلی مدیر: " + (user && user.email ? user.email : "");
+      }
       loadAdminData();
     }
 
     document.getElementById("admin-login-form").addEventListener("submit", async (e) => {
       e.preventDefault();
-      if (!client) return;
+      if (!client || !client.auth) return;
+
       const email = document.getElementById("admin-email").value.trim();
       const password = document.getElementById("admin-password").value;
+
+      if (!email || !password) {
+        authStatus.textContent = "مهرباني وکړئ ایمیل او پټنوم دواړه دننه کړئ.";
+        return;
+      }
+
+      if (loginBtn) loginBtn.disabled = true;
       authStatus.textContent = "ننوتل روان دي...";
 
-      const { data, error } = await client.auth.signInWithPassword({ email, password });
-      if (error) {
-        authStatus.textContent = "تېروتنه: " + error.message;
-      } else if (data && data.user) {
-        authStatus.textContent = "";
-        showDashboard(data.user);
+      try {
+        const { data, error } = await client.auth.signInWithPassword({ email, password });
+        if (error) {
+          authStatus.textContent = "تېروتنه: " + error.message;
+        } else if (data && data.user) {
+          authStatus.textContent = "";
+          showDashboard(data.user);
+        }
+      } catch (err) {
+        authStatus.textContent = "ناڅاپي ستونزه: " + (err && err.message ? err.message : "");
+      } finally {
+        if (loginBtn) loginBtn.disabled = false;
       }
     });
 
     document.getElementById("logout-btn").addEventListener("click", async () => {
-      if (!client) return;
+      if (!client || !client.auth) return;
       await client.auth.signOut();
       checkSession();
     });
@@ -168,22 +203,38 @@
     document.getElementById("add-poem-form").addEventListener("submit", async (e) => {
       e.preventDefault();
       if (!client) return;
+
       const status = document.getElementById("poem-form-status");
+      const addBtn = document.getElementById("add-poem-btn");
       const title = document.getElementById("poem-title").value.trim();
       const poet = document.getElementById("poem-poet").value.trim();
       const category = document.getElementById("poem-category").value.trim() || "شعر";
       const content = document.getElementById("poem-content").value.trim();
 
-      if (!title || !content) return;
+      if (!title || !content) {
+        status.textContent = "مهرباني وکړئ د شعر سرلیک او متن دواړه ولیکئ.";
+        return;
+      }
+
+      if (addBtn) addBtn.disabled = true;
       status.textContent = "شعر ثبتېږي...";
 
-      const { error } = await client.from("poems").insert([{ title, poet, category, content }]);
-      if (error) {
-        status.textContent = "ستونزه: " + error.message;
-      } else {
-        status.textContent = "شعر په بریالیتوب خپور شو!";
-        e.target.reset();
-        loadAdminData();
+      try {
+        const { error } = await client
+          .from("poems")
+          .insert([{ title, poet, category, content }]);
+
+        if (error) {
+          status.textContent = "ستونزه: " + error.message;
+        } else {
+          status.textContent = "شعر په بریالیتوب خپور شو!";
+          e.target.reset();
+          loadAdminData();
+        }
+      } catch (err) {
+        status.textContent = "ناڅاپي ستونزه: " + (err && err.message ? err.message : "");
+      } finally {
+        if (addBtn) addBtn.disabled = false;
       }
     });
 
@@ -247,8 +298,13 @@
           btn.addEventListener("click", async () => {
             const id = btn.getAttribute("data-id");
             if (!id) return;
-            await client.from("poems").delete().eq("id", id);
-            loadAdminData();
+            btn.disabled = true;
+            const { error: delErr } = await client.from("poems").delete().eq("id", id);
+            if (!delErr) {
+              loadAdminData();
+            } else {
+              btn.disabled = false;
+            }
           });
         });
       }
