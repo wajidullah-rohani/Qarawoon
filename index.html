@@ -454,4 +454,341 @@
     </section>
 
     <footer class="site-footer">
-      <div>کړاوونه — د پښتو ادب او شعر کور</div> 
+      <div>کړاوونه — د پښتو ادب او شعر کور</div>
+    </footer>
+  </div>
+
+  <!-- Optional Supabase Config (loaded safely) -->
+  <script src="./supabase-config.js" onerror="window.__supaConfigFailed = true"></script>
+
+  <script>
+    (function () {
+      const SAMPLE_POEMS = [
+        {
+          id: "sample-1",
+          title: "د شپې تر پایه",
+          category: "غزل",
+          created_at: "نن",
+          content:
+            "د زړه په پاڼو کې د اوښکو کرښې پاتې دي\nد تېرو یادونو لا هم درنې کیسې پاتې دي\n\nموږ د امید په لار کې ډېر کړاوونه ګاللي\nخو د سبا د سهار روښانه هیلې پاتې دي"
+        },
+        {
+          id: "sample-2",
+          title: "د قلم امانت",
+          category: "نظم",
+          created_at: "تازه",
+          content:
+            "چې کله غږونه بند شي، قلم خبرې کوي\nد درد او مینې ترمنځ نوي پلونه جوړوي\n\nهر بیت یو زخم دی چې په شعر کې شفا مومي\nهر مصرع هغه څراغ ده چې تیاره راباسي"
+        }
+      ];
+
+      function $(id) {
+        return document.getElementById(id);
+      }
+
+      const poemsListEl = $("poemsList");
+      const poemsStatusEl = $("poemsStatus");
+      const searchInputEl = $("searchInput");
+      const categoryChipsEl = $("categoryChips");
+
+      const readerModalEl = $("readerModal");
+      const closeModalBtn = $("closeModalBtn");
+      const modalTitleEl = $("modalTitle");
+      const modalCategoryEl = $("modalCategory");
+      const modalBodyEl = $("modalBody");
+      const modalDateEl = $("modalDate");
+      const sharePoemBtn = $("sharePoemBtn");
+
+      const feedbackFormEl = $("feedbackForm");
+      const readerNameEl = $("readerName");
+      const readerMessageEl = $("readerMessage");
+      const feedbackStatusEl = $("feedbackStatus");
+
+      let allPoems = [...SAMPLE_POEMS];
+      let selectedCategory = "ټول";
+      let activePoem = null;
+
+      function escapeHtml(str) {
+        return String(str || "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      function renderPoems() {
+        try {
+          if (!poemsListEl) return;
+          const q = searchInputEl ? (searchInputEl.value || "").trim().toLowerCase() : "";
+
+          const filtered = allPoems.filter((p) => {
+            const catMatch =
+              selectedCategory === "ټول" || (p.category || "غزل") === selectedCategory;
+            const textMatch =
+              !q ||
+              (p.title || "").toLowerCase().includes(q) ||
+              (p.content || "").toLowerCase().includes(q) ||
+              (p.category || "").toLowerCase().includes(q);
+            return catMatch && textMatch;
+          });
+
+          if (!filtered.length) {
+            poemsListEl.innerHTML =
+              '<div class="poem-card"><p class="poem-body">ستاسو د لټون یا ډلبندۍ سره سم کوم شعر ونه موندل شو.</p></div>';
+            if (poemsStatusEl) poemsStatusEl.textContent = "۰ شعرونه";
+            return;
+          }
+
+          if (poemsStatusEl) {
+            poemsStatusEl.textContent = `${filtered.length} شعرونه`;
+          }
+
+          poemsListEl.innerHTML = filtered
+            .map((poem) => {
+              const safeId = escapeHtml(poem.id);
+              const safeTitle = escapeHtml(poem.title || "بې سرلیکه شعر");
+              const safeCategory = escapeHtml(poem.category || "غزل");
+              const safeContent = escapeHtml(poem.content || "");
+              const safeDate = escapeHtml(poem.created_at || "");
+
+              return `
+                <article class="poem-card">
+                  <div class="poem-meta">
+                    <span class="poem-tag">${safeCategory}</span>
+                    <span>${safeDate}</span>
+                  </div>
+                  <h3 class="poem-title">${safeTitle}</h3>
+                  <div class="poem-body">${safeContent}</div>
+                  <div class="poem-footer">
+                    <button class="btn-ghost open-reader-btn" data-id="${safeId}" type="button">بشپړ لوستل</button>
+                    <button class="btn-ghost copy-poem-btn" data-id="${safeId}" type="button">کاپي</button>
+                  </div>
+                </article>
+              `;
+            })
+            .join("");
+
+          poemsListEl.querySelectorAll(".open-reader-btn").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const found = allPoems.find((item) => String(item.id) === String(btn.dataset.id));
+              if (found) openReader(found);
+            });
+          });
+
+          poemsListEl.querySelectorAll(".copy-poem-btn").forEach((btn) => {
+            btn.addEventListener("click", async () => {
+              const found = allPoems.find((item) => String(item.id) === String(btn.dataset.id));
+              if (!found) return;
+              const shareText = `${found.title || ""}\n\n${found.content || ""}\n\n— کړاوونه`;
+              try {
+                await navigator.clipboard.writeText(shareText);
+                btn.textContent = "کاپي شو ✓";
+                setTimeout(() => (btn.textContent = "کاپي"), 1800);
+              } catch (_) {}
+            });
+          });
+        } catch (_) {}
+      }
+
+      function openReader(poem) {
+        if (!readerModalEl) return;
+        activePoem = poem;
+        if (modalTitleEl) modalTitleEl.textContent = poem.title || "بې سرلیکه شعر";
+        if (modalCategoryEl) modalCategoryEl.textContent = poem.category || "غزل";
+        if (modalBodyEl) modalBodyEl.textContent = poem.content || "";
+        if (modalDateEl) modalDateEl.textContent = poem.created_at || "";
+        readerModalEl.classList.add("open");
+      }
+
+      function closeReader() {
+        if (readerModalEl) readerModalEl.classList.remove("open");
+        activePoem = null;
+      }
+
+      if (closeModalBtn) closeModalBtn.addEventListener("click", closeReader);
+      if (readerModalEl) {
+        readerModalEl.addEventListener("click", (e) => {
+          if (e.target === readerModalEl) closeReader();
+        });
+      }
+
+      if (sharePoemBtn) {
+        sharePoemBtn.addEventListener("click", async () => {
+          if (!activePoem) return;
+          const text = `${activePoem.title || ""}\n\n${activePoem.content || ""}\n\n${window.location.href}`;
+          if (navigator.share) {
+            try {
+              await navigator.share({
+                title: activePoem.title || "کړاوونه",
+                text,
+                url: window.location.href
+              });
+              return;
+            } catch (_) {}
+          }
+          try {
+            await navigator.clipboard.writeText(text);
+            sharePoemBtn.textContent = "لینک او شعر کاپي شو ✓";
+            setTimeout(() => (sharePoemBtn.textContent = "شریک یې کړئ"), 2000);
+          } catch (_) {}
+        });
+      }
+
+      if (searchInputEl) {
+        searchInputEl.addEventListener("input", renderPoems);
+      }
+
+      if (categoryChipsEl) {
+        categoryChipsEl.querySelectorAll(".chip").forEach((chip) => {
+          chip.addEventListener("click", () => {
+            categoryChipsEl.querySelectorAll(".chip").forEach((c) => c.classList.remove("active"));
+            chip.classList.add("active");
+            selectedCategory = chip.dataset.category || "ټول";
+            renderPoems();
+          });
+        });
+      }
+
+      function getSupabaseClient() {
+        try {
+          if (window.supabaseClient) return window.supabaseClient;
+          if (window.sb) return window.sb;
+          const url =
+            window.SUPABASE_URL ||
+            (window.supabaseConfig && (window.supabaseConfig.url || window.supabaseConfig.SUPABASE_URL));
+          const key =
+            window.SUPABASE_ANON_KEY ||
+            (window.supabaseConfig &&
+              (window.supabaseConfig.anonKey ||
+                window.supabaseConfig.key ||
+                window.supabaseConfig.SUPABASE_ANON_KEY));
+          if (window.supabase && typeof window.supabase.createClient === "function" && url && key) {
+            window.supabaseClient = window.supabase.createClient(url, key);
+            return window.supabaseClient;
+          }
+        } catch (_) {}
+        return null;
+      }
+
+      async function loadPoemsFromSupabase() {
+        try {
+          const client = getSupabaseClient();
+          if (!client) {
+            if (poemsStatusEl) poemsStatusEl.textContent = `${allPoems.length} شعرونه`;
+            return;
+          }
+
+          const candidateTables = ["poems", "poetry", "posts"];
+          for (const table of candidateTables) {
+            try {
+              const { data, error } = await client.from(table).select("*").limit(100);
+              if (!error && Array.isArray(data) && data.length > 0) {
+                allPoems = data.map((row, index) => ({
+                  id: row.id || `${table}-${index}`,
+                  title: row.title || row.name || "شعر",
+                  category: row.category || row.type || "غزل",
+                  content: row.content || row.body || row.poem || row.text || "",
+                  created_at: row.created_at
+                    ? new Date(row.created_at).toLocaleDateString("ps-AF")
+                    : ""
+                }));
+                renderPoems();
+                return;
+              }
+            } catch (_) {}
+          }
+        } catch (_) {}
+      }
+
+      if (feedbackFormEl) {
+        feedbackFormEl.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const nameVal = readerNameEl
+            ? (readerNameEl.value || "").trim() || "ناڅرګند لوستونکی"
+            : "ناڅرګند لوستونکی";
+          const msgVal = readerMessageEl ? (readerMessageEl.value || "").trim() : "";
+          if (!msgVal) return;
+
+          if (feedbackStatusEl) {
+            feedbackStatusEl.style.color = "#1b4d40";
+            feedbackStatusEl.textContent = "نظر لېږل کېږي...";
+          }
+
+          try {
+            const client = getSupabaseClient();
+            if (client) {
+              const feedbackTables = ["feedback", "comments", "messages"];
+              for (const tbl of feedbackTables) {
+                try {
+                  const { error } = await client.from(tbl).insert([{ name: nameVal, message: msgVal }]);
+                  if (!error) {
+                    if (feedbackStatusEl) {
+                      feedbackStatusEl.textContent = "ستاسو نظر په بریالیتوب ثبت شو. مننه!";
+                    }
+                    feedbackFormEl.reset();
+                    return;
+                  }
+                } catch (_) {}
+              }
+            }
+          } catch (_) {}
+
+          try {
+            const saved = JSON.parse(localStorage.getItem("qarawoon_feedback") || "[]");
+            saved.push({ name: nameVal, message: msgVal, date: new Date().toISOString() });
+            localStorage.setItem("qarawoon_feedback", JSON.stringify(saved));
+            if (feedbackStatusEl) {
+              feedbackStatusEl.textContent = "ستاسو نظر خوندي شو. مننه!";
+            }
+            feedbackFormEl.reset();
+          } catch (_) {
+            if (feedbackStatusEl) {
+              feedbackStatusEl.style.color = "#9e2a2b";
+              feedbackStatusEl.textContent = "د نظر په لېږلو کې ستونزه راغله.";
+            }
+          }
+        });
+      }
+
+      renderPoems();
+      loadPoemsFromSupabase();
+    })();
+  </script>
+
+  <!-- Service Worker Registration & PWA Install Prompt -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js").catch(() => {});
+      });
+    }
+
+    (function () {
+      let deferredPrompt = null;
+      const installBar = document.getElementById("installBar");
+      const installBtn = document.getElementById("installBtn");
+
+      window.addEventListener("beforeinstallprompt", (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        if (installBar) installBar.classList.add("show");
+      });
+
+      if (installBtn) {
+        installBtn.addEventListener("click", async () => {
+          if (!deferredPrompt) return;
+          deferredPrompt.prompt();
+          await deferredPrompt.userChoice;
+          deferredPrompt = null;
+          if (installBar) installBar.classList.remove("show");
+        });
+      }
+
+      window.addEventListener("appinstalled", () => {
+        deferredPrompt = null;
+        if (installBar) installBar.classList.remove("show");
+      });
+    })();
+  </script>
+</body>
+</html> 
