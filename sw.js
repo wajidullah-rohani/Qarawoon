@@ -1,4 +1,4 @@
-const CACHE_NAME = "qarawoon-pwa-v4";
+const CACHE_NAME = "qarawoon-pwa-v6";
 const STATIC_ASSETS = [
   "./",
   "./index.html",
@@ -53,6 +53,10 @@ self.addEventListener("fetch", (event) => {
         }
         return response;
       })
-      .catch(() => caches.match(request).then((cached) => cached || caches.match("./index.html")))
+      .catch(() =>
+        caches
+          .match(request)
+          .then((cached) => cached || caches.match("./index.html"))
+      )
   );
 }); 
