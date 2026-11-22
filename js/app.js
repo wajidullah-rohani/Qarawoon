@@ -3,6 +3,25 @@ function getSupabaseClient() {
   if (window.supabase && typeof window.supabase.from === "function") {
     return window.supabase;
   }
+
+  const rawUrl = typeof SUPABASE_URL === "string" ? SUPABASE_URL.trim() : "";
+  const rawKey = typeof SUPABASE_ANON_KEY === "string" ? SUPABASE_ANON_KEY.trim() : "";
+
+  const urlMatch = rawUrl.match(/https:\/\/[a-zA-Z0-9-]+\.supabase\.co/);
+  const cleanUrl = urlMatch ? urlMatch[0] : rawUrl.replace(/\/+$/, "");
+
+  const cleanKey = rawKey.replace(/\s+/g, "");
+
+  if (
+    cleanUrl &&
+    cleanKey &&
+    window.supabase &&
+    typeof window.supabase.createClient === "function"
+  ) {
+    window.supabaseClient = window.supabase.createClient(cleanUrl, cleanKey);
+    return window.supabaseClient;
+  }
+
   return null;
 }
 
@@ -77,7 +96,7 @@ async function loadPoems() {
       })
       .join("");
   } catch (err) {
-    poemsListEl.innerHTML = "<p>ناڅاپي ستونزه رامنځته شوه.</p>";
+    poemsListEl.innerHTML = `<p>ناڅاپي ستونزه رامنځته شوه: ${escapeHtml(err && err.message ? err.message : "")}</p>`;
   }
 }
 
