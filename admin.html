@@ -3,51 +3,258 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>د مدیر ډشبورډ — کړاوونه</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <title>مدیریت | کړاوونه</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;600;700&family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css?v=2" />
 </head>
 <body>
-  <main class="container">
-    <h1>د مدیر ډشبورډ</h1>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="brand-emblem">ک</div>
+        <div>
+          <h1 class="brand-title">د کړاوونه مدیریت</h1>
+          <p class="brand-subtitle">د شعرونو او لوستونکو نظرونو کنټرول</p>
+        </div>
+      </div>
+      <a href="index.html" class="admin-link">اصلي پاڼه</a>
+    </div>
+  </header>
 
-    <section id="login-box">
-      <h2>ننوتل</h2>
-      <form id="login-form">
-        <input type="email" id="admin-email" placeholder="ایمیل" required />
-        <input type="password" id="admin-password" placeholder="پاسورډ" required />
-        <button type="submit">ننوتل</button>
+  <main class="container main-layout">
+    <!-- Login Box -->
+    <section id="auth-section" class="feedback-card">
+      <div class="feedback-header">
+        <h2>د مدیر ننوتل</h2>
+        <p>مهرباني وکړئ د خپل Supabase مدیر ایمیل او پټنوم دننه کړئ.</p>
+      </div>
+      <form id="admin-login-form">
+        <div class="form-group">
+          <label for="admin-email">ایمیل</label>
+          <input type="email" id="admin-email" required placeholder="admin@example.com" />
+        </div>
+        <div class="form-group">
+          <label for="admin-password">پټنوم</label>
+          <input type="password" id="admin-password" required placeholder="••••••••" />
+        </div>
+        <button type="submit" class="btn-primary">ننوتل</button>
+        <p id="auth-status" class="feedback-status"></p>
       </form>
-      <p id="auth-status"></p>
     </section>
 
-    <section id="dashboard-box" style="display: none;">
-      <button id="logout-btn" type="button">وتل</button>
+    <!-- Dashboard -->
+    <section id="dashboard-section" style="display: none;">
+      <div class="toolbar-card" style="grid-template-columns: 1fr auto; align-items: center;">
+        <strong id="admin-user-label">ښه راغلاست، مدیر!</strong>
+        <button type="button" id="logout-btn" class="btn-ghost">وتل (Logout)</button>
+      </div>
 
-      <h2>نوی شعر زیاتول</h2>
-      <form id="poem-form">
-        <input type="text" id="poem-title" placeholder="د شعر سرلیک" required />
-        <textarea id="poem-body" placeholder="د شعر متن..." required></textarea>
-        <button type="submit">شعر خوندي کول</button>
-      </form>
+      <div class="feedback-card" style="margin-bottom: 2.2rem;">
+        <div class="feedback-header">
+          <h2>نوی شعر اضافه کول</h2>
+        </div>
+        <form id="add-poem-form">
+          <div class="form-group">
+            <label for="poem-title">د شعر سرلیک</label>
+            <input type="text" id="poem-title" required placeholder="مثلاً: د زړه آواز" />
+          </div>
+          <div class="form-group">
+            <label for="poem-poet">د شاعر نوم</label>
+            <input type="text" id="poem-poet" placeholder="مثلاً: رحمان بابا" />
+          </div>
+          <div class="form-group">
+            <label for="poem-category">کټګوري / ډول</label>
+            <input type="text" id="poem-category" placeholder="مثلاً: غزل، ټپیزه، نظم" />
+          </div>
+          <div class="form-group">
+            <label for="poem-content">د شعر متن</label>
+            <textarea id="poem-content" rows="6" required placeholder="د شعر بیتونه دلته ولیکئ..."></textarea>
+          </div>
+          <button type="submit" class="btn-primary">شعر خپرول</button>
+          <p id="poem-form-status" class="feedback-status"></p>
+        </form>
+      </div>
 
-      <h2>شعرونه</h2>
-      <div id="admin-poems-list"></div>
+      <div class="section-heading">
+        <h2>د لوستونکو نظرونه</h2>
+        <span class="section-line"></span>
+      </div>
+      <div id="admin-feedback-list" class="poems-grid" style="margin-bottom: 2.5rem;">
+        <p>نظرونه لودېږي...</p>
+      </div>
 
-      <h2>پروفایل او ټولنیزې رسنۍ</h2>
-      <form id="settings-form">
-        <textarea id="settings-about" placeholder="زما په اړه..."></textarea>
-        <input type="text" id="settings-social" placeholder="د ټولنیزو رسنیو لینکونه" />
-        <button type="submit">تنظیمات خوندي کول</button>
-      </form>
-
-      <h2>راغلي نظرونه</h2>
-      <div id="feedback-list"></div>
+      <div class="section-heading">
+        <h2>خپاره شوي شعرونه</h2>
+        <span class="section-line"></span>
+      </div>
+      <div id="admin-poems-list" class="poems-grid">
+        <p>شعرونه لودېږي...</p>
+      </div>
     </section>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase-config.js"></script>
-  <script src="js/storage.js"></script>
-  <script src="js/app.js"></script>
+  <script src="supabase-config.js?v=2"></script>
+  <script>
+    function getClient() {
+      if (window.supabaseClient) return window.supabaseClient;
+      const rawUrl = typeof SUPABASE_URL === "string" ? SUPABASE_URL.trim() : "";
+      const rawKey = typeof SUPABASE_ANON_KEY === "string" ? SUPABASE_ANON_KEY.trim() : "";
+      const match = rawUrl.match(/https:\/\/[a-zA-Z0-9-]+\.supabase\.co/);
+      const url = match ? match[0] : rawUrl.replace(/\/+$/, "");
+      const key = rawKey.replace(/\s+/g, "");
+      if (url && key && window.supabase) {
+        window.supabaseClient = window.supabase.createClient(url, key);
+        return window.supabaseClient;
+      }
+      return null;
+    }
+
+    function esc(str) {
+      const div = document.createElement("div");
+      div.textContent = String(str || "");
+      return div.innerHTML;
+    }
+
+    const client = getClient();
+    const authSection = document.getElementById("auth-section");
+    const dashboardSection = document.getElementById("dashboard-section");
+    const authStatus = document.getElementById("auth-status");
+
+    async function checkSession() {
+      if (!client) return;
+      const { data } = await client.auth.getSession();
+      if (data && data.session) {
+        showDashboard(data.session.user);
+      } else {
+        authSection.style.display = "block";
+        dashboardSection.style.display = "none";
+      }
+    }
+
+    function showDashboard(user) {
+      authSection.style.display = "none";
+      dashboardSection.style.display = "block";
+      document.getElementById("admin-user-label").textContent = "ننوتلی مدیر: " + (user.email || "");
+      loadAdminData();
+    }
+
+    document.getElementById("admin-login-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!client) return;
+      const email = document.getElementById("admin-email").value.trim();
+      const password = document.getElementById("admin-password").value;
+      authStatus.textContent = "ننوتل روان دي...";
+
+      const { data, error } = await client.auth.signInWithPassword({ email, password });
+      if (error) {
+        authStatus.textContent = "تېروتنه: " + error.message;
+      } else if (data && data.user) {
+        authStatus.textContent = "";
+        showDashboard(data.user);
+      }
+    });
+
+    document.getElementById("logout-btn").addEventListener("click", async () => {
+      if (!client) return;
+      await client.auth.signOut();
+      checkSession();
+    });
+
+    document.getElementById("add-poem-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!client) return;
+      const status = document.getElementById("poem-form-status");
+      const title = document.getElementById("poem-title").value.trim();
+      const poet = document.getElementById("poem-poet").value.trim();
+      const category = document.getElementById("poem-category").value.trim() || "شعر";
+      const content = document.getElementById("poem-content").value.trim();
+
+      if (!title || !content) return;
+      status.textContent = "شعر ثبتېږي...";
+
+      const { error } = await client.from("poems").insert([{ title, poet, category, content }]);
+      if (error) {
+        status.textContent = "ستونزه: " + error.message;
+      } else {
+        status.textContent = "شعر په بریالیتوب خپور شو!";
+        e.target.reset();
+        loadAdminData();
+      }
+    });
+
+    async function loadAdminData() {
+      if (!client) return;
+
+      const fbList = document.getElementById("admin-feedback-list");
+      const { data: feedbacks, error: fbErr } = await client
+        .from("feedback")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (fbErr) {
+        fbList.innerHTML = `<div class="error-card"><p>${esc(fbErr.message)}</p></div>`;
+      } else if (!feedbacks || feedbacks.length === 0) {
+        fbList.innerHTML = `<div class="empty-state"><p>تر اوسه کوم نظر نشته.</p></div>`;
+      } else {
+        fbList.innerHTML = feedbacks
+          .map(
+            (f) => `
+            <article class="poem-card">
+              <div class="poem-card-top">
+                <span class="poem-badge">نظر</span>
+                <span class="poem-poet">${esc(f.name || "ورکوونکی")}</span>
+              </div>
+              <div class="poem-body">${esc(f.message).replace(/\n/g, "<br>")}</div>
+            </article>`
+          )
+          .join("");
+      }
+
+      const poemsList = document.getElementById("admin-poems-list");
+      const { data: poems, error: pErr } = await client
+        .from("poems")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (pErr) {
+        poemsList.innerHTML = `<div class="error-card"><p>${esc(pErr.message)}</p></div>`;
+      } else if (!poems || poems.length === 0) {
+        poemsList.innerHTML = `<div class="empty-state"><p>کوم شعر ونه موندل شو.</p></div>`;
+      } else {
+        poemsList.innerHTML = poems
+          .map(
+            (p) => `
+            <article class="poem-card">
+              <div class="poem-card-top">
+                <span class="poem-badge">${esc(p.category || "شعر")}</span>
+                <span class="poem-poet">${esc(p.poet || "")}</span>
+              </div>
+              <h3 class="poem-title">${esc(p.title)}</h3>
+              <div class="poem-body poem-body--clamped">${esc(p.content).replace(/\n/g, "<br>")}</div>
+              <div class="poem-card-actions">
+                <button type="button" class="btn-ghost delete-poem-btn" data-id="${esc(p.id)}">حذف کول</button>
+              </div>
+            </article>`
+          )
+          .join("");
+
+        poemsList.querySelectorAll(".delete-poem-btn").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            const id = btn.getAttribute("data-id");
+            if (!id) return;
+            await client.from("poems").delete().eq("id", id);
+            loadAdminData();
+          });
+        });
+      }
+    }
+
+    checkSession();
+  </script>
 </body>
 </html> 
