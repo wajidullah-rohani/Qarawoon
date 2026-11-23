@@ -1386,6 +1386,7 @@
       let fontSizePx = 20;
       /** @type {string | null} */
       let pendingPhotoDataUrl = null;
+      let isHandlingPopstate = false;
 
       /** @param {string} text @returns {Promise<string>} */
       async function sha256Hex(text) {
@@ -1515,13 +1516,14 @@
           sec.classList.toggle("active-page", sec.getAttribute("data-page") === pageName);
         });
 
-        if (pushToHistory !== false) {
-          if (pageHistory[pageHistory.length - 1] !== pageName) {
-            pageHistory.push(pageName);
+        const currentTop = pageHistory[pageHistory.length - 1];
+        if (pushToHistory !== false && currentTop !== pageName) {
+          pageHistory.push(pageName);
+          if (!isHandlingPopstate) {
+            try {
+              history.pushState({ page: pageName, idx: pageHistory.length - 1 }, "", "#page-" + pageName);
+            } catch {}
           }
-          try {
-            history.pushState({ page: pageName }, "", "");
-          } catch {}
         }
 
         if (pageName === "poetry") {
@@ -1541,7 +1543,8 @@
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
-      function goBack() {
+      /** @param {boolean} [fromHardwareBack] */
+      function goBack(fromHardwareBack) {
         const poemReader = document.getElementById("poem-reader");
         const categoryView = document.getElementById("category-view");
         const currentPage = pageHistory[pageHistory.length - 1] || "main-menu";
@@ -1554,20 +1557,35 @@
             } else {
               showCategoriesGridOnly();
             }
+            if (fromHardwareBack) {
+              try {
+                history.pushState({ page: "poetry", idx: pageHistory.length - 1 }, "", "#page-poetry");
+              } catch {}
+            }
             return;
           }
           if (categoryView && !categoryView.classList.contains("hidden")) {
             showCategoriesGridOnly();
+            if (fromHardwareBack) {
+              try {
+                history.pushState({ page: "poetry", idx: pageHistory.length - 1 }, "", "#page-poetry");
+              } catch {}
+            }
             return;
           }
         }
 
         if (pageHistory.length > 1) {
           pageHistory.pop();
-          const prevPage = pageHistory[pageHistory.length - 1];
+          const prevPage = pageHistory[pageHistory.length - 1] || "main-menu";
           showPage(prevPage, false);
         } else {
           showPage("main-menu", false);
+          if (fromHardwareBack) {
+            try {
+              history.pushState({ page: "main-menu", idx: 0 }, "", "#page-main-menu");
+            } catch {}
+          }
         }
       }
 
@@ -1974,7 +1992,11 @@
       document.getElementById("start-app")?.addEventListener("click", function () {
         document.getElementById("welcome-screen")?.classList.add("hidden");
         document.getElementById("app-content")?.classList.remove("hidden");
-        showPage("main-menu");
+        pageHistory = ["main-menu"];
+        try {
+          history.replaceState({ page: "main-menu", idx: 0 }, "", "#page-main-menu");
+        } catch {}
+        showPage("main-menu", false);
       });
 
       document.getElementById("brand-home")?.addEventListener("click", function () {
@@ -2057,11 +2079,18 @@
       });
 
       document.querySelectorAll("[data-back]").forEach(function (btn) {
-        btn.addEventListener("click", goBack);
+        btn.addEventListener("click", function () {
+          goBack(false);
+        });
       });
 
       window.addEventListener("popstate", function () {
-        goBack();
+        isHandlingPopstate = true;
+        try {
+          goBack(true);
+        } finally {
+          isHandlingPopstate = false;
+        }
       });
 
       document.querySelectorAll(".category-card").forEach(function (card) {
