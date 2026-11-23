@@ -6,15 +6,16 @@
   <title>کړاوونه — د پښتو شعرونو ټولګه</title>
 
   <!-- PWA Manifest & Mobile App Settings -->
-  <link rel="manifest" href="./manifest.json" />
+  <link rel="manifest" href="/Qarawoon/manifest.json" />
   <meta name="theme-color" content="#1b4d40" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="کړاوونه" />
-  <link rel="apple-touch-icon" sizes="192x192" href="./icons/icon-192.png" />
-  <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png" />
-  <link rel="icon" type="image/png" sizes="512x512" href="./icons/icon-512.png" />
+  <link rel="apple-touch-icon" sizes="192x192" href="/Qarawoon/icons/icon-192.png" />
+  <link rel="apple-touch-icon" sizes="512x512" href="/Qarawoon/icons/icon-512.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/Qarawoon/icons/icon-192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="/Qarawoon/icons/icon-512.png" />
 
   <style>
     :root {
@@ -381,7 +382,7 @@
       <div class="header-actions">
         <a href="#poemsSection" class="header-link">شعرونه وګورئ</a>
         <a href="#feedbackSection" class="header-link">نظر او پیغام</a>
-        <a href="./admin.html" class="header-link">اداري برخه</a>
+        <a href="/Qarawoon/admin.html" class="header-link">اداري برخه</a>
       </div>
     </header>
 
@@ -463,7 +464,7 @@
 
   <!-- Supabase JS & Local Config -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onerror="window.__supaLibFailed = true"></script>
-  <script src="./supabase-config.js" onerror="window.__supaConfigFailed = true"></script>
+  <script src="/Qarawoon/supabase-config.js" onerror="window.__supaConfigFailed = true"></script>
 
   <script>
     (function () {
@@ -749,51 +750,4 @@
           } catch (_) {
             if (feedbackStatusEl) {
               feedbackStatusEl.style.color = "#9e2a2b";
-              feedbackStatusEl.textContent = "د نظر په لېږلو کې ستونزه راغله.";
-            }
-          }
-        });
-      }
-
-      renderPoems();
-      loadPoemsFromSupabase();
-    })();
-  </script>
-
-  <!-- Service Worker Registration & PWA Install Prompt -->
-  <script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./sw.js").catch(() => {});
-      });
-    }
-
-    (function () {
-      let deferredPrompt = null;
-      const installBar = document.getElementById("installBar");
-      const installBtn = document.getElementById("installBtn");
-
-      window.addEventListener("beforeinstallprompt", (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        if (installBar) installBar.classList.add("show");
-      });
-
-      if (installBtn) {
-        installBtn.addEventListener("click", async () => {
-          if (!deferredPrompt) return;
-          deferredPrompt.prompt();
-          await deferredPrompt.userChoice;
-          deferredPrompt = null;
-          if (installBar) installBar.classList.remove("show");
-        });
-      }
-
-      window.addEventListener("appinstalled", () => {
-        deferredPrompt = null;
-        if (installBar) installBar.classList.remove("show");
-      });
-    })();
-  </script>
-</body>
-</html> 
+              feedbackStatusEl 
