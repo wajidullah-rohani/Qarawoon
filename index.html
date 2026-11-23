@@ -500,6 +500,21 @@
           .replace(/"/g, "&quot;");
       }
 
+      function normalizeCat(val) {
+        const cleaned = String(val || "")
+          .trim()
+          .replace(/\u200c/g, "")
+          .replace(/ي/g, "ی");
+
+        if (cleaned === "ټپیزه" || cleaned === "ټپیزې") {
+          return "ټپیزې";
+        }
+        if (cleaned === "ماهیه" || cleaned === "ماهیې") {
+          return "ماهیې";
+        }
+        return cleaned;
+      }
+
       function renderPoems() {
         try {
           if (!poemsListEl) return;
@@ -507,7 +522,8 @@
 
           const filtered = allPoems.filter((p) => {
             const catMatch =
-              selectedCategory === "ټول" || (p.category || "غزل") === selectedCategory;
+              selectedCategory === "ټول" ||
+              normalizeCat(p.category || "غزل") === normalizeCat(selectedCategory);
             const textMatch =
               !q ||
               (p.title || "").toLowerCase().includes(q) ||
@@ -533,7 +549,7 @@
             .map((poem) => {
               const safeId = escapeHtml(poem.id);
               const safeTitle = escapeHtml(poem.title || "بې سرلیکه شعر");
-              const safeCategory = escapeHtml(poem.category || "غزل");
+              const safeCategory = escapeHtml(normalizeCat(poem.category || "غزل"));
               const safeContent = escapeHtml(poem.content || "");
               const safeDate = escapeHtml(poem.created_at || "");
 
@@ -580,7 +596,7 @@
         if (!readerModalEl) return;
         activePoem = poem;
         if (modalTitleEl) modalTitleEl.textContent = poem.title || "بې سرلیکه شعر";
-        if (modalCategoryEl) modalCategoryEl.textContent = poem.category || "غزل";
+        if (modalCategoryEl) modalCategoryEl.textContent = normalizeCat(poem.category || "غزل");
         if (modalBodyEl) modalBodyEl.textContent = poem.content || "";
         if (modalDateEl) modalDateEl.textContent = poem.created_at || "";
         readerModalEl.classList.add("open");
