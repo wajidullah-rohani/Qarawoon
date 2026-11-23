@@ -1,4 +1,4 @@
-const CACHE_NAME = "qarawoon-pwa-v10";
+const CACHE_NAME = "qarawoon-pwa-v13";
 const STATIC_ASSETS = [
   "./",
   "./index.html",
