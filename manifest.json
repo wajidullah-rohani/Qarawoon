@@ -2,6 +2,7 @@
   "name": "کړاوونه — د پښتو شعرونو ټولګه",
   "short_name": "کړاوونه",
   "description": "د پښتو شعرونو، غزلونو، نظمونو، ماهیې او ټپیزو ټولګه",
+  "id": "/Qarawoon/",
   "start_url": "/Qarawoon/",
   "scope": "/Qarawoon/",
   "display": "standalone",
