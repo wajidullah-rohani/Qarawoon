@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ps" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>کړاوونه — PNG Icons</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: sans-serif;
+      background: #0f2922;
+      color: #fcf8ee;
+      text-align: center;
+    }
+    .card {
+      max-width: 460px;
+      margin: 0 auto;
+      background: #183e34;
+      border: 1px solid rgba(228, 190, 103, 0.4);
+      border-radius: 18px;
+      padding: 20px;
+    }
+    h2 { margin: 0 0 14px; color: #f4d78e; }
+    .previews {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+    .previews img {
+      width: 110px;
+      height: 110px;
+      border-radius: 16px;
+      border: 2px solid #e4be67;
+      background: #183e34;
+    }
+    button {
+      width: 100%;
+      padding: 13px 18px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      background: #f4d78e;
+      color: #0f2922;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+    #msg {
+      min-height: 22px;
+      color: #8ef4b4;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>کړاوونه — PNG Icons</h2>
+
+    <div class="previews">
+      <img id="img192" alt="icon-192.png" />
+      <img id="img512" alt="icon-512.png" />
+    </div>
+
+    <button id="dl192" type="button">Download icon-192.png</button>
+    <button id="dl512" type="button">Download icon-512.png</button>
+    <p id="msg"></p>
+  </div>
+
+  <script>
+    (function () {
+      /** @type {Blob | null} */
+      var blob192 = null;
+      /** @type {Blob | null} */
+      var blob512 = null;
+
+      /**
+       * @param {number} size
+       * @param {string} imgId
+       * @param {(b: Blob) => void} storeBlob
+       */
+      function buildPng(size, imgId, storeBlob) {
+        var canvas = document.createElement("canvas");
+        canvas.width = size;
+        canvas.height = size;
+        var ctx = canvas.getContext("2d");
+        if (!ctx) return;
+
+        ctx.fillStyle = "#183e34";
+        ctx.fillRect(0, 0, size, size);
+
+        ctx.strokeStyle = "#e4be67";
+        ctx.lineWidth = Math.max(6, size * 0.04);
+        ctx.strokeRect(size * 0.1, size * 0.1, size * 0.8, size * 0.8);
+
+        ctx.fillStyle = "#f4d78e";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.font = "bold " + Math.round(size * 0.2) + "px sans-serif";
+        ctx.fillText("کړاوونه", size / 2, size * 0.46);
+
+        ctx.fillStyle = "#fcf8ee";
+        ctx.font = "bold " + Math.round(size * 0.08) + "px sans-serif";
+        ctx.fillText("Qarawoon", size / 2, size * 0.72);
+
+        canvas.toBlob(function (blob) {
+          if (!blob) return;
+          storeBlob(blob);
+          var el = document.getElementById(imgId);
+          if (el instanceof HTMLImageElement) {
+            el.src = URL.createObjectURL(blob);
+          }
+        }, "image/png");
+      }
+
+      /**
+       * @param {Blob | null} blob
+       * @param {string} name
+       */
+      function savePng(blob, name) {
+        var status = document.getElementById("msg");
+        if (!blob) {
+          if (status) status.textContent = "PNG لا چمتو نه دی، لږ صبر وکړئ.";
+          return;
+        }
+        var url = URL.createObjectURL(blob);
+        var link = document.createElement("a");
+        link.href = url;
+        link.download = name;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(function () {
+          URL.revokeObjectURL(url);
+        }, 2500);
+        if (status) status.textContent = name + " ډاونلوډ شو.";
+      }
+
+      buildPng(192, "img192", function (b) { blob192 = b; });
+      buildPng(512, "img512", function (b) { blob512 = b; });
+
+      var btn192 = document.getElementById("dl192");
+      var btn512 = document.getElementById("dl512");
+
+      if (btn192 instanceof HTMLButtonElement) {
+        btn192.addEventListener("click", function () {
+          savePng(blob192, "icon-192.png");
+        });
+      }
+
+      if (btn512 instanceof HTMLButtonElement) {
+        btn512.addEventListener("click", function () {
+          savePng(blob512, "icon-512.png");
+        });
+      }
+    })();
+  </script>
+</body>
+</html> 
