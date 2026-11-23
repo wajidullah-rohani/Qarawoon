@@ -2,7 +2,7 @@
   "name": "کړاوونه — د پښتو شعرونو ټولګه",
   "short_name": "کړاوونه",
   "description": "د پښتو شعرونو، غزلونو، نظمونو، ماهیې او ټپیزو ټولګه",
-  "start_url": "./index.html",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
@@ -12,15 +12,15 @@
   "dir": "rtl",
   "icons": [
     {
-      "src": "./icons/icon-192.svg",
+      "src": "icons/icon-192.png",
       "sizes": "192x192",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icons/icon-512.svg",
+      "src": "icons/icon-512.png",
       "sizes": "512x512",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any"
     }
   ]
