@@ -930,7 +930,9 @@
             <button class="outline-button" id="font-minus" type="button" title="لیکنه وړه کول">A−</button>
             <button class="outline-button" id="font-reset" type="button" title="عادي اندازه">A</button>
             <button class="outline-button" id="font-plus" type="button" title="لیکنه غټه کول">A+</button>
+            <button class="outline-button" id="share-poem-btn" type="button">شریکول</button>
           </div>
+          <p class="status-note" id="reader-share-status" style="text-align:center;"></p>
         </div>
 
       </section>
@@ -1363,7 +1365,6 @@
         creation: "په دې کاریال کې غزلونه، نظمونه، ماهیې، ټپیزې، ټپې او بیتونه په جلا جلا برخو کې تنظیم شوي او د پښتو ژبې او ادب د خدمت په موخه جوړ شوي دي."
       };
 
-      // Isolated in-memory state (never writes content changes to localStorage)
       /** @type {PoemItem[]} */
       let sessionPoems = DEFAULT_POEMS.map(function (p) {
         return Object.assign({}, p);
@@ -1383,10 +1384,13 @@
       let pageHistory = ["main-menu"];
       /** @type {string | null} */
       let activeCategory = null;
+      /** @type {PoemItem | null} */
+      let activePoem = null;
       let fontSizePx = 20;
       /** @type {string | null} */
       let pendingPhotoDataUrl = null;
       let isHandlingPopstate = false;
+      let historySeq = 0;
 
       /** @param {string} text @returns {Promise<string>} */
       async function sha256Hex(text) {
@@ -1479,6 +1483,41 @@
         });
       }
 
+      /** @param {string} pageName @param {string} viewMode */
+      function recordHistoryStep(pageName, viewMode) {
+        if (isHandlingPopstate) return;
+        historySeq += 1;
+        try {
+          history.pushState(
+            {
+              qarawoon: true,
+              seq: historySeq,
+              page: pageName,
+              viewMode: viewMode
+            },
+            "",
+            "#q-" + historySeq + "-" + pageName + (viewMode ? "-" + viewMode : "")
+          );
+        } catch {}
+      }
+
+      function initHistoryGuard() {
+        historySeq = 1;
+        try {
+          history.replaceState(
+            { qarawoon: true, seq: 1, page: "main-menu", viewMode: "root" },
+            "",
+            "#q-1-main-menu-root"
+          );
+          history.pushState(
+            { qarawoon: true, seq: 2, page: "main-menu", viewMode: "menu" },
+            "",
+            "#q-2-main-menu-menu"
+          );
+          historySeq = 2;
+        } catch {}
+      }
+
       function toggleTheme() {
         isLightTheme = !isLightTheme;
         document.body.classList.toggle("light-theme", isLightTheme);
@@ -1499,6 +1538,7 @@
 
       function showCategoriesGridOnly() {
         activeCategory = null;
+        activePoem = null;
         document.getElementById("category-view")?.classList.add("hidden");
         document.getElementById("poem-reader")?.classList.add("hidden");
         document.getElementById("category-grid-wrap")?.classList.remove("hidden");
@@ -1519,11 +1559,7 @@
         const currentTop = pageHistory[pageHistory.length - 1];
         if (pushToHistory !== false && currentTop !== pageName) {
           pageHistory.push(pageName);
-          if (!isHandlingPopstate) {
-            try {
-              history.pushState({ page: pageName, idx: pageHistory.length - 1 }, "", "#page-" + pageName);
-            } catch {}
-          }
+          recordHistoryStep(pageName, "page");
         }
 
         if (pageName === "poetry") {
@@ -1552,25 +1588,25 @@
         if (currentPage === "poetry") {
           if (poemReader && !poemReader.classList.contains("hidden")) {
             poemReader.classList.add("hidden");
+            activePoem = null;
             if (categoryView && activeCategory) {
               categoryView.classList.remove("hidden");
             } else {
               showCategoriesGridOnly();
             }
             if (fromHardwareBack) {
-              try {
-                history.pushState({ page: "poetry", idx: pageHistory.length - 1 }, "", "#page-poetry");
-              } catch {}
+              recordHistoryStep("poetry", activeCategory ? "category" : "grid");
             }
+            window.scrollTo({ top: 0, behavior: "smooth" });
             return;
           }
+
           if (categoryView && !categoryView.classList.contains("hidden")) {
             showCategoriesGridOnly();
             if (fromHardwareBack) {
-              try {
-                history.pushState({ page: "poetry", idx: pageHistory.length - 1 }, "", "#page-poetry");
-              } catch {}
+              recordHistoryStep("poetry", "grid");
             }
+            window.scrollTo({ top: 0, behavior: "smooth" });
             return;
           }
         }
@@ -1579,12 +1615,14 @@
           pageHistory.pop();
           const prevPage = pageHistory[pageHistory.length - 1] || "main-menu";
           showPage(prevPage, false);
+          if (fromHardwareBack) {
+            recordHistoryStep(prevPage, "page");
+          }
         } else {
+          pageHistory = ["main-menu"];
           showPage("main-menu", false);
           if (fromHardwareBack) {
-            try {
-              history.pushState({ page: "main-menu", idx: 0 }, "", "#page-main-menu");
-            } catch {}
+            recordHistoryStep("main-menu", "menu");
           }
         }
       }
@@ -1630,6 +1668,7 @@
       /** @param {string} categoryName */
       function openCategory(categoryName) {
         activeCategory = categoryName;
+        activePoem = null;
         const poems = getPoems().filter(function (p) { return p.category === categoryName; });
         const categoryGridWrap = document.getElementById("category-grid-wrap");
         const categoryView = document.getElementById("category-view");
@@ -1641,8 +1680,9 @@
         if (poemReader) poemReader.classList.add("hidden");
         if (headingEl) headingEl.textContent = "د «" + categoryName + "» شعرونه";
         if (categoryView) categoryView.classList.remove("hidden");
-        if (!listEl) return;
+        recordHistoryStep("poetry", "category");
 
+        if (!listEl) return;
         listEl.innerHTML = "";
         if (!poems.length) {
           const empty = document.createElement("div");
@@ -1674,15 +1714,18 @@
 
       /** @param {PoemItem} poem */
       function openPoem(poem) {
+        activePoem = poem;
         const categoryGridWrap = document.getElementById("category-grid-wrap");
         const categoryView = document.getElementById("category-view");
         const poemReader = document.getElementById("poem-reader");
         const titleEl = document.getElementById("poem-title");
         const contentEl = document.getElementById("poem-content");
         const catLabel = document.getElementById("reader-category-label");
+        const shareStatus = document.getElementById("reader-share-status");
 
         if (categoryGridWrap) categoryGridWrap.classList.add("hidden");
         if (categoryView) categoryView.classList.add("hidden");
+        if (shareStatus) shareStatus.textContent = "";
         if (catLabel) catLabel.textContent = "کټګوري: " + poem.category;
         if (titleEl) titleEl.textContent = poem.title;
         if (contentEl) {
@@ -1691,6 +1734,7 @@
         }
         if (poemReader) {
           poemReader.classList.remove("hidden");
+          recordHistoryStep("poetry", "reader");
           window.scrollTo({ top: 0, behavior: "smooth" });
         }
       }
@@ -1993,9 +2037,7 @@
         document.getElementById("welcome-screen")?.classList.add("hidden");
         document.getElementById("app-content")?.classList.remove("hidden");
         pageHistory = ["main-menu"];
-        try {
-          history.replaceState({ page: "main-menu", idx: 0 }, "", "#page-main-menu");
-        } catch {}
+        initHistoryGuard();
         showPage("main-menu", false);
       });
 
@@ -2106,6 +2148,7 @@
 
       document.getElementById("back-to-list-btn")?.addEventListener("click", function () {
         document.getElementById("poem-reader")?.classList.add("hidden");
+        activePoem = null;
         if (activeCategory) {
           document.getElementById("category-view")?.classList.remove("hidden");
           window.scrollTo({ top: 0, behavior: "smooth" });
@@ -2124,6 +2167,25 @@
 
       document.getElementById("font-reset")?.addEventListener("click", function () {
         setPoemFontSize(20);
+      });
+
+      document.getElementById("share-poem-btn")?.addEventListener("click", async function () {
+        const statusEl = document.getElementById("reader-share-status");
+        if (!activePoem) return;
+        const shareText = activePoem.title + " (" + activePoem.category + ")\n\n" + activePoem.body + "\n\n— کړاوونه";
+
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              title: activePoem.title,
+              text: shareText
+            });
+            if (statusEl) statusEl.textContent = "شعر شریک شو.";
+            return;
+          } catch {}
+        }
+
+        await copySnippetToClipboard(shareText, null, statusEl, "د شعر متن کاپي شو.");
       });
 
       document.getElementById("feedback-form")?.addEventListener("submit", function (e) {
