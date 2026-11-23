@@ -568,7 +568,7 @@
       background: var(--surface2);
     }
 
-    /* Feedback */
+    /* Feedback & Admin */
 
     .form-card {
       max-width: 680px;
@@ -1077,7 +1077,23 @@
         </div>
 
         <h2 class="section-heading">د مدیر کنټرول پینل</h2>
-        <p class="section-subtitle">شعرونه، پېژندنه، عکس، لینکونه، موبایل شمېره او نظریات مدیریت کړئ</p>
+        <p class="section-subtitle">شعرونه، بیک‌آپ، پېژندنه، عکس، لینکونه، موبایل شمېره او نظریات مدیریت کړئ</p>
+
+        <!-- 0. Backup & Restore (Export / Import) -->
+        <div class="form-card">
+          <h3>د معلوماتو بیک‌آپ او راګرځول (Backup / Restore)</h3>
+          <p style="color:var(--muted);font-size:14px;margin-bottom:12px;">
+            د خپلو ټولو شعرونو، پېژندنې، لینکونو او نظریاتو بیک‌آپ فایل ښکته کړئ یا پخوانی بیک‌آپ فایل پورته کړئ.
+          </p>
+          <div class="manage-row-actions">
+            <button class="gold-button" id="backup-export-btn" type="button">بیک‌آپ ډاونلوډ (JSON)</button>
+            <label class="outline-button" style="display:inline-flex;align-items:center;gap:6px;margin:0;">
+              بیک‌آپ فایل پورته کول
+              <input id="backup-import-file" type="file" accept=".json,application/json" style="display:none;">
+            </label>
+          </div>
+          <p class="status-note" id="backup-status"></p>
+        </div>
 
         <!-- 1. Add / Edit Poem -->
         <form id="admin-poem-form" class="form-card">
@@ -1538,6 +1554,59 @@
       /** @param {string} newPin */
       function setAdminPin(newPin) {
         localStorage.setItem(STORAGE_KEYS.pin, newPin);
+      }
+
+      function exportFullBackup() {
+        const bundle = {
+          app: "Qarawoon",
+          exportedAt: new Date().toISOString(),
+          poems: getPoems(),
+          profile: getProfile(),
+          social: getSocial(),
+          feedbacks: getFeedbacks(),
+          appInfo: getAppInfo()
+        };
+        const blob = new Blob([JSON.stringify(bundle, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "qarawoon-backup.json";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        const statusEl = document.getElementById("backup-status");
+        if (statusEl) statusEl.textContent = "بیک‌آپ فایل (qarawoon-backup.json) ښکته شو.";
+      }
+
+      /** @param {unknown} rawData */
+      function importFullBackupData(rawData) {
+        if (!rawData || typeof rawData !== "object") return;
+        const obj = /** @type {Record<string, unknown>} */ (rawData);
+
+        if (Array.isArray(obj.poems)) {
+          const cleanPoems = sanitizePoemArray(obj.poems);
+          if (cleanPoems.length > 0) savePoems(cleanPoems);
+        }
+        if (obj.profile && typeof obj.profile === "object") {
+          saveProfile(Object.assign({}, DEFAULT_PROFILE, /** @type {Partial<ProfileData>} */ (obj.profile)));
+        }
+        if (obj.social && typeof obj.social === "object") {
+          saveSocial(Object.assign({}, DEFAULT_SOCIAL, /** @type {Partial<SocialData>} */ (obj.social)));
+        }
+        if (Array.isArray(obj.feedbacks)) {
+          saveFeedbacks(/** @type {FeedbackItem[]} */ (obj.feedbacks));
+        }
+        if (obj.appInfo && typeof obj.appInfo === "object") {
+          saveAppInfo(Object.assign({}, DEFAULT_APP_INFO, /** @type {Partial<AppInfoData>} */ (obj.appInfo)));
+        }
+
+        renderCategoryCounts();
+        renderPublicProfile();
+        renderPublicSocial();
+        renderStatistics();
+        renderAppInfo();
+        renderAdminPanel();
       }
 
       /** @param {number | string} num @returns {string} */
@@ -2027,6 +2096,28 @@
       document.getElementById("theme-toggle")?.addEventListener("click", toggleTheme);
       document.getElementById("admin-open-btn")?.addEventListener("click", handleAdminButton);
       document.getElementById("admin-logout-btn")?.addEventListener("click", handleAdminLogout);
+
+      document.getElementById("backup-export-btn")?.addEventListener("click", exportFullBackup);
+
+      document.getElementById("backup-import-file")?.addEventListener("change", function (e) {
+        const input = /** @type {HTMLInputElement | null} */ (e.target);
+        const file = input?.files?.[0];
+        const statusEl = document.getElementById("backup-status");
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function () {
+          try {
+            if (typeof reader.result !== "string") return;
+            const parsed = JSON.parse(reader.result);
+            importFullBackupData(parsed);
+            if (statusEl) statusEl.textContent = "بیک‌آپ په بریالیتوب پورته او خوندي شو.";
+          } catch {
+            if (statusEl) statusEl.textContent = "فایل سم JSON نه دی.";
+          }
+        };
+        reader.readAsText(file);
+        if (input) input.value = "";
+      });
 
       document.querySelectorAll("[data-open-page]").forEach(function (btn) {
         btn.addEventListener("click", function () {
