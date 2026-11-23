@@ -375,8 +375,8 @@
 
     <!-- Header -->
     <header class="site-header">
-      <h1>کړاوونه</h1>
-      <p>د پښتو شعرونو، غزلونو، نظمونو او ژورو ادبي احساساتو ټولګه — د لوستلو او شریکولو لپاره</p>
+      <h1 id="siteTitle">کړاوونه</h1>
+      <p id="siteSubtitle">د پښتو شعرونو، غزلونو، نظمونو او ژورو ادبي احساساتو ټولګه — د لوستلو او شریکولو لپاره</p>
       <div class="header-actions">
         <a href="#poemsSection" class="header-link">شعرونه وګورئ</a>
         <a href="#feedbackSection" class="header-link">نظر او پیغام</a>
@@ -405,7 +405,7 @@
     <section id="poemsSection">
       <div class="section-heading">
         <h2>خپاره شوي شعرونه</h2>
-        <span id="poemsStatus" class="status-note">شعرونه چمتو دي</span>
+        <span id="poemsStatus" class="status-note">د شعرونو راخیستل...</span>
       </div>
 
       <div id="poemsList" class="poems-list"></div>
@@ -458,30 +458,12 @@
     </footer>
   </div>
 
-  <!-- Optional Supabase Config (loaded safely) -->
+  <!-- Supabase JS & Local Config -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onerror="window.__supaLibFailed = true"></script>
   <script src="./supabase-config.js" onerror="window.__supaConfigFailed = true"></script>
 
   <script>
     (function () {
-      const SAMPLE_POEMS = [
-        {
-          id: "sample-1",
-          title: "د شپې تر پایه",
-          category: "غزل",
-          created_at: "نن",
-          content:
-            "د زړه په پاڼو کې د اوښکو کرښې پاتې دي\nد تېرو یادونو لا هم درنې کیسې پاتې دي\n\nموږ د امید په لار کې ډېر کړاوونه ګاللي\nخو د سبا د سهار روښانه هیلې پاتې دي"
-        },
-        {
-          id: "sample-2",
-          title: "د قلم امانت",
-          category: "نظم",
-          created_at: "تازه",
-          content:
-            "چې کله غږونه بند شي، قلم خبرې کوي\nد درد او مینې ترمنځ نوي پلونه جوړوي\n\nهر بیت یو زخم دی چې په شعر کې شفا مومي\nهر مصرع هغه څراغ ده چې تیاره راباسي"
-        }
-      ];
-
       function $(id) {
         return document.getElementById(id);
       }
@@ -504,7 +486,7 @@
       const readerMessageEl = $("readerMessage");
       const feedbackStatusEl = $("feedbackStatus");
 
-      let allPoems = [...SAMPLE_POEMS];
+      let allPoems = [];
       let selectedCategory = "ټول";
       let activePoem = null;
 
@@ -533,8 +515,10 @@
           });
 
           if (!filtered.length) {
-            poemsListEl.innerHTML =
-              '<div class="poem-card"><p class="poem-body">ستاسو د لټون یا ډلبندۍ سره سم کوم شعر ونه موندل شو.</p></div>';
+            const emptyMsg = allPoems.length
+              ? "ستاسو د لټون یا ډلبندۍ سره سم کوم شعر ونه موندل شو."
+              : "تر اوسه په poems جدول کې کوم شعر نه دی ثبت شوی. کولی شئ په Supabase یا اداري برخه کې لومړی شعر اضافه کړئ.";
+            poemsListEl.innerHTML = `<div class="poem-card"><p class="poem-body">${escapeHtml(emptyMsg)}</p></div>`;
             if (poemsStatusEl) poemsStatusEl.textContent = "۰ شعرونه";
             return;
           }
@@ -674,30 +658,35 @@
         try {
           const client = getSupabaseClient();
           if (!client) {
-            if (poemsStatusEl) poemsStatusEl.textContent = `${allPoems.length} شعرونه`;
+            if (poemsStatusEl) poemsStatusEl.textContent = "له Supabase سره اړیکه نشته";
+            renderPoems();
             return;
           }
 
-          const candidateTables = ["poems", "poetry", "posts"];
-          for (const table of candidateTables) {
-            try {
-              const { data, error } = await client.from(table).select("*").limit(100);
-              if (!error && Array.isArray(data) && data.length > 0) {
-                allPoems = data.map((row, index) => ({
-                  id: row.id || `${table}-${index}`,
-                  title: row.title || row.name || "شعر",
-                  category: row.category || row.type || "غزل",
-                  content: row.content || row.body || row.poem || row.text || "",
-                  created_at: row.created_at
-                    ? new Date(row.created_at).toLocaleDateString("ps-AF")
-                    : ""
-                }));
-                renderPoems();
-                return;
-              }
-            } catch (_) {}
+          const { data, error } = await client
+            .from("poems")
+            .select("*")
+            .order("created_at", { ascending: false })
+            .limit(200);
+
+          if (!error && Array.isArray(data)) {
+            allPoems = data.map((row, index) => ({
+              id: row.id || `poem-${index}`,
+              title: row.title || "بې سرلیکه شعر",
+              category: row.category || "غزل",
+              content: row.content || "",
+              created_at: row.created_at
+                ? new Date(row.created_at).toLocaleDateString("ps-AF")
+                : ""
+            }));
+            renderPoems();
+            return;
           }
-        } catch (_) {}
+
+          renderPoems();
+        } catch (_) {
+          renderPoems();
+        }
       }
 
       if (feedbackFormEl) {
@@ -717,18 +706,15 @@
           try {
             const client = getSupabaseClient();
             if (client) {
-              const feedbackTables = ["feedback", "comments", "messages"];
-              for (const tbl of feedbackTables) {
-                try {
-                  const { error } = await client.from(tbl).insert([{ name: nameVal, message: msgVal }]);
-                  if (!error) {
-                    if (feedbackStatusEl) {
-                      feedbackStatusEl.textContent = "ستاسو نظر په بریالیتوب ثبت شو. مننه!";
-                    }
-                    feedbackFormEl.reset();
-                    return;
-                  }
-                } catch (_) {}
+              const { error } = await client
+                .from("feedback")
+                .insert([{ name: nameVal, message: msgVal }]);
+              if (!error) {
+                if (feedbackStatusEl) {
+                  feedbackStatusEl.textContent = "ستاسو نظر په بریالیتوب ثبت شو. مننه!";
+                }
+                feedbackFormEl.reset();
+                return;
               }
             }
           } catch (_) {}
