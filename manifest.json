@@ -2,7 +2,7 @@
   "name": "کړاوونه — د پښتو شعرونو ټولګه",
   "short_name": "کړاوونه",
   "description": "د پښتو شعرونو، غزلونو، نظمونو، ماهیې او ټپیزو ټولګه",
-  "start_url": "./",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
