@@ -679,6 +679,22 @@
       border: 2px solid var(--gold);
     }
 
+    .code-export-box {
+      width: 100%;
+      min-height: 165px;
+      margin-top: 10px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: monospace;
+      font-size: 12px;
+      direction: ltr;
+      text-align: left;
+      resize: vertical;
+    }
+
     /* Statistics */
 
     .stats-card {
@@ -1077,25 +1093,9 @@
         </div>
 
         <h2 class="section-heading">د مدیر کنټرول پینل</h2>
-        <p class="section-subtitle">شعرونه، بیک‌آپ، پېژندنه، عکس، لینکونه، موبایل شمېره او نظریات مدیریت کړئ</p>
+        <p class="section-subtitle">شعرونه، اتوماتیک کوډ، پېژندنه، عکس، لینکونه او PIN مدیریت کړئ</p>
 
-        <!-- 0. Backup & Restore (Export / Import) -->
-        <div class="form-card">
-          <h3>د معلوماتو بیک‌آپ او راګرځول (Backup / Restore)</h3>
-          <p style="color:var(--muted);font-size:14px;margin-bottom:12px;">
-            د خپلو ټولو شعرونو، پېژندنې، لینکونو او نظریاتو بیک‌آپ فایل ښکته کړئ یا پخوانی بیک‌آپ فایل پورته کړئ.
-          </p>
-          <div class="manage-row-actions">
-            <button class="gold-button" id="backup-export-btn" type="button">بیک‌آپ ډاونلوډ (JSON)</button>
-            <label class="outline-button" style="display:inline-flex;align-items:center;gap:6px;margin:0;">
-              بیک‌آپ فایل پورته کول
-              <input id="backup-import-file" type="file" accept=".json,application/json" style="display:none;">
-            </label>
-          </div>
-          <p class="status-note" id="backup-status"></p>
-        </div>
-
-        <!-- 1. Add / Edit Poem -->
+        <!-- 1. Add / Edit Poem & Auto-Generated Broadcast Code -->
         <form id="admin-poem-form" class="form-card">
           <h3 id="admin-poem-form-title">نوی شعر اضافه کول</h3>
           <input type="hidden" id="admin-poem-id">
@@ -1119,13 +1119,33 @@
           <div class="manage-row-actions" style="margin-top:14px;">
             <button class="gold-button" type="submit">شعر خوندي کول</button>
             <button class="outline-button" id="admin-poem-cancel" type="button">فورمه پاکول</button>
+            <button class="outline-button" id="copy-default-poems-btn" type="button">کوډ کاپي کول</button>
           </div>
           <p class="status-note" id="admin-poem-status"></p>
+
+          <textarea id="default-poems-code-output" class="code-export-box" readonly placeholder="دلته به د DEFAULT_POEMS لپاره اتوماتیک چمتو کوډ ښکاره شي..."></textarea>
 
           <div id="admin-poems-list" class="manage-list"></div>
         </form>
 
-        <!-- 2. Profile & Photo Upload -->
+        <!-- 2. Change Admin PIN inside App -->
+        <form id="admin-pin-form" class="form-card">
+          <h3>په اپ کې د مدیر PIN بدلول</h3>
+          <label for="admin-current-pin">اوسنی PIN</label>
+          <input id="admin-current-pin" type="password" required placeholder="اوسنی پټ کوډ ولیکئ">
+
+          <label for="admin-new-pin">نوی PIN (لږ تر لږه ۴ نښې)</label>
+          <input id="admin-new-pin" type="password" minlength="4" required placeholder="نوی پټ کوډ ولیکئ">
+
+          <div class="manage-row-actions" style="margin-top:14px;">
+            <button class="gold-button" type="submit">PIN بدلول</button>
+            <button class="outline-button" id="copy-pin-hash-btn" type="button">د نوي PIN کوډ کاپي کول</button>
+          </div>
+          <p class="status-note" id="admin-pin-status"></p>
+          <textarea id="pin-hash-code-output" class="code-export-box hidden" readonly></textarea>
+        </form>
+
+        <!-- 3. Profile & Photo Upload -->
         <form id="admin-profile-form" class="form-card">
           <h3>زما پېژندنه او عکس سمون</h3>
 
@@ -1149,11 +1169,11 @@
             <button class="outline-button" id="admin-photo-clear" type="button">عکس بېرته اصلي حالت ته</button>
           </div>
 
-          <button class="gold-button" type="submit" style="margin-top:14px;">پېژندنه خوندي کول</button>
+          <button class="gold-button" type="submit" style="margin-top:14px;">پېژندنه په دې ناسته کې تازه کول</button>
           <p class="status-note" id="admin-profile-status"></p>
         </form>
 
-        <!-- 3. Social Links & Mobile Number -->
+        <!-- 4. Social Links & Mobile Number -->
         <form id="admin-social-form" class="form-card">
           <h3>ټولنیزې اړیکې او د موبایل شمېره</h3>
 
@@ -1175,11 +1195,11 @@
           <label for="admin-other-link">نور لینک (اختیاري)</label>
           <input id="admin-other-link" type="url" placeholder="https://...">
 
-          <button class="gold-button" type="submit" style="margin-top:14px;">اړیکې خوندي کول</button>
+          <button class="gold-button" type="submit" style="margin-top:14px;">اړیکې په دې ناسته کې تازه کول</button>
           <p class="status-note" id="admin-social-status"></p>
         </form>
 
-        <!-- 4. App Info & Creation -->
+        <!-- 5. App Info & Creation -->
         <form id="admin-appinfo-form" class="form-card">
           <h3>د کاریال په اړه او جوړېدو معلومات</h3>
 
@@ -1192,24 +1212,15 @@
           <label for="admin-app-creation">د کاریال جوړېدو تفصیل</label>
           <textarea id="admin-app-creation" required></textarea>
 
-          <button class="gold-button" type="submit" style="margin-top:14px;">د کاریال معلومات خوندي کول</button>
+          <button class="gold-button" type="submit" style="margin-top:14px;">د کاریال معلومات په دې ناسته کې تازه کول</button>
           <p class="status-note" id="admin-appinfo-status"></p>
         </form>
 
-        <!-- 5. Reader Feedbacks -->
+        <!-- 6. Session Reader Feedbacks -->
         <div class="form-card">
-          <h3>د لوستونکو نظرونه او پیغامونه</h3>
+          <h3>د لوستونکو نظرونه او پیغامونه (موقت)</h3>
           <div id="admin-feedback-list" class="manage-list"></div>
         </div>
-
-        <!-- 6. Change Admin PIN -->
-        <form id="admin-pin-form" class="form-card">
-          <h3>د مدیر پټ کوډ (PIN) بدلول</h3>
-          <label for="admin-new-pin">نوی پټ کوډ (لږ تر لږه ۴ نښې)</label>
-          <input id="admin-new-pin" type="password" minlength="4" required placeholder="نوی پټ کوډ ولیکئ">
-          <button class="gold-button" type="submit" style="margin-top:14px;">پټ کوډ تازه کول</button>
-          <p class="status-note" id="admin-pin-status"></p>
-        </form>
 
       </section>
 
@@ -1271,24 +1282,8 @@
       /** @type {string[]} */
       const CATEGORIES = ["غزل", "نظم", "ماهیې", "ټپیزې", "ټپې", "بیتونه"];
 
-      const STORAGE_KEYS = {
-        poems: "QarawoonPoems",
-        profile: "QarawoonProfile",
-        social: "QarawoonSocial",
-        feedback: "QarawoonFeedback",
-        appInfo: "QarawoonAppInfo",
-        theme: "QarawoonTheme",
-        pin: "QarawoonAdminPin"
-      };
-
-      const LEGACY_POEM_KEYS = [
-        "QarawoonPoems",
-        "qarawoon_poems",
-        "qarawoonPoems",
-        "poems",
-        "qarawoon_store",
-        "qarawoonStore"
-      ];
+      // SHA-256 hash of default PIN "2026"
+      let activeAdminPinHash = "541f577e9403766da33952ba6869682e39a835a147b03c1b2994a0112a6c4e1a";
 
       const DEFAULT_PHOTO = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Crect width='150' height='150' rx='75' fill='%23222222'/%3E%3Ctext x='75' y='95' font-size='65' text-anchor='middle' fill='%23d6ad55'%3E✒%3C/text%3E%3C/svg%3E";
 
@@ -1368,6 +1363,21 @@
         creation: "په دې کاریال کې غزلونه، نظمونه، ماهیې، ټپیزې، ټپې او بیتونه په جلا جلا برخو کې تنظیم شوي او د پښتو ژبې او ادب د خدمت په موخه جوړ شوي دي."
       };
 
+      // Isolated in-memory state (never writes content changes to localStorage)
+      /** @type {PoemItem[]} */
+      let sessionPoems = DEFAULT_POEMS.map(function (p) {
+        return Object.assign({}, p);
+      });
+      /** @type {ProfileData} */
+      let sessionProfile = Object.assign({}, DEFAULT_PROFILE);
+      /** @type {SocialData} */
+      let sessionSocial = Object.assign({}, DEFAULT_SOCIAL);
+      /** @type {FeedbackItem[]} */
+      let sessionFeedbacks = [];
+      /** @type {AppInfoData} */
+      let sessionAppInfo = Object.assign({}, DEFAULT_APP_INFO);
+      let isLightTheme = false;
+
       let isAdminLoggedIn = false;
       /** @type {string[]} */
       let pageHistory = ["main-menu"];
@@ -1376,6 +1386,25 @@
       let fontSizePx = 20;
       /** @type {string | null} */
       let pendingPhotoDataUrl = null;
+
+      /** @param {string} text @returns {Promise<string>} */
+      async function sha256Hex(text) {
+        if (window.crypto && window.crypto.subtle && window.isSecureContext) {
+          const encoder = new TextEncoder();
+          const data = encoder.encode(text);
+          const hashBuffer = await window.crypto.subtle.digest("SHA-256", data);
+          const hashArray = Array.from(new Uint8Array(hashBuffer));
+          return hashArray.map(function (b) {
+            return b.toString(16).padStart(2, "0");
+          }).join("");
+        }
+        let h1 = 0x811c9dc5;
+        for (let i = 0; i < text.length; i++) {
+          h1 ^= text.charCodeAt(i);
+          h1 = Math.imul(h1, 0x01000193);
+        }
+        return (h1 >>> 0).toString(16).padStart(8, "0");
+      }
 
       /** @param {string} rawCat @returns {string} */
       function normalizeCategory(rawCat) {
@@ -1390,223 +1419,55 @@
         return "غزل";
       }
 
-      /** @param {unknown} rawList @returns {PoemItem[]} */
-      function sanitizePoemArray(rawList) {
-        if (!Array.isArray(rawList)) return [];
-        /** @type {PoemItem[]} */
-        const out = [];
-        rawList.forEach(function (item, index) {
-          if (!item || typeof item !== "object") return;
-          const rec = /** @type {Record<string, unknown>} */ (item);
-          const title = String(rec.title || rec.name || "").trim();
-          const body = String(rec.body || rec.content || rec.text || "").trim();
-          if (!title && !body) return;
-          const id = String(rec.id || ("imported-" + index + "-" + title.slice(0, 12)));
-          const category = normalizeCategory(String(rec.category || rec.type || "غزل"));
-          out.push({
-            id: id,
-            title: title || "بې سرلیکه شعر",
-            category: category,
-            body: body
-          });
-        });
-        return out;
-      }
-
       /** @returns {PoemItem[]} */
       function getPoems() {
-        try {
-          const primaryRaw = localStorage.getItem(STORAGE_KEYS.poems);
-          if (primaryRaw) {
-            const parsedPrimary = JSON.parse(primaryRaw);
-            const cleanPrimary = sanitizePoemArray(parsedPrimary);
-            if (cleanPrimary.length > 0) {
-              return cleanPrimary;
-            }
-          }
-
-          /** @type {PoemItem[]} */
-          const recovered = [];
-          const seenKeys = new Set();
-
-          LEGACY_POEM_KEYS.forEach(function (key) {
-            const raw = localStorage.getItem(key);
-            if (!raw) return;
-            const parsed = JSON.parse(raw);
-            if (Array.isArray(parsed)) {
-              sanitizePoemArray(parsed).forEach(function (p) {
-                const sig = p.title + "::" + p.category + "::" + p.body.slice(0, 40);
-                if (!seenKeys.has(sig)) {
-                  seenKeys.add(sig);
-                  recovered.push(p);
-                }
-              });
-            } else if (parsed && typeof parsed === "object" && Array.isArray(parsed.poems)) {
-              sanitizePoemArray(parsed.poems).forEach(function (p) {
-                const sig = p.title + "::" + p.category + "::" + p.body.slice(0, 40);
-                if (!seenKeys.has(sig)) {
-                  seenKeys.add(sig);
-                  recovered.push(p);
-                }
-              });
-            }
-          });
-
-          if (recovered.length > 0) {
-            savePoems(recovered);
-            return recovered;
-          }
-
-          if (primaryRaw) {
-            return [];
-          }
-
-          return DEFAULT_POEMS.slice();
-        } catch {
-          return DEFAULT_POEMS.slice();
-        }
+        return sessionPoems;
       }
 
       /** @param {PoemItem[]} list */
       function savePoems(list) {
-        localStorage.setItem(STORAGE_KEYS.poems, JSON.stringify(list));
+        sessionPoems = list.slice();
+        refreshAutoPoemsCodeBox();
       }
 
       /** @returns {ProfileData} */
       function getProfile() {
-        try {
-          const raw = localStorage.getItem(STORAGE_KEYS.profile);
-          if (!raw) return Object.assign({}, DEFAULT_PROFILE);
-          /** @type {Partial<ProfileData>} */
-          const parsed = JSON.parse(raw);
-          return Object.assign({}, DEFAULT_PROFILE, parsed, {
-            image: parsed && parsed.image ? parsed.image : DEFAULT_PHOTO
-          });
-        } catch {
-          return Object.assign({}, DEFAULT_PROFILE);
-        }
+        return sessionProfile;
       }
 
       /** @param {ProfileData} profileObj */
       function saveProfile(profileObj) {
-        localStorage.setItem(STORAGE_KEYS.profile, JSON.stringify(profileObj));
+        sessionProfile = Object.assign({}, DEFAULT_PROFILE, profileObj);
       }
 
       /** @returns {SocialData} */
       function getSocial() {
-        try {
-          const raw = localStorage.getItem(STORAGE_KEYS.social);
-          if (!raw) return Object.assign({}, DEFAULT_SOCIAL);
-          /** @type {Partial<SocialData>} */
-          const parsed = JSON.parse(raw);
-          return Object.assign({}, DEFAULT_SOCIAL, parsed);
-        } catch {
-          return Object.assign({}, DEFAULT_SOCIAL);
-        }
+        return sessionSocial;
       }
 
       /** @param {SocialData} socialObj */
       function saveSocial(socialObj) {
-        localStorage.setItem(STORAGE_KEYS.social, JSON.stringify(socialObj));
+        sessionSocial = Object.assign({}, DEFAULT_SOCIAL, socialObj);
       }
 
       /** @returns {FeedbackItem[]} */
       function getFeedbacks() {
-        try {
-          const raw = localStorage.getItem(STORAGE_KEYS.feedback);
-          if (!raw) return [];
-          /** @type {unknown} */
-          const parsed = JSON.parse(raw);
-          return Array.isArray(parsed) ? /** @type {FeedbackItem[]} */ (parsed) : [];
-        } catch {
-          return [];
-        }
+        return sessionFeedbacks;
       }
 
       /** @param {FeedbackItem[]} list */
       function saveFeedbacks(list) {
-        localStorage.setItem(STORAGE_KEYS.feedback, JSON.stringify(list));
+        sessionFeedbacks = list.slice();
       }
 
       /** @returns {AppInfoData} */
       function getAppInfo() {
-        try {
-          const raw = localStorage.getItem(STORAGE_KEYS.appInfo);
-          if (!raw) return Object.assign({}, DEFAULT_APP_INFO);
-          /** @type {Partial<AppInfoData>} */
-          const parsed = JSON.parse(raw);
-          return Object.assign({}, DEFAULT_APP_INFO, parsed);
-        } catch {
-          return Object.assign({}, DEFAULT_APP_INFO);
-        }
+        return sessionAppInfo;
       }
 
       /** @param {AppInfoData} infoObj */
       function saveAppInfo(infoObj) {
-        localStorage.setItem(STORAGE_KEYS.appInfo, JSON.stringify(infoObj));
-      }
-
-      /** @returns {string} */
-      function getAdminPin() {
-        return localStorage.getItem(STORAGE_KEYS.pin) || "2026";
-      }
-
-      /** @param {string} newPin */
-      function setAdminPin(newPin) {
-        localStorage.setItem(STORAGE_KEYS.pin, newPin);
-      }
-
-      function exportFullBackup() {
-        const bundle = {
-          app: "Qarawoon",
-          exportedAt: new Date().toISOString(),
-          poems: getPoems(),
-          profile: getProfile(),
-          social: getSocial(),
-          feedbacks: getFeedbacks(),
-          appInfo: getAppInfo()
-        };
-        const blob = new Blob([JSON.stringify(bundle, null, 2)], { type: "application/json" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "qarawoon-backup.json";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        const statusEl = document.getElementById("backup-status");
-        if (statusEl) statusEl.textContent = "بیک‌آپ فایل (qarawoon-backup.json) ښکته شو.";
-      }
-
-      /** @param {unknown} rawData */
-      function importFullBackupData(rawData) {
-        if (!rawData || typeof rawData !== "object") return;
-        const obj = /** @type {Record<string, unknown>} */ (rawData);
-
-        if (Array.isArray(obj.poems)) {
-          const cleanPoems = sanitizePoemArray(obj.poems);
-          if (cleanPoems.length > 0) savePoems(cleanPoems);
-        }
-        if (obj.profile && typeof obj.profile === "object") {
-          saveProfile(Object.assign({}, DEFAULT_PROFILE, /** @type {Partial<ProfileData>} */ (obj.profile)));
-        }
-        if (obj.social && typeof obj.social === "object") {
-          saveSocial(Object.assign({}, DEFAULT_SOCIAL, /** @type {Partial<SocialData>} */ (obj.social)));
-        }
-        if (Array.isArray(obj.feedbacks)) {
-          saveFeedbacks(/** @type {FeedbackItem[]} */ (obj.feedbacks));
-        }
-        if (obj.appInfo && typeof obj.appInfo === "object") {
-          saveAppInfo(Object.assign({}, DEFAULT_APP_INFO, /** @type {Partial<AppInfoData>} */ (obj.appInfo)));
-        }
-
-        renderCategoryCounts();
-        renderPublicProfile();
-        renderPublicSocial();
-        renderStatistics();
-        renderAppInfo();
-        renderAdminPanel();
+        sessionAppInfo = Object.assign({}, DEFAULT_APP_INFO, infoObj);
       }
 
       /** @param {number | string} num @returns {string} */
@@ -1617,19 +1478,9 @@
         });
       }
 
-      function applySavedTheme() {
-        const saved = localStorage.getItem(STORAGE_KEYS.theme);
-        if (saved === "light") {
-          document.body.classList.add("light-theme");
-        } else {
-          document.body.classList.remove("light-theme");
-        }
-      }
-
       function toggleTheme() {
-        document.body.classList.toggle("light-theme");
-        const mode = document.body.classList.contains("light-theme") ? "light" : "dark";
-        localStorage.setItem(STORAGE_KEYS.theme, mode);
+        isLightTheme = !isLightTheme;
+        document.body.classList.toggle("light-theme", isLightTheme);
       }
 
       function syncAdminHeaderUI() {
@@ -1720,14 +1571,16 @@
         }
       }
 
-      function handleAdminButton() {
+      async function handleAdminButton() {
         if (isAdminLoggedIn) {
           showPage("admin");
           return;
         }
         const pin = prompt("د مدیر پټ کوډ (PIN) ولیکئ:");
         if (pin === null) return;
-        if (pin.trim() === getAdminPin()) {
+        const enteredHash = await sha256Hex(pin.trim());
+        const isDefaultPlainMatch = (activeAdminPinHash === "541f577e9403766da33952ba6869682e39a835a147b03c1b2994a0112a6c4e1a" && pin.trim() === "2026");
+        if (enteredHash === activeAdminPinHash || isDefaultPlainMatch) {
           isAdminLoggedIn = true;
           syncAdminHeaderUI();
           showPage("admin");
@@ -1776,7 +1629,7 @@
         if (!poems.length) {
           const empty = document.createElement("div");
           empty.className = "poem-item";
-          empty.innerHTML = "<h3>په دې کټګورۍ کې اوس مهال شعر نشته</h3><p>د مدیر له برخې څخه نوی شعر اضافه کولی شئ.</p>";
+          empty.innerHTML = "<h3>په دې کټګورۍ کې اوس مهال شعر نشته</h3><p>نوی شعر د مدیر له لارې په کوډ کې اضافه کولی شئ.</p>";
           listEl.appendChild(empty);
           window.scrollTo({ top: 0, behavior: "smooth" });
           return;
@@ -1914,7 +1767,7 @@
             statsEl.appendChild(line);
           });
           const fbLine = document.createElement("div");
-          fbLine.textContent = "ثبت شوي نظرونه: " + toPashtoDigits(getFeedbacks().length);
+          fbLine.textContent = "موقت ثبت شوي نظرونه: " + toPashtoDigits(getFeedbacks().length);
           statsEl.appendChild(fbLine);
         }
       }
@@ -1944,12 +1797,47 @@
         if (bodyInput) bodyInput.value = "";
       }
 
+      function refreshAutoPoemsCodeBox() {
+        const outEl = /** @type {HTMLTextAreaElement | null} */ (document.getElementById("default-poems-code-output"));
+        if (!outEl) return;
+        outEl.value = "const DEFAULT_POEMS = " + JSON.stringify(getPoems(), null, 2) + ";";
+      }
+
+      /**
+       * Modern clipboard helper without deprecated execCommand
+       * @param {string} text
+       * @param {HTMLTextAreaElement | null} targetArea
+       * @param {HTMLElement | null} statusTarget
+       * @param {string} doneMsg
+       */
+      async function copySnippetToClipboard(text, targetArea, statusTarget, doneMsg) {
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+          try {
+            await navigator.clipboard.writeText(text);
+            if (statusTarget) statusTarget.textContent = doneMsg;
+            return;
+          } catch {}
+        }
+
+        if (targetArea) {
+          targetArea.classList.remove("hidden");
+          targetArea.value = text;
+          targetArea.focus();
+          targetArea.setSelectionRange(0, text.length);
+        }
+        if (statusTarget) {
+          statusTarget.textContent = "متن وټاکل شو؛ مهرباني وکړئ په اسانۍ یې کاپي (Copy) کړئ.";
+        }
+      }
+
       function renderAdminPanel() {
         const profile = getProfile();
         const social = getSocial();
         const appInfo = getAppInfo();
         const poems = getPoems();
         const feedbacks = getFeedbacks();
+
+        refreshAutoPoemsCodeBox();
 
         const pName = /** @type {HTMLInputElement | null} */ (document.getElementById("admin-profile-name"));
         const pFather = /** @type {HTMLInputElement | null} */ (document.getElementById("admin-profile-father"));
@@ -2097,26 +1985,68 @@
       document.getElementById("admin-open-btn")?.addEventListener("click", handleAdminButton);
       document.getElementById("admin-logout-btn")?.addEventListener("click", handleAdminLogout);
 
-      document.getElementById("backup-export-btn")?.addEventListener("click", exportFullBackup);
+      document.getElementById("copy-default-poems-btn")?.addEventListener("click", function () {
+        refreshAutoPoemsCodeBox();
+        const outEl = /** @type {HTMLTextAreaElement | null} */ (document.getElementById("default-poems-code-output"));
+        const statusEl = document.getElementById("admin-poem-status");
+        if (!outEl) return;
+        copySnippetToClipboard(
+          outEl.value,
+          outEl,
+          statusEl,
+          "د DEFAULT_POEMS کوډ کاپي شو. په index.html کې یې د پخواني DEFAULT_POEMS پر ځای واچوئ."
+        );
+      });
 
-      document.getElementById("backup-import-file")?.addEventListener("change", function (e) {
-        const input = /** @type {HTMLInputElement | null} */ (e.target);
-        const file = input?.files?.[0];
-        const statusEl = document.getElementById("backup-status");
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = function () {
-          try {
-            if (typeof reader.result !== "string") return;
-            const parsed = JSON.parse(reader.result);
-            importFullBackupData(parsed);
-            if (statusEl) statusEl.textContent = "بیک‌آپ په بریالیتوب پورته او خوندي شو.";
-          } catch {
-            if (statusEl) statusEl.textContent = "فایل سم JSON نه دی.";
-          }
-        };
-        reader.readAsText(file);
-        if (input) input.value = "";
+      document.getElementById("admin-pin-form")?.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        if (!isAdminLoggedIn) return;
+
+        const currInp = /** @type {HTMLInputElement | null} */ (document.getElementById("admin-current-pin"));
+        const newInp = /** @type {HTMLInputElement | null} */ (document.getElementById("admin-new-pin"));
+        const statusEl = document.getElementById("admin-pin-status");
+        const hashBox = /** @type {HTMLTextAreaElement | null} */ (document.getElementById("pin-hash-code-output"));
+
+        const currVal = (currInp?.value || "").trim();
+        const newVal = (newInp?.value || "").trim();
+
+        const currHash = await sha256Hex(currVal);
+        const isDefaultPlainMatch = (activeAdminPinHash === "541f577e9403766da33952ba6869682e39a835a147b03c1b2994a0112a6c4e1a" && currVal === "2026");
+
+        if (!(currHash === activeAdminPinHash || isDefaultPlainMatch)) {
+          if (statusEl) statusEl.textContent = "اوسنی PIN سم نه دی.";
+          return;
+        }
+
+        if (newVal.length < 4) {
+          if (statusEl) statusEl.textContent = "نوی PIN باید لږ تر لږه ۴ نښې ولري.";
+          return;
+        }
+
+        const newHash = await sha256Hex(newVal);
+        activeAdminPinHash = newHash;
+
+        const pinLine = 'let activeAdminPinHash = "' + newHash + '";';
+        if (hashBox) {
+          hashBox.value = pinLine;
+          hashBox.classList.remove("hidden");
+        }
+
+        if (currInp) currInp.value = "";
+        if (newInp) newInp.value = "";
+        if (statusEl) {
+          statusEl.textContent = "PIN په اپ کې تازه شو. د دایمي ساتلو لپاره لاندې کرښه په کوډ کې بدلولای شئ.";
+        }
+      });
+
+      document.getElementById("copy-pin-hash-btn")?.addEventListener("click", function () {
+        const hashBox = /** @type {HTMLTextAreaElement | null} */ (document.getElementById("pin-hash-code-output"));
+        const statusEl = document.getElementById("admin-pin-status");
+        if (!hashBox || !hashBox.value.trim()) {
+          if (statusEl) statusEl.textContent = "لومړی نوی PIN دننه او بدل کړئ.";
+          return;
+        }
+        copySnippetToClipboard(hashBox.value, hashBox, statusEl, "د PIN کوډ کاپي شو.");
       });
 
       document.querySelectorAll("[data-open-page]").forEach(function (btn) {
@@ -2187,7 +2117,7 @@
         saveFeedbacks(list);
         if (nameInput) nameInput.value = "";
         msgInput.value = "";
-        if (statusEl) statusEl.textContent = "ستاسو پیغام په بریالیتوب ثبت شو.";
+        if (statusEl) statusEl.textContent = "ستاسو پیغام په موقتي حافظه کې ثبت شو.";
       });
 
       document.getElementById("admin-poem-form")?.addEventListener("submit", function (e) {
@@ -2208,7 +2138,7 @@
           if (idx !== -1) {
             poems[idx] = { id: idVal, title: titleVal, category: catVal, body: bodyVal };
           }
-          if (statusEl) statusEl.textContent = "شعر تازه شو.";
+          if (statusEl) statusEl.textContent = "شعر تازه شو او د DEFAULT_POEMS کوډ په اتومات ډول جوړ شو.";
         } else {
           poems.unshift({
             id: "poem-" + Date.now(),
@@ -2216,7 +2146,7 @@
             category: catVal,
             body: bodyVal
           });
-          if (statusEl) statusEl.textContent = "نوی شعر اضافه شو.";
+          if (statusEl) statusEl.textContent = "نوی شعر اضافه شو او د DEFAULT_POEMS کوډ په اتومات ډول جوړ شو.";
         }
 
         savePoems(poems);
@@ -2268,7 +2198,7 @@
         pendingPhotoDataUrl = null;
         renderPublicProfile();
         const statusEl = document.getElementById("admin-profile-status");
-        if (statusEl) statusEl.textContent = "پېژندنه او عکس خوندي شول.";
+        if (statusEl) statusEl.textContent = "پېژندنه او عکس په اوسنۍ ناسته کې تازه شول.";
       });
 
       document.getElementById("admin-social-form")?.addEventListener("submit", function (e) {
@@ -2288,7 +2218,7 @@
         saveSocial(updatedSocial);
         renderPublicSocial();
         const statusEl = document.getElementById("admin-social-status");
-        if (statusEl) statusEl.textContent = "ټولنیزې اړیکې او د موبایل شمېره خوندي شول.";
+        if (statusEl) statusEl.textContent = "ټولنیزې اړیکې او د موبایل شمېره په اوسنۍ ناسته کې تازه شول.";
       });
 
       document.getElementById("admin-appinfo-form")?.addEventListener("submit", function (e) {
@@ -2305,24 +2235,15 @@
         saveAppInfo(updatedInfo);
         renderAppInfo();
         const statusEl = document.getElementById("admin-appinfo-status");
-        if (statusEl) statusEl.textContent = "د کاریال معلومات خوندي شول.";
+        if (statusEl) statusEl.textContent = "د کاریال معلومات په اوسنۍ ناسته کې تازه شول.";
       });
 
-      document.getElementById("admin-pin-form")?.addEventListener("submit", function (e) {
-        e.preventDefault();
-        if (!isAdminLoggedIn) return;
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+          navigator.serviceWorker.register("./sw.js").catch(function () {});
+        });
+      }
 
-        const pinInput = /** @type {HTMLInputElement | null} */ (document.getElementById("admin-new-pin"));
-        const newPin = (pinInput?.value || "").trim();
-        if (newPin.length < 4) return;
-
-        setAdminPin(newPin);
-        if (pinInput) pinInput.value = "";
-        const statusEl = document.getElementById("admin-pin-status");
-        if (statusEl) statusEl.textContent = "د مدیر نوی پټ کوډ خوندي شو.";
-      });
-
-      applySavedTheme();
       syncAdminHeaderUI();
       renderCategoryCounts();
       renderPublicProfile();
