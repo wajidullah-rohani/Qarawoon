@@ -1,753 +1,2129 @@
 <!DOCTYPE html>
 <html lang="ps" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>کړاوونه — د پښتو شعرونو ټولګه</title>
-
-  <!-- PWA Manifest & Mobile App Settings -->
-  <link rel="manifest" href="/Qarawoon/manifest.json" />
-  <meta name="theme-color" content="#1b4d40" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="کړاوونه" />
-  <link rel="apple-touch-icon" sizes="192x192" href="/Qarawoon/icons/icon-192.png" />
-  <link rel="apple-touch-icon" sizes="512x512" href="/Qarawoon/icons/icon-512.png" />
-  <link rel="icon" type="image/png" sizes="192x192" href="/Qarawoon/icons/icon-192.png" />
-  <link rel="icon" type="image/png" sizes="512x512" href="/Qarawoon/icons/icon-512.png" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101010">
+  <meta name="description" content="کړاوونه؛ د پښتو شعر او ادب ادبي ټولګه">
+  <link rel="manifest" href="manifest.json">
+  <title>کړاوونه | د شعر او ادب کور</title>
 
   <style>
     :root {
-      --emerald: #1b4d40;
-      --emerald-deep: #0f2922;
-      --emerald-soft: #246151;
-      --gold: #e4be67;
-      --gold-bright: #f4d78e;
-      --gold-dark: #b8882e;
-      --cream: #fcf8ee;
-      --paper: #fffdf8;
-      --ink: #172722;
-      --muted: #556862;
-      --border: rgba(27, 77, 64, 0.18);
-      --shadow: 0 12px 30px rgba(15, 41, 34, 0.1);
-      --radius: 16px;
+      --bg: #101010;
+      --surface: #191919;
+      --surface2: #222222;
+      --gold: #d6ad55;
+      --gold2: #f0d28c;
+      --text: #f3f0e9;
+      --muted: #aaa49a;
+      --border: rgba(214,173,85,.25);
+      --shadow: 0 12px 35px rgba(0,0,0,.3);
+      --poem-size: 20px;
     }
 
     * {
       box-sizing: border-box;
-    }
-
-    html,
-    body {
       margin: 0;
       padding: 0;
-      min-height: 100%;
-      background: radial-gradient(circle at top, #f7f1e1 0%, #efe7d4 100%);
-      color: var(--ink);
-      font-family: "Noto Naskh Arabic", "Amiri", "Tahoma", sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Noto Naskh Arabic", "Noto Sans Arabic", Tahoma, sans-serif;
       line-height: 1.9;
+      min-height: 100vh;
+    }
+
+    body.light-theme {
+      --bg: #f4f0e7;
+      --surface: #ffffff;
+      --surface2: #eee8dc;
+      --gold: #9b7025;
+      --gold2: #78551c;
+      --text: #25221d;
+      --muted: #686057;
+      --border: rgba(120,85,28,.22);
+      --shadow: 0 12px 35px rgba(0,0,0,.08);
+    }
+
+    button, input, textarea, select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: var(--gold2);
+      text-decoration: none;
     }
 
     .container {
-      max-width: 920px;
-      margin: 0 auto;
-      padding: 16px;
+      width: min(1100px, 92%);
+      margin: auto;
     }
 
-    /* Install Banner */
-    .install-bar {
-      display: none;
+    .hidden {
+      display: none !important;
+    }
+
+    /* Welcome screen */
+
+    #welcome-screen {
+      min-height: 100vh;
+      display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 16px;
-      padding: 14px 18px;
-      border-radius: var(--radius);
-      background: linear-gradient(135deg, var(--emerald), var(--emerald-deep));
-      color: var(--cream);
-      border: 1px solid rgba(228, 190, 103, 0.45);
+      justify-content: center;
+      padding: 25px;
+      background:
+        radial-gradient(circle at 50% 35%, rgba(214,173,85,.13), transparent 45%),
+        var(--bg);
+      text-align: center;
+    }
+
+    .welcome-card {
+      width: min(520px, 100%);
+      padding: 45px 25px;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: var(--surface);
       box-shadow: var(--shadow);
     }
 
-    .install-bar.show {
-      display: flex;
+    .welcome-symbol {
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 20px;
+      border: 2px solid var(--gold);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--gold);
+      font-size: 40px;
     }
 
-    .install-bar-title {
-      font-weight: 700;
-      font-size: 1.05rem;
-      color: var(--gold-bright);
+    .welcome-card h1 {
+      color: var(--gold);
+      font-size: clamp(35px, 8vw, 55px);
+      margin-bottom: 8px;
     }
 
-    .install-bar-sub {
-      font-size: 0.9rem;
-      color: rgba(252, 248, 238, 0.92);
+    .welcome-card p {
+      color: var(--muted);
+      margin-bottom: 18px;
     }
 
-    .btn-gold {
-      background: linear-gradient(135deg, var(--gold-bright), var(--gold-dark));
-      color: var(--emerald-deep);
-      border: none;
-      border-radius: 10px;
-      padding: 10px 18px;
-      font-family: inherit;
-      font-size: 0.95rem;
-      font-weight: 700;
-      cursor: pointer;
-      white-space: nowrap;
+    /* Buttons */
+
+    .gold-button {
+      border: 1px solid var(--gold);
+      background: var(--gold);
+      color: #17130c;
+      border-radius: 12px;
+      padding: 11px 24px;
+      font-weight: bold;
+      transition: .2s;
     }
 
-    .btn-emerald {
-      background: linear-gradient(135deg, var(--emerald-soft), var(--emerald));
-      color: var(--cream);
-      border: none;
-      border-radius: 10px;
-      padding: 10px 18px;
-      font-family: inherit;
-      font-size: 0.95rem;
-      font-weight: 700;
-      cursor: pointer;
+    .gold-button:hover {
+      background: var(--gold2);
+      transform: translateY(-2px);
     }
 
-    .btn-ghost {
+    .outline-button {
       background: transparent;
-      color: var(--emerald);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 8px 14px;
-      font-family: inherit;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      border-radius: 12px;
+      padding: 9px 18px;
+      transition: .2s;
+    }
+
+    .outline-button:hover {
+      background: rgba(214,173,85,.1);
+    }
+
+    .danger-button {
+      background: rgba(180, 35, 24, 0.16);
+      color: #ff9c94;
+      border: 1px solid rgba(255, 110, 98, 0.4);
+      border-radius: 12px;
+      padding: 9px 16px;
+      transition: .2s;
+    }
+
+    body.light-theme .danger-button {
+      background: rgba(180, 35, 24, 0.1);
+      color: #a81c14;
+      border-color: rgba(168, 28, 20, 0.35);
     }
 
     /* Header */
+
     .site-header {
-      background: linear-gradient(145deg, var(--emerald), var(--emerald-deep));
-      color: var(--cream);
-      border-radius: 22px;
-      padding: 28px 22px;
-      text-align: center;
-      border: 1px solid rgba(228, 190, 103, 0.4);
-      box-shadow: var(--shadow);
-      margin-bottom: 20px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      box-shadow: 0 4px 20px rgba(0,0,0,.12);
     }
 
-    .site-header h1 {
-      margin: 0 0 8px;
-      font-size: 2.3rem;
-      color: var(--gold-bright);
-      font-weight: 700;
+    .header-inner {
+      min-height: 75px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
     }
 
-    .site-header p {
-      margin: 0 auto 18px;
-      max-width: 620px;
-      color: rgba(252, 248, 238, 0.92);
-      font-size: 1rem;
+    .brand {
+      color: var(--gold);
+      font-size: 25px;
+      font-weight: bold;
+      cursor: pointer;
     }
 
     .header-actions {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-    }
-
-    .header-link {
-      text-decoration: none;
-      background: rgba(255, 255, 255, 0.12);
-      color: var(--cream);
-      border: 1px solid rgba(228, 190, 103, 0.35);
-      padding: 8px 16px;
-      border-radius: 10px;
-      font-size: 0.92rem;
-      font-weight: 600;
-    }
-
-    /* Search & Filter Box */
-    .toolbar {
-      background: var(--paper);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px;
-      margin-bottom: 20px;
-      box-shadow: var(--shadow);
-      display: grid;
-      gap: 12px;
-    }
-
-    .search-input,
-    .field-input,
-    .field-textarea {
-      width: 100%;
-      padding: 12px 14px;
-      border-radius: 12px;
-      border: 1px solid rgba(27, 77, 64, 0.25);
-      background: #ffffff;
-      color: var(--ink);
-      font-family: inherit;
-      font-size: 1rem;
-    }
-
-    .search-input:focus,
-    .field-input:focus,
-    .field-textarea:focus {
-      outline: none;
-      border-color: var(--emerald);
-      box-shadow: 0 0 0 3px rgba(27, 77, 64, 0.12);
-    }
-
-    .filter-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .chip {
-      border: 1px solid rgba(27, 77, 64, 0.22);
-      background: var(--cream);
-      color: var(--ink);
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-family: inherit;
-      font-size: 0.9rem;
-      cursor: pointer;
-    }
-
-    .chip.active {
-      background: var(--emerald);
-      color: var(--gold-bright);
-      border-color: var(--emerald);
-      font-weight: 700;
-    }
-
-    /* Poems List */
-    .section-heading {
-      display: flex;
+      gap: 9px;
       align-items: center;
-      justify-content: space-between;
-      margin: 24px 0 12px;
+      flex-wrap: wrap;
     }
 
-    .section-heading h2 {
-      margin: 0;
-      font-size: 1.45rem;
-      color: var(--emerald-deep);
+    .icon-button {
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface2);
+      color: var(--gold);
+      font-size: 19px;
+      display: inline-grid;
+      place-items: center;
     }
 
-    .status-note {
-      font-size: 0.9rem;
+    /* Main */
+
+    main {
+      min-height: 75vh;
+      padding: 28px 0 45px;
+    }
+
+    [data-page] {
+      display: none;
+      animation: appear .25s ease;
+    }
+
+    [data-page].active-page {
+      display: block;
+    }
+
+    @keyframes appear {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .section-heading {
+      color: var(--gold);
+      text-align: center;
+      font-size: 27px;
+      margin-bottom: 8px;
+    }
+
+    .section-subtitle {
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    /* Main menu */
+
+    .hero {
+      text-align: center;
+      padding: 35px 15px 28px;
+      margin-bottom: 28px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: linear-gradient(145deg, var(--surface), var(--surface2));
+    }
+
+    .hero h2 {
+      color: var(--gold);
+      font-size: clamp(28px, 6vw, 40px);
+      margin-bottom: 8px;
+    }
+
+    .hero p {
       color: var(--muted);
     }
 
-    .poems-list {
+    .menu-grid {
       display: grid;
+      grid-template-columns: repeat(3, 1fr);
       gap: 16px;
     }
 
-    .poem-card {
-      background: var(--paper);
+    .menu-card {
+      min-height: 145px;
+      padding: 22px 12px;
+      background: var(--surface);
       border: 1px solid var(--border);
-      border-right: 5px solid var(--gold-dark);
-      border-radius: var(--radius);
-      padding: 20px;
+      border-radius: 18px;
+      color: var(--text);
+      text-align: center;
+      transition: .2s;
       box-shadow: var(--shadow);
     }
 
-    .poem-meta {
+    .menu-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--gold);
+    }
+
+    .menu-icon {
+      display: block;
+      font-size: 31px;
+      margin-bottom: 8px;
+    }
+
+    .menu-card strong {
+      color: var(--gold);
+      font-size: 17px;
+    }
+
+    .menu-card small {
+      display: block;
+      color: var(--muted);
+      margin-top: 5px;
+    }
+
+    /* Category cards */
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-top: 25px;
+    }
+
+    .category-card {
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 10px;
-      font-size: 0.88rem;
+      gap: 15px;
+      min-height: 85px;
+      padding: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      color: var(--text);
+      text-align: right;
+      transition: .2s;
+    }
+
+    .category-card:hover,
+    .category-card.selected-cat {
+      border-color: var(--gold);
+      background: var(--surface2);
+      transform: translateY(-2px);
+    }
+
+    .category-icon {
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      background: var(--surface2);
+      border-radius: 13px;
+      color: var(--gold);
+      font-size: 24px;
+    }
+
+    .category-card strong {
+      color: var(--gold);
+      font-size: 17px;
+    }
+
+    .category-card small {
+      display: block;
       color: var(--muted);
     }
 
-    .poem-tag {
-      background: rgba(27, 77, 64, 0.1);
-      color: var(--emerald);
-      padding: 3px 10px;
-      border-radius: 8px;
-      font-weight: 700;
+    /* Poems */
+
+    #category-view {
+      margin-top: 24px;
     }
 
-    .poem-title {
-      margin: 0 0 12px;
-      font-size: 1.45rem;
-      color: var(--emerald-deep);
-    }
-
-    .poem-body {
-      font-family: "Amiri", "Noto Naskh Arabic", "Tahoma", serif;
-      font-size: 1.25rem;
-      line-height: 2.15;
-      white-space: pre-line;
-      color: var(--ink);
-      margin-bottom: 14px;
-    }
-
-    .poem-footer {
+    .category-banner {
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      padding-top: 12px;
-      border-top: 1px dashed rgba(27, 77, 64, 0.18);
-    }
-
-    /* Reader Modal */
-    .modal-backdrop {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(10, 26, 21, 0.72);
-      z-index: 999;
-      padding: 16px;
-      overflow-y: auto;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal-backdrop.open {
-      display: flex;
-    }
-
-    .modal-card {
-      width: 100%;
-      max-width: 720px;
-      background: var(--paper);
-      border-radius: 20px;
-      padding: 24px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-
-    /* Feedback Box */
-    .feedback-box {
-      background: var(--paper);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 22px;
-      margin-top: 28px;
-      box-shadow: var(--shadow);
-    }
-
-    .feedback-box h2 {
-      margin: 0 0 6px;
-      font-size: 1.4rem;
-      color: var(--emerald-deep);
-    }
-
-    .feedback-grid {
-      display: grid;
       gap: 12px;
+      flex-wrap: wrap;
+      padding: 14px 18px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    .category-banner h3 {
+      color: var(--gold);
+      font-size: 20px;
+    }
+
+    .poem-list {
+      display: grid;
+      gap: 13px;
       margin-top: 14px;
     }
 
-    .feedback-msg {
+    .poem-item {
+      padding: 17px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface);
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .poem-item:hover {
+      border-color: var(--gold);
+      background: var(--surface2);
+    }
+
+    .poem-item h3 {
+      color: var(--gold);
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+
+    .poem-item p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* Reader */
+
+    #poem-reader {
+      margin-top: 22px;
+      padding: 25px 18px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .reader-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    #poem-title {
+      color: var(--gold);
+      text-align: center;
+      font-size: 25px;
+      margin-bottom: 22px;
+    }
+
+    #poem-content {
+      color: var(--text);
+      font-size: var(--poem-size);
+      line-height: 2.4;
+      text-align: center;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      padding: 10px 0 25px;
+    }
+
+    .reader-tools {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 9px;
+      padding-top: 15px;
+      border-top: 1px solid var(--border);
+    }
+
+    .reader-tools button {
+      min-width: 43px;
+    }
+
+    /* About */
+
+    .profile-card {
+      max-width: 760px;
+      margin: auto;
+      padding: 25px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    #public-profile-photo {
+      width: 145px;
+      height: 145px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--gold);
+      margin: 0 auto 15px;
+      display: block;
+    }
+
+    #public-profile-name {
+      color: var(--gold);
+      font-size: 25px;
+    }
+
+    #public-profile-father {
+      color: var(--muted);
+      margin-bottom: 15px;
+    }
+
+    #public-profile-bio {
+      text-align: justify;
+      line-height: 2.2;
+      white-space: pre-wrap;
+    }
+
+    #public-profile-message {
+      color: var(--gold2);
+      margin-top: 18px;
+    }
+
+    /* Social & Phone */
+
+    .social-list {
+      display: grid;
+      gap: 13px;
+      max-width: 550px;
+      margin: auto;
+    }
+
+    .phone-card {
+      padding: 16px 18px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .phone-card strong {
+      color: var(--gold);
+      display: block;
+      font-size: 15px;
+    }
+
+    .phone-card span {
+      color: var(--text);
+      font-size: 17px;
+      direction: ltr;
+      display: inline-block;
+    }
+
+    .social-link {
+      display: block;
+      padding: 15px;
+      text-align: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      color: var(--gold);
+      transition: .2s;
+    }
+
+    .social-link:hover {
+      border-color: var(--gold);
+      background: var(--surface2);
+    }
+
+    /* Feedback */
+
+    .form-card {
+      max-width: 680px;
+      margin: 0 auto 22px;
+      padding: 22px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .form-card h3 {
+      color: var(--gold);
+      margin-bottom: 8px;
+      font-size: 20px;
+    }
+
+    .form-card label {
+      display: block;
+      color: var(--gold);
+      margin: 12px 0 5px;
+    }
+
+    .form-card input,
+    .form-card textarea,
+    .form-card select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--bg);
+      color: var(--text);
+      outline: none;
+    }
+
+    .form-card textarea {
+      min-height: 130px;
+      resize: vertical;
+    }
+
+    .form-card input:focus,
+    .form-card textarea:focus,
+    .form-card select:focus {
+      border-color: var(--gold);
+    }
+
+    #feedback-status,
+    .status-note {
+      color: var(--gold);
+      margin-top: 12px;
+      font-size: 14px;
+    }
+
+    .manage-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .manage-row {
+      padding: 13px 15px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .manage-row-meta {
+      flex: 1;
+      min-width: 180px;
+    }
+
+    .manage-row-meta strong {
+      color: var(--gold);
+      display: block;
+    }
+
+    .manage-row-meta small,
+    .manage-row-meta p {
+      color: var(--muted);
+      font-size: 13px;
+      white-space: pre-wrap;
+    }
+
+    .manage-row-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .photo-preview-box {
       margin-top: 10px;
-      font-weight: 700;
-      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .photo-preview-box img {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--gold);
+    }
+
+    /* Statistics */
+
+    .stats-card {
+      padding: 25px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    #total-poems {
+      display: block;
+      color: var(--gold);
+      font-size: 42px;
+      font-weight: bold;
+    }
+
+    #category-statistics {
+      margin-top: 20px;
+      text-align: right;
+      color: var(--muted);
+      line-height: 2.2;
+    }
+
+    /* Back and footer */
+
+    .page-actions {
+      display: flex;
+      justify-content: flex-start;
+      margin-bottom: 22px;
     }
 
     .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 22px 10px;
       text-align: center;
-      padding: 28px 12px 36px;
       color: var(--muted);
-      font-size: 0.92rem;
+      font-size: 13px;
+    }
+
+    .site-footer strong {
+      color: var(--gold);
+    }
+
+    @media (max-width: 650px) {
+      .menu-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 11px;
+      }
+
+      .menu-card {
+        min-height: 130px;
+        padding: 17px 8px;
+      }
+
+      .category-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .header-inner {
+        min-height: 65px;
+      }
+
+      .brand {
+        font-size: 22px;
+      }
+
+      main {
+        padding-top: 20px;
+      }
+
+      .profile-card {
+        padding: 18px;
+      }
+    }
+
+    @media (max-width: 350px) {
+      .menu-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
-<body>
-  <div class="container">
-    <!-- Install App Bar -->
-    <div id="installBar" class="install-bar" role="region" aria-label="د اپلیکیشن نصبول">
-      <div>
-        <div class="install-bar-title">کړاوونه اپلیکیشن نصب کړئ</div>
-        <div class="install-bar-sub">په وړیا ډول یې د خپل موبایل په اصلي سکرین کې وساتئ</div>
-      </div>
-      <button id="installBtn" class="btn-gold" type="button">نصبول</button>
-    </div>
 
-    <!-- Header -->
+<body>
+
+  <!-- Welcome screen -->
+  <section id="welcome-screen">
+    <div class="welcome-card">
+      <div class="welcome-symbol">✒</div>
+      <h1>کړاوونه</h1>
+      <p>د شعر، ادب او احساساتو کور</p>
+      <p>د پښتو ادب یوې ځانګړې نړۍ ته ښه راغلاست</p>
+      <button class="gold-button" id="start-app" type="button">کاریال ته ننوتل</button>
+    </div>
+  </section>
+
+  <!-- Application -->
+  <div id="app-content" class="hidden">
+
     <header class="site-header">
-      <h1 id="siteTitle">کړاوونه</h1>
-      <p id="siteSubtitle">د پښتو شعرونو، غزلونو، نظمونو، ماهیې او ټپیزو ټولګه — د لوستلو او شریکولو لپاره</p>
-      <div class="header-actions">
-        <a href="#poemsSection" class="header-link">شعرونه وګورئ</a>
-        <a href="#feedbackSection" class="header-link">نظر او پیغام</a>
-        <a href="/Qarawoon/admin.html" class="header-link">اداري برخه</a>
+      <div class="container header-inner">
+        <div class="brand" id="brand-home">کړاوونه</div>
+
+        <div class="header-actions">
+          <button class="outline-button" id="admin-open-btn" type="button">مدیر</button>
+          <button class="outline-button hidden" id="admin-logout-btn" type="button">وتل</button>
+          <button class="icon-button" id="theme-toggle" type="button" title="د رنګ بدلول">☼</button>
+        </div>
       </div>
     </header>
 
-    <!-- Search & Category Filter -->
-    <section class="toolbar" aria-label="لټون او ډلبندي">
-      <input
-        id="searchInput"
-        class="search-input"
-        type="search"
-        placeholder="د شعر سرلیک، بیت یا موضوع ولټوئ..."
-      />
-      <div id="categoryChips" class="filter-chips">
-        <button class="chip active" data-category="ټول" type="button">ټول</button>
-        <button class="chip" data-category="غزل" type="button">غزل</button>
-        <button class="chip" data-category="نظم" type="button">نظم</button>
-        <button class="chip" data-category="ماهیې" type="button">ماهیې</button>
-        <button class="chip" data-category="بیتونه" type="button">بیتونه</button>
-        <button class="chip" data-category="ټپې" type="button">ټپې</button>
-        <button class="chip" data-category="ټپیزې" type="button">ټپیزې</button>
-      </div>
-    </section>
+    <main class="container">
 
-    <!-- Poems Section -->
-    <section id="poemsSection">
-      <div class="section-heading">
-        <h2>خپاره شوي شعرونه</h2>
-        <span id="poemsStatus" class="status-note">د شعرونو راخیستل...</span>
-      </div>
+      <!-- Main menu -->
+      <section data-page="main-menu" class="active-page">
 
-      <div id="poemsList" class="poems-list"></div>
-    </section>
-
-    <!-- Reader Modal -->
-    <div id="readerModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <div class="modal-card">
-        <div class="poem-meta">
-          <span id="modalCategory" class="poem-tag">غزل</span>
-          <button id="closeModalBtn" class="btn-ghost" type="button">بندول ✕</button>
+        <div class="hero">
+          <h2>کړاوونه</h2>
+          <p>د پښتو شعر او ادب ادبي ټولګه</p>
+          <p>دلته احساسات د الفاظو په ژبه خبرې کوي</p>
         </div>
-        <h3 id="modalTitle" class="poem-title"></h3>
-        <div id="modalBody" class="poem-body"></div>
-        <div class="poem-footer">
-          <span id="modalDate" class="status-note"></span>
-          <button id="sharePoemBtn" class="btn-emerald" type="button">شریک یې کړئ</button>
-        </div>
-      </div>
-    </div>
 
-    <!-- Reader Feedback Section -->
-    <section id="feedbackSection" class="feedback-box">
-      <h2>د لیدونکو نظر او پیغام</h2>
-      <p class="status-note">خپل نظر، د شعر په اړه احساس، یا وړاندیز له موږ سره شریک کړئ.</p>
+        <h2 class="section-heading">اصلي برخې</h2>
+        <p class="section-subtitle">خپله خوښه برخه وټاکئ</p>
 
-      <form id="feedbackForm" class="feedback-grid">
-        <input
-          id="readerName"
-          class="field-input"
-          type="text"
-          placeholder="ستاسو نوم (اختیاري)"
-        />
-        <textarea
-          id="readerMessage"
-          class="field-textarea"
-          rows="4"
-          placeholder="خپل نظر یا پیغام دلته ولیکئ..."
-          required
-        ></textarea>
-        <div>
-          <button id="sendFeedbackBtn" class="btn-gold" type="submit">نظر ولېږئ</button>
+        <div class="menu-grid">
+
+          <button class="menu-card" data-open-page="poetry" type="button">
+            <span class="menu-icon">📚</span>
+            <strong>د شعرونو ټولګه</strong>
+            <small>غزلونه، نظمونه او نور ادبي آثار</small>
+          </button>
+
+          <button class="menu-card" data-open-page="about" type="button">
+            <span class="menu-icon">✍️</span>
+            <strong>زما پېژندنه</strong>
+            <small>د لیکوال لنډه پېژندنه</small>
+          </button>
+
+          <button class="menu-card" data-open-page="social" type="button">
+            <span class="menu-icon">🌐</span>
+            <strong>ټولنیزې اړیکې</strong>
+            <small>لینکونه او د موبایل شمېره</small>
+          </button>
+
+          <button class="menu-card" data-open-page="feedback" type="button">
+            <span class="menu-icon">💬</span>
+            <strong>نظرونه او وړاندیزونه</strong>
+            <small>خپل نظر له موږ سره شریک کړئ</small>
+          </button>
+
+          <button class="menu-card" data-open-page="statistics" type="button">
+            <span class="menu-icon">📊</span>
+            <strong>احصائیه</strong>
+            <small>د ادبي ټولګې معلومات</small>
+          </button>
+
+          <button class="menu-card" data-open-page="app-info" type="button">
+            <span class="menu-icon">ℹ️</span>
+            <strong>د کاریال په اړه</strong>
+            <small>د کړاوونه موخې او معلومات</small>
+          </button>
+
         </div>
-        <div id="feedbackStatus" class="feedback-msg" aria-live="polite"></div>
-      </form>
-    </section>
+      </section>
+
+      <!-- Poetry categories -->
+      <section data-page="poetry">
+
+        <div class="page-actions">
+          <button class="outline-button" data-back type="button">← بېرته</button>
+        </div>
+
+        <h2 class="section-heading">د شعرونو نړۍ</h2>
+        <p class="section-subtitle">د خپلې خوښې ادبي صنف وټاکئ</p>
+
+        <div class="category-grid">
+
+          <button class="category-card" data-category="غزل" type="button">
+            <span class="category-icon">🌹</span>
+            <span><strong>غزل</strong><small id="count-غزل">د مینې او احساساتو ژبه</small></span>
+          </button>
+
+          <button class="category-card" data-category="نظم" type="button">
+            <span class="category-icon">📖</span>
+            <span><strong>نظم</strong><small id="count-نظم">د فکر او خیال انځور</small></span>
+          </button>
+
+          <button class="category-card" data-category="ماهیې" type="button">
+            <span class="category-icon">🌙</span>
+            <span><strong>ماهیې</strong><small id="count-ماهیې">د پښتني ادب ځانګړی رنګ</small></span>
+          </button>
+
+          <button class="category-card" data-category="ټپیزې" type="button">
+            <span class="category-icon">🎶</span>
+            <span><strong>ټپیزې</strong><small id="count-ټپیزې">د ولسي ادب خوږه برخه</small></span>
+          </button>
+
+          <button class="category-card" data-category="ټپې" type="button">
+            <span class="category-icon">🍃</span>
+            <span><strong>ټپې</strong><small id="count-ټپې">د ولسي احساساتو غږ</small></span>
+          </button>
+
+          <button class="category-card" data-category="بیتونه" type="button">
+            <span class="category-icon">🖋</span>
+            <span><strong>بیتونه</strong><small id="count-بیتونه">لنډې خو ژورې خبرې</small></span>
+          </button>
+
+        </div>
+
+        <div id="category-view" class="hidden">
+          <div class="category-banner">
+            <h3 id="active-category-heading">کټګوري</h3>
+            <button class="outline-button" id="close-category-btn" type="button">کټګورۍ پټول</button>
+          </div>
+          <div id="poem-list" class="poem-list"></div>
+        </div>
+
+        <div id="poem-reader" class="hidden">
+          <div class="reader-top-bar">
+            <button class="outline-button" id="back-to-list-btn" type="button">← شعرونو لست ته</button>
+            <span class="status-note" id="reader-category-label"></span>
+          </div>
+
+          <h2 id="poem-title"></h2>
+          <div id="poem-content"></div>
+
+          <div class="reader-tools">
+            <button class="outline-button" id="font-minus" type="button" title="لیکنه وړه کول">A−</button>
+            <button class="outline-button" id="font-reset" type="button" title="عادي اندازه">A</button>
+            <button class="outline-button" id="font-plus" type="button" title="لیکنه غټه کول">A+</button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- About -->
+      <section data-page="about">
+
+        <div class="page-actions">
+          <button class="outline-button" data-back type="button">← بېرته</button>
+        </div>
+
+        <h2 class="section-heading">زما پېژندنه</h2>
+        <p class="section-subtitle">د قلم او ادب له نړۍ سره یوه لنډه پېژندنه</p>
+
+        <div class="profile-card">
+
+          <img
+            id="public-profile-photo"
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Crect width='150' height='150' rx='75' fill='%23222222'/%3E%3Ctext x='75' y='95' font-size='65' text-anchor='middle' fill='%23d6ad55'%3E✒%3C/text%3E%3C/svg%3E"
+            alt="د لیکوال انځور"
+          >
+
+          <h2 id="public-profile-name">واجدالله روحاني</h2>
+          <p id="public-profile-father">د مامور صاحب مارزک زوی</p>
+
+          <div id="public-profile-bio">
+واجدالله روحاني، د مامور صاحب مارزک زوی، په ۱۳۸۲ هجري لمریز کال کې زېږېدلی دی. نوموړي خپلې لومړنۍ زده‌کړې د منګلیو په ابتدایه ښوونځي او د خپل کلي په جومات کې پیل کړې. وروسته یې د انصارالمؤمنین عالي لېسې د زده‌کړو دوره په بریالیتوب بشپړه کړه.
+
+په ۱۴۰۱ هجري لمریز کال کې یې د کانکور ازموینې له لارې د لوړو نمرو په ترلاسه کولو سره د ننګرهار پوهنتون د عامه ادارې او پالیسۍ پوهنځي د عامه ادارې څانګې ته لاره وموندله. همدارنګه، په ۱۴۰۴ کال کې یې د ابوبکر مسلکي اکاډمۍ څخه د انګلیسي ژبې زده‌کړو سند ترلاسه کړ.
+
+واجدالله روحاني له کوچنیوالي راهیسې له شعر، ادب او لیکوالۍ سره ځانګړې مینه لرلې ده. نوموړي په ۱۳۹۸ کال کې په رسمي ډول د شعر لیکلو بهیر پیل کړ او له هغه وخت راهیسې یې ګڼ شمېر غزلونه، نظمونه، ماهیې او بیتونه پنځولي دي.
+
+د شعر او ادب له نړۍ سره د نوموړي ژوره مینه او د ادبي اثارو د لوستونکو ترمنځ د شریکولو لېوالتیا هغه دې ته وهڅاوه چې د «کړاوونه» په نوم دا ادبي کاریال رامنځته کړي. د دې کاریال اساسي موخه د خپلو ادبي آثارو خوندي کول، د شعر او ادب مینه‌والو ته د هغو وړاندې کول او د پښتو ژبې او ادب د ودې او پراختیا په برخه کې ونډه اخیستل دي.
+
+نوموړی هیله لري چې دا کاریال به د شعر او ادب مینه‌والو ته د مطالعې یوه ګټوره سرچینه او د ادبي ذوق د پیاوړتیا لپاره یو مناسب ځای وي، څو لوستونکي وکولای شي د شعرونو له لوستلو څخه خوند واخلي او خپله ادبي تنده پرې ماته کړي.
+          </div>
+
+          <p id="public-profile-message"></p>
+
+        </div>
+      </section>
+
+      <!-- Social links -->
+      <section data-page="social">
+
+        <div class="page-actions">
+          <button class="outline-button" data-back type="button">← بېرته</button>
+        </div>
+
+        <h2 class="section-heading">ټولنیزې اړیکې</h2>
+        <p class="section-subtitle">له لیکوال سره د اړیکې لارې او د موبایل شمېره</p>
+
+        <div class="social-list">
+          <div class="phone-card" id="public-phone-box">
+            <div>
+              <strong>د موبایل شمېره</strong>
+              <span id="public-phone-number">+93 700 000 000</span>
+            </div>
+            <a class="gold-button" id="public-phone-call" href="tel:+93700000000">زنګ وهل</a>
+          </div>
+        </div>
+
+        <div id="public-social-links" class="social-list" style="margin-top: 13px;">
+          <a class="social-link" href="https://facebook.com" id="default-facebook" target="_blank" rel="noopener noreferrer">📘  Facebook</a>
+          <a class="social-link" href="https://youtube.com" id="default-youtube" target="_blank" rel="noopener noreferrer">▶️  YouTube</a>
+          <a class="social-link" href="https://tiktok.com" id="default-tiktok" target="_blank" rel="noopener noreferrer">🎵  TikTok</a>
+          <a class="social-link" href="https://whatsapp.com" id="default-whatsapp" target="_blank" rel="noopener noreferrer">💬  WhatsApp</a>
+        </div>
+      </section>
+
+      <!-- Feedback -->
+      <section data-page="feedback">
+
+        <div class="page-actions">
+          <button class="outline-button" data-back type="button">← بېرته</button>
+        </div>
+
+        <h2 class="section-heading">نظرونه او وړاندیزونه</h2>
+        <p class="section-subtitle">ستاسې نظرونه د دې ادبي ټولګې د ښه والي لپاره ارزښت لري</p>
+
+        <form id="feedback-form" class="form-card">
+
+          <label for="feedback-name">ستاسې نوم</label>
+          <input
+            id="feedback-name"
+            name="name"
+            type="text"
+            placeholder="خپل نوم ولیکئ"
+          >
+
+          <label for="feedback-message">ستاسې پیغام</label>
+          <textarea
+            id="feedback-message"
+            name="message"
+            placeholder="خپل نظر، وړاندیز یا نیوکه ولیکئ..."
+            required
+          ></textarea>
+
+          <button class="gold-button" type="submit" style="margin-top:15px">
+            پیغام لېږل
+          </button>
+
+          <p id="feedback-status"></p>
+
+        </form>
+      </section>
+
+      <!-- Statistics -->
+      <section data-page="statistics">
+
+        <div class="page-actions">
+          <button class="outline-button" data-back type="button">← بېرته</button>
+        </div>
+
+        <h2 class="section-heading">د ادبي ټولګې احصائیه</h2>
+        <p class="section-subtitle">د ثبت شوو شعرونو عمومي معلومات</p>
+
+        <div class="stats-card">
+          <p>د ټولو شعرونو شمېر</p>
+          <strong id="total-poems">۰</strong>
+          <div id="category-statistics"></div>
+        </div>
+
+      </section>
+
+      <!-- App information -->
+      <section data-page="app-info">
+
+        <div class="page-actions">
+          <button class="outline-button" data-back type="button">← بېرته</button>
+        </div>
+
+        <h2 class="section-heading" id="app-info-heading">د کړاوونه په اړه</h2>
+
+        <div class="profile-card">
+          <h3 style="color:var(--gold);margin-bottom:15px" id="app-info-title">کړاوونه؛ د شعر او ادب کور</h3>
+
+          <p id="app-info-desc">
+            کړاوونه یوه پښتو ادبي ټولګه ده چې موخه یې د شعرونو او ادبي اثارو
+            خوندي کول، تنظیمول او د ادب مینه‌والو ته وړاندې کول دي.
+          </p>
+
+          <p style="margin-top:15px" id="app-info-creation">
+            په دې کاریال کې غزلونه، نظمونه، ماهیې، ټپیزې، ټپې او بیتونه
+            په جلا جلا برخو کې تنظیم شوي او د پښتو ژبې او ادب د خدمت په موخه جوړ شوي دي.
+          </p>
+
+          <p style="margin-top:15px;color:var(--gold)">
+            د پښتو ژبې او ادب د ودې په هیله.
+          </p>
+        </div>
+
+      </section>
+
+      <!-- Admin Control Panel (Admin only) -->
+      <section data-page="admin">
+
+        <div class="page-actions">
+          <button class="outline-button" data-back type="button">← بېرته</button>
+        </div>
+
+        <h2 class="section-heading">د مدیر کنټرول پینل</h2>
+        <p class="section-subtitle">شعرونه، پېژندنه، عکس، لینکونه، موبایل شمېره او نظریات مدیریت کړئ</p>
+
+        <!-- 1. Add / Edit Poem -->
+        <form id="admin-poem-form" class="form-card">
+          <h3 id="admin-poem-form-title">نوی شعر اضافه کول</h3>
+          <input type="hidden" id="admin-poem-id">
+
+          <label for="admin-poem-title">د شعر سرلیک</label>
+          <input id="admin-poem-title" type="text" required placeholder="د شعر سرلیک ولیکئ">
+
+          <label for="admin-poem-category">کټګوري</label>
+          <select id="admin-poem-category" required>
+            <option value="غزل">غزل</option>
+            <option value="نظم">نظم</option>
+            <option value="ماهیې">ماهیې</option>
+            <option value="ټپیزې">ټپیزې</option>
+            <option value="ټپې">ټپې</option>
+            <option value="بیتونه">بیتونه</option>
+          </select>
+
+          <label for="admin-poem-body">د شعر متن</label>
+          <textarea id="admin-poem-body" required placeholder="د شعر بیتونه یا کرښې ولیکئ..."></textarea>
+
+          <div class="manage-row-actions" style="margin-top:14px;">
+            <button class="gold-button" type="submit">شعر خوندي کول</button>
+            <button class="outline-button" id="admin-poem-cancel" type="button">فورمه پاکول</button>
+          </div>
+          <p class="status-note" id="admin-poem-status"></p>
+
+          <div id="admin-poems-list" class="manage-list"></div>
+        </form>
+
+        <!-- 2. Profile & Photo Upload -->
+        <form id="admin-profile-form" class="form-card">
+          <h3>زما پېژندنه او عکس سمون</h3>
+
+          <label for="admin-profile-name">نوم</label>
+          <input id="admin-profile-name" type="text" required>
+
+          <label for="admin-profile-father">د پلار نوم</label>
+          <input id="admin-profile-father" type="text">
+
+          <label for="admin-profile-bio">ژوندلیک او پېژندنه</label>
+          <textarea id="admin-profile-bio" required></textarea>
+
+          <label for="admin-profile-message">لنډ پیغام</label>
+          <input id="admin-profile-message" type="text">
+
+          <label for="admin-profile-photo-file">عکس اپلوډ / بدلول</label>
+          <input id="admin-profile-photo-file" type="file" accept="image/*">
+
+          <div class="photo-preview-box">
+            <img id="admin-photo-preview" src="" alt="مخکتنه">
+            <button class="outline-button" id="admin-photo-clear" type="button">عکس بېرته اصلي حالت ته</button>
+          </div>
+
+          <button class="gold-button" type="submit" style="margin-top:14px;">پېژندنه خوندي کول</button>
+          <p class="status-note" id="admin-profile-status"></p>
+        </form>
+
+        <!-- 3. Social Links & Mobile Number -->
+        <form id="admin-social-form" class="form-card">
+          <h3>ټولنیزې اړیکې او د موبایل شمېره</h3>
+
+          <label for="admin-phone">د موبایل شمېره</label>
+          <input id="admin-phone" type="tel" placeholder="+93700000000">
+
+          <label for="admin-facebook">Facebook لینک</label>
+          <input id="admin-facebook" type="url" placeholder="https://facebook.com/...">
+
+          <label for="admin-youtube">YouTube لینک</label>
+          <input id="admin-youtube" type="url" placeholder="https://youtube.com/...">
+
+          <label for="admin-tiktok">TikTok لینک</label>
+          <input id="admin-tiktok" type="url" placeholder="https://tiktok.com/...">
+
+          <label for="admin-whatsapp">WhatsApp لینک</label>
+          <input id="admin-whatsapp" type="url" placeholder="https://wa.me/...">
+
+          <label for="admin-other-link">نور لینک (اختیاري)</label>
+          <input id="admin-other-link" type="url" placeholder="https://...">
+
+          <button class="gold-button" type="submit" style="margin-top:14px;">اړیکې خوندي کول</button>
+          <p class="status-note" id="admin-social-status"></p>
+        </form>
+
+        <!-- 4. App Info & Creation -->
+        <form id="admin-appinfo-form" class="form-card">
+          <h3>د کاریال په اړه او جوړېدو معلومات</h3>
+
+          <label for="admin-app-title">د کاریال سرلیک</label>
+          <input id="admin-app-title" type="text" required>
+
+          <label for="admin-app-desc">د کاریال پېژندنه</label>
+          <textarea id="admin-app-desc" required></textarea>
+
+          <label for="admin-app-creation">د کاریال جوړېدو تفصیل</label>
+          <textarea id="admin-app-creation" required></textarea>
+
+          <button class="gold-button" type="submit" style="margin-top:14px;">د کاریال معلومات خوندي کول</button>
+          <p class="status-note" id="admin-appinfo-status"></p>
+        </form>
+
+        <!-- 5. Reader Feedbacks -->
+        <div class="form-card">
+          <h3>د لوستونکو نظرونه او پیغامونه</h3>
+          <div id="admin-feedback-list" class="manage-list"></div>
+        </div>
+
+        <!-- 6. Change Admin PIN -->
+        <form id="admin-pin-form" class="form-card">
+          <h3>د مدیر پټ کوډ (PIN) بدلول</h3>
+          <label for="admin-new-pin">نوی پټ کوډ (لږ تر لږه ۴ نښې)</label>
+          <input id="admin-new-pin" type="password" minlength="4" required placeholder="نوی پټ کوډ ولیکئ">
+          <button class="gold-button" type="submit" style="margin-top:14px;">پټ کوډ تازه کول</button>
+          <p class="status-note" id="admin-pin-status"></p>
+        </form>
+
+      </section>
+
+    </main>
 
     <footer class="site-footer">
-      <div>کړاوونه — د پښتو ادب او شعر کور</div>
+      <p><strong>کړاوونه</strong> | د شعر او ادب کور</p>
+      <p>د پښتو ژبې او ادب د ودې په هیله</p>
     </footer>
+
   </div>
 
-  <!-- Supabase JS & Local Config -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onerror="window.__supaLibFailed = true"></script>
-  <script src="/Qarawoon/supabase-config.js" onerror="window.__supaConfigFailed = true"></script>
-
   <script>
-    (function () {
-      function $(id) {
-        return document.getElementById(id);
-      }
+    "use strict";
 
-      const poemsListEl = $("poemsList");
-      const poemsStatusEl = $("poemsStatus");
-      const searchInputEl = $("searchInput");
-      const categoryChipsEl = $("categoryChips");
+    /**
+     * @typedef {Object} PoemItem
+     * @property {string} id
+     * @property {string} title
+     * @property {string} category
+     * @property {string} body
+     */
 
-      const readerModalEl = $("readerModal");
-      const closeModalBtn = $("closeModalBtn");
-      const modalTitleEl = $("modalTitle");
-      const modalCategoryEl = $("modalCategory");
-      const modalBodyEl = $("modalBody");
-      const modalDateEl = $("modalDate");
-      const sharePoemBtn = $("sharePoemBtn");
+    /**
+     * @typedef {Object} ProfileData
+     * @property {string} name
+     * @property {string} father
+     * @property {string} bio
+     * @property {string} message
+     * @property {string} image
+     */
 
-      const feedbackFormEl = $("feedbackForm");
-      const readerNameEl = $("readerName");
-      const readerMessageEl = $("readerMessage");
-      const feedbackStatusEl = $("feedbackStatus");
+    /**
+     * @typedef {Object} SocialData
+     * @property {string} phone
+     * @property {string} facebook
+     * @property {string} youtube
+     * @property {string} tiktok
+     * @property {string} whatsapp
+     * @property {string} other
+     */
 
-      let allPoems = [];
-      let selectedCategory = "ټول";
-      let activePoem = null;
+    /**
+     * @typedef {Object} FeedbackItem
+     * @property {string} id
+     * @property {string} name
+     * @property {string} message
+     * @property {string} date
+     */
 
-      function escapeHtml(str) {
-        return String(str || "")
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;");
-      }
+    /**
+     * @typedef {Object} AppInfoData
+     * @property {string} title
+     * @property {string} description
+     * @property {string} creation
+     */
 
-      function normalizeCat(val) {
-        const cleaned = String(val || "")
-          .trim()
-          .replace(/\u200c/g, "")
-          .replace(/ي/g, "ی");
+    document.addEventListener("DOMContentLoaded", function () {
+      /** @type {string[]} */
+      const CATEGORIES = ["غزل", "نظم", "ماهیې", "ټپیزې", "ټپې", "بیتونه"];
 
-        if (cleaned === "ټپیزه" || cleaned === "ټپیزې") {
-          return "ټپیزې";
+      const STORAGE_KEYS = {
+        poems: "QarawoonPoems",
+        profile: "QarawoonProfile",
+        social: "QarawoonSocial",
+        feedback: "QarawoonFeedback",
+        appInfo: "QarawoonAppInfo",
+        theme: "QarawoonTheme",
+        pin: "QarawoonAdminPin"
+      };
+
+      const DEFAULT_PHOTO = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Crect width='150' height='150' rx='75' fill='%23222222'/%3E%3Ctext x='75' y='95' font-size='65' text-anchor='middle' fill='%23d6ad55'%3E✒%3C/text%3E%3C/svg%3E";
+
+      const DEFAULT_BIO = `واجدالله روحاني، د مامور صاحب مارزک زوی، په ۱۳۸۲ هجري لمریز کال کې زېږېدلی دی. نوموړي خپلې لومړنۍ زده‌کړې د منګلیو په ابتدایه ښوونځي او د خپل کلي په جومات کې پیل کړې. وروسته یې د انصارالمؤمنین عالي لېسې د زده‌کړو دوره په بریالیتوب بشپړه کړه.
+
+په ۱۴۰۱ هجري لمریز کال کې یې د کانکور ازموینې له لارې د لوړو نمرو په ترلاسه کولو سره د ننګرهار پوهنتون د عامه ادارې او پالیسۍ پوهنځي د عامه ادارې څانګې ته لاره وموندله. همدارنګه، په ۱۴۰۴ کال کې یې د ابوبکر مسلکي اکاډمۍ څخه د انګلیسي ژبې زده‌کړو سند ترلاسه کړ.
+
+واجدالله روحاني له کوچنیوالي راهیسې له شعر، ادب او لیکوالۍ سره ځانګړې مینه لرلې ده. نوموړي په ۱۳۹۸ کال کې په رسمي ډول د شعر لیکلو بهیر پیل کړ او له هغه وخت راهیسې یې ګڼ شمېر غزلونه، نظمونه، ماهیې او بیتونه پنځولي دي.
+
+د شعر او ادب له نړۍ سره د نوموړي ژوره مینه او د ادبي اثارو د لوستونکو ترمنځ د شریکولو لېوالتیا هغه دې ته وهڅاوه چې د «کړاوونه» په نوم دا ادبي کاریال رامنځته کړي. د دې کاریال اساسي موخه د خپلو ادبي آثارو خوندي کول، د شعر او ادب مینه‌والو ته د هغو وړاندې کول او د پښتو ژبې او ادب د ودې او پراختیا په برخه کې ونډه اخیستل دي.
+
+نوموړی هیله لري چې دا کاریال به د شعر او ادب مینه‌والو ته د مطالعې یوه ګټوره سرچینه او د ادبي ذوق د پیاوړتیا لپاره یو مناسب ځای وي، څو لوستونکي وکولای شي د شعرونو له لوستلو څخه خوند واخلي او خپله ادبي تنده پرې ماته کړي.`;
+
+      /** @type {PoemItem[]} */
+      const DEFAULT_POEMS = [
+        {
+          id: "g-1",
+          title: "د سحر نغمه",
+          category: "غزل",
+          body: "چې په توره شپه کې رڼا د سحر راشي\nد زړه په کونج کې د امید خبر راشي\nکه د درد څپې هر څومره طوفاني شي\nپه دعا به مو د مینې لار هواره شي"
+        },
+        {
+          id: "n-1",
+          title: "د قلم سفر",
+          category: "نظم",
+          body: "په سپین کاغذ باندې چې اوښکې شي قلم\nهر یو ټکی یې راوړي د ژوندون عالم\nنه ستړی کېږي دا کاروان د ادب هیڅکله\nچې د مینې او وفا وي پکې هر قدم"
+        },
+        {
+          id: "m-1",
+          title: "خاموشه شپه",
+          category: "ماهیې",
+          body: "خاموشه شپه ده\nیوازې د زړه درزا ده\nاو د شعر څراغ بل دی"
+        },
+        {
+          id: "tp-1",
+          title: "د امید ټپیزه",
+          category: "ټپیزې",
+          body: "که نن لاره اغزي لري غم مه کوه\nسبا به د ګلونو فصل راشي پرې"
+        },
+        {
+          id: "t-1",
+          title: "د وطن یاد",
+          category: "ټپې",
+          body: "په پردي وطن کې مې زړه تنګ شو\nد خپل کلي خاورې ته مې سترګې شوې ډکې"
+        },
+        {
+          id: "b-1",
+          title: "د صبر بیت",
+          category: "بیتونه",
+          body: "صبر د زړه هغه کلک سنګر دی چې نه ماتېږي\nهر سخت ماښام پسې رڼا سبا ته را رسېږي"
         }
-        if (cleaned === "ماهیه" || cleaned === "ماهیې") {
-          return "ماهیې";
-        }
-        return cleaned;
-      }
+      ];
 
-      function renderPoems() {
+      /** @type {ProfileData} */
+      const DEFAULT_PROFILE = {
+        name: "واجدالله روحاني",
+        father: "د مامور صاحب مارزک زوی",
+        bio: DEFAULT_BIO,
+        message: "",
+        image: DEFAULT_PHOTO
+      };
+
+      /** @type {SocialData} */
+      const DEFAULT_SOCIAL = {
+        phone: "+93700000000",
+        facebook: "https://facebook.com",
+        youtube: "https://youtube.com",
+        tiktok: "https://tiktok.com",
+        whatsapp: "https://whatsapp.com",
+        other: ""
+      };
+
+      /** @type {AppInfoData} */
+      const DEFAULT_APP_INFO = {
+        title: "کړاوونه؛ د شعر او ادب کور",
+        description: "کړاوونه یوه پښتو ادبي ټولګه ده چې موخه یې د شعرونو او ادبي اثارو خوندي کول، تنظیمول او د ادب مینه‌والو ته وړاندې کول دي.",
+        creation: "په دې کاریال کې غزلونه، نظمونه، ماهیې، ټپیزې، ټپې او بیتونه په جلا جلا برخو کې تنظیم شوي او د پښتو ژبې او ادب د خدمت په موخه جوړ شوي دي."
+      };
+
+      let isAdminLoggedIn = false;
+      /** @type {string[]} */
+      let pageHistory = ["main-menu"];
+      /** @type {string | null} */
+      let activeCategory = null;
+      let fontSizePx = 20;
+      /** @type {string | null} */
+      let pendingPhotoDataUrl = null;
+
+      /** @returns {PoemItem[]} */
+      function getPoems() {
         try {
-          if (!poemsListEl) return;
-          const q = searchInputEl ? (searchInputEl.value || "").trim().toLowerCase() : "";
-
-          const filtered = allPoems.filter((p) => {
-            const catMatch =
-              selectedCategory === "ټول" ||
-              normalizeCat(p.category || "غزل") === normalizeCat(selectedCategory);
-            const textMatch =
-              !q ||
-              (p.title || "").toLowerCase().includes(q) ||
-              (p.content || "").toLowerCase().includes(q) ||
-              (p.category || "").toLowerCase().includes(q);
-            return catMatch && textMatch;
-          });
-
-          if (!filtered.length) {
-            const emptyMsg = allPoems.length
-              ? "ستاسو د لټون یا ډلبندۍ سره سم کوم شعر ونه موندل شو."
-              : "تر اوسه په poems جدول کې کوم شعر نه دی ثبت شوی. کولی شئ په Supabase یا اداري برخه کې لومړی شعر اضافه کړئ.";
-            poemsListEl.innerHTML = `<div class="poem-card"><p class="poem-body">${escapeHtml(emptyMsg)}</p></div>`;
-            if (poemsStatusEl) poemsStatusEl.textContent = "۰ شعرونه";
-            return;
-          }
-
-          if (poemsStatusEl) {
-            poemsStatusEl.textContent = `${filtered.length} شعرونه`;
-          }
-
-          poemsListEl.innerHTML = filtered
-            .map((poem) => {
-              const safeId = escapeHtml(poem.id);
-              const safeTitle = escapeHtml(poem.title || "بې سرلیکه شعر");
-              const safeCategory = escapeHtml(normalizeCat(poem.category || "غزل"));
-              const safeContent = escapeHtml(poem.content || "");
-              const safeDate = escapeHtml(poem.created_at || "");
-
-              return `
-                <article class="poem-card">
-                  <div class="poem-meta">
-                    <span class="poem-tag">${safeCategory}</span>
-                    <span>${safeDate}</span>
-                  </div>
-                  <h3 class="poem-title">${safeTitle}</h3>
-                  <div class="poem-body">${safeContent}</div>
-                  <div class="poem-footer">
-                    <button class="btn-ghost open-reader-btn" data-id="${safeId}" type="button">بشپړ لوستل</button>
-                    <button class="btn-ghost copy-poem-btn" data-id="${safeId}" type="button">کاپي</button>
-                  </div>
-                </article>
-              `;
-            })
-            .join("");
-
-          poemsListEl.querySelectorAll(".open-reader-btn").forEach((btn) => {
-            btn.addEventListener("click", () => {
-              const found = allPoems.find((item) => String(item.id) === String(btn.dataset.id));
-              if (found) openReader(found);
-            });
-          });
-
-          poemsListEl.querySelectorAll(".copy-poem-btn").forEach((btn) => {
-            btn.addEventListener("click", async () => {
-              const found = allPoems.find((item) => String(item.id) === String(btn.dataset.id));
-              if (!found) return;
-              const shareText = `${found.title || ""}\n\n${found.content || ""}\n\n— کړاوونه`;
-              try {
-                await navigator.clipboard.writeText(shareText);
-                btn.textContent = "کاپي شو ✓";
-                setTimeout(() => (btn.textContent = "کاپي"), 1800);
-              } catch (_) {}
-            });
-          });
-        } catch (_) {}
+          const raw = localStorage.getItem(STORAGE_KEYS.poems);
+          if (!raw) return DEFAULT_POEMS.slice();
+          /** @type {unknown} */
+          const parsed = JSON.parse(raw);
+          return Array.isArray(parsed) ? /** @type {PoemItem[]} */ (parsed) : DEFAULT_POEMS.slice();
+        } catch {
+          return DEFAULT_POEMS.slice();
+        }
       }
 
-      function openReader(poem) {
-        if (!readerModalEl) return;
-        activePoem = poem;
-        if (modalTitleEl) modalTitleEl.textContent = poem.title || "بې سرلیکه شعر";
-        if (modalCategoryEl) modalCategoryEl.textContent = normalizeCat(poem.category || "غزل");
-        if (modalBodyEl) modalBodyEl.textContent = poem.content || "";
-        if (modalDateEl) modalDateEl.textContent = poem.created_at || "";
-        readerModalEl.classList.add("open");
+      /** @param {PoemItem[]} list */
+      function savePoems(list) {
+        localStorage.setItem(STORAGE_KEYS.poems, JSON.stringify(list));
       }
 
-      function closeReader() {
-        if (readerModalEl) readerModalEl.classList.remove("open");
-        activePoem = null;
+      /** @returns {ProfileData} */
+      function getProfile() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEYS.profile);
+          if (!raw) return Object.assign({}, DEFAULT_PROFILE);
+          /** @type {Partial<ProfileData>} */
+          const parsed = JSON.parse(raw);
+          return Object.assign({}, DEFAULT_PROFILE, parsed, {
+            image: parsed && parsed.image ? parsed.image : DEFAULT_PHOTO
+          });
+        } catch {
+          return Object.assign({}, DEFAULT_PROFILE);
+        }
       }
 
-      if (closeModalBtn) closeModalBtn.addEventListener("click", closeReader);
-      if (readerModalEl) {
-        readerModalEl.addEventListener("click", (e) => {
-          if (e.target === readerModalEl) closeReader();
+      /** @param {ProfileData} profileObj */
+      function saveProfile(profileObj) {
+        localStorage.setItem(STORAGE_KEYS.profile, JSON.stringify(profileObj));
+      }
+
+      /** @returns {SocialData} */
+      function getSocial() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEYS.social);
+          if (!raw) return Object.assign({}, DEFAULT_SOCIAL);
+          /** @type {Partial<SocialData>} */
+          const parsed = JSON.parse(raw);
+          return Object.assign({}, DEFAULT_SOCIAL, parsed);
+        } catch {
+          return Object.assign({}, DEFAULT_SOCIAL);
+        }
+      }
+
+      /** @param {SocialData} socialObj */
+      function saveSocial(socialObj) {
+        localStorage.setItem(STORAGE_KEYS.social, JSON.stringify(socialObj));
+      }
+
+      /** @returns {FeedbackItem[]} */
+      function getFeedbacks() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEYS.feedback);
+          if (!raw) return [];
+          /** @type {unknown} */
+          const parsed = JSON.parse(raw);
+          return Array.isArray(parsed) ? /** @type {FeedbackItem[]} */ (parsed) : [];
+        } catch {
+          return [];
+        }
+      }
+
+      /** @param {FeedbackItem[]} list */
+      function saveFeedbacks(list) {
+        localStorage.setItem(STORAGE_KEYS.feedback, JSON.stringify(list));
+      }
+
+      /** @returns {AppInfoData} */
+      function getAppInfo() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEYS.appInfo);
+          if (!raw) return Object.assign({}, DEFAULT_APP_INFO);
+          /** @type {Partial<AppInfoData>} */
+          const parsed = JSON.parse(raw);
+          return Object.assign({}, DEFAULT_APP_INFO, parsed);
+        } catch {
+          return Object.assign({}, DEFAULT_APP_INFO);
+        }
+      }
+
+      /** @param {AppInfoData} infoObj */
+      function saveAppInfo(infoObj) {
+        localStorage.setItem(STORAGE_KEYS.appInfo, JSON.stringify(infoObj));
+      }
+
+      /** @returns {string} */
+      function getAdminPin() {
+        return localStorage.getItem(STORAGE_KEYS.pin) || "2026";
+      }
+
+      /** @param {string} newPin */
+      function setAdminPin(newPin) {
+        localStorage.setItem(STORAGE_KEYS.pin, newPin);
+      }
+
+      /** @param {number | string} num @returns {string} */
+      function toPashtoDigits(num) {
+        const map = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
+        return String(num).replace(/\d/g, function (d) {
+          return map[Number(d)];
         });
       }
 
-      if (sharePoemBtn) {
-        sharePoemBtn.addEventListener("click", async () => {
-          if (!activePoem) return;
-          const text = `${activePoem.title || ""}\n\n${activePoem.content || ""}\n\n${window.location.href}`;
-          if (navigator.share) {
-            try {
-              await navigator.share({
-                title: activePoem.title || "کړاوونه",
-                text,
-                url: window.location.href
+      function applySavedTheme() {
+        const saved = localStorage.getItem(STORAGE_KEYS.theme);
+        if (saved === "light") {
+          document.body.classList.add("light-theme");
+        } else {
+          document.body.classList.remove("light-theme");
+        }
+      }
+
+      function toggleTheme() {
+        document.body.classList.toggle("light-theme");
+        const mode = document.body.classList.contains("light-theme") ? "light" : "dark";
+        localStorage.setItem(STORAGE_KEYS.theme, mode);
+      }
+
+      function syncAdminHeaderUI() {
+        const openBtn = document.getElementById("admin-open-btn");
+        const logoutBtn = document.getElementById("admin-logout-btn");
+        if (!openBtn || !logoutBtn) return;
+        if (isAdminLoggedIn) {
+          openBtn.textContent = "مدیریت";
+          logoutBtn.classList.remove("hidden");
+        } else {
+          openBtn.textContent = "مدیر";
+          logoutBtn.classList.add("hidden");
+        }
+      }
+
+      /** @param {string} pageName @param {boolean} [pushToHistory] */
+      function showPage(pageName, pushToHistory) {
+        if (pageName === "admin" && !isAdminLoggedIn) {
+          handleAdminButton();
+          return;
+        }
+
+        document.querySelectorAll("[data-page]").forEach(function (sec) {
+          sec.classList.toggle("active-page", sec.getAttribute("data-page") === pageName);
+        });
+
+        if (pushToHistory !== false) {
+          if (pageHistory[pageHistory.length - 1] !== pageName) {
+            pageHistory.push(pageName);
+          }
+          try {
+            history.pushState({ page: pageName }, "", "");
+          } catch {}
+        }
+
+        if (pageName === "poetry") {
+          renderCategoryCounts();
+        } else if (pageName === "about") {
+          renderPublicProfile();
+        } else if (pageName === "social") {
+          renderPublicSocial();
+        } else if (pageName === "statistics") {
+          renderStatistics();
+        } else if (pageName === "app-info") {
+          renderAppInfo();
+        } else if (pageName === "admin" && isAdminLoggedIn) {
+          renderAdminPanel();
+        }
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function goBack() {
+        const poemReader = document.getElementById("poem-reader");
+        const categoryView = document.getElementById("category-view");
+        const currentPage = pageHistory[pageHistory.length - 1] || "main-menu";
+
+        if (currentPage === "poetry" && poemReader && !poemReader.classList.contains("hidden")) {
+          poemReader.classList.add("hidden");
+          if (categoryView) categoryView.classList.remove("hidden");
+          return;
+        }
+
+        if (pageHistory.length > 1) {
+          pageHistory.pop();
+          const prevPage = pageHistory[pageHistory.length - 1];
+          showPage(prevPage, false);
+        } else {
+          showPage("main-menu", false);
+        }
+      }
+
+      function handleAdminButton() {
+        if (isAdminLoggedIn) {
+          showPage("admin");
+          return;
+        }
+        const pin = prompt("د مدیر پټ کوډ (PIN) ولیکئ:");
+        if (pin === null) return;
+        if (pin.trim() === getAdminPin()) {
+          isAdminLoggedIn = true;
+          syncAdminHeaderUI();
+          showPage("admin");
+        } else {
+          alert("پټ کوډ سم نه دی.");
+        }
+      }
+
+      function handleAdminLogout() {
+        isAdminLoggedIn = false;
+        syncAdminHeaderUI();
+        if (pageHistory[pageHistory.length - 1] === "admin") {
+          pageHistory.pop();
+          showPage(pageHistory[pageHistory.length - 1] || "main-menu", false);
+        }
+      }
+
+      function renderCategoryCounts() {
+        const poems = getPoems();
+        CATEGORIES.forEach(function (cat) {
+          const countEl = document.getElementById("count-" + cat);
+          if (countEl) {
+            const c = poems.filter(function (p) { return p.category === cat; }).length;
+            countEl.textContent = toPashtoDigits(c) + " شعرونه";
+          }
+        });
+      }
+
+      /** @param {string} categoryName */
+      function openCategory(categoryName) {
+        activeCategory = categoryName;
+        const poems = getPoems().filter(function (p) { return p.category === categoryName; });
+        const categoryView = document.getElementById("category-view");
+        const poemReader = document.getElementById("poem-reader");
+        const listEl = document.getElementById("poem-list");
+        const headingEl = document.getElementById("active-category-heading");
+
+        document.querySelectorAll(".category-card").forEach(function (card) {
+          card.classList.toggle("selected-cat", card.getAttribute("data-category") === categoryName);
+        });
+
+        if (poemReader) poemReader.classList.add("hidden");
+        if (headingEl) headingEl.textContent = "د «" + categoryName + "» شعرونه";
+        if (categoryView) categoryView.classList.remove("hidden");
+        if (!listEl) return;
+
+        listEl.innerHTML = "";
+        if (!poems.length) {
+          const empty = document.createElement("div");
+          empty.className = "poem-item";
+          empty.innerHTML = "<h3>په دې کټګورۍ کې اوس مهال شعر نشته</h3><p>د مدیر له برخې څخه نوی شعر اضافه کولی شئ.</p>";
+          listEl.appendChild(empty);
+          return;
+        }
+
+        poems.forEach(function (poem) {
+          const row = document.createElement("div");
+          row.className = "poem-item";
+          const titleH3 = document.createElement("h3");
+          titleH3.textContent = poem.title;
+          const previewP = document.createElement("p");
+          const firstLine = (poem.body || "").split("\n")[0] || "";
+          previewP.textContent = firstLine;
+          row.appendChild(titleH3);
+          row.appendChild(previewP);
+          row.addEventListener("click", function () {
+            openPoem(poem);
+          });
+          listEl.appendChild(row);
+        });
+      }
+
+      /** @param {PoemItem} poem */
+      function openPoem(poem) {
+        const categoryView = document.getElementById("category-view");
+        const poemReader = document.getElementById("poem-reader");
+        const titleEl = document.getElementById("poem-title");
+        const contentEl = document.getElementById("poem-content");
+        const catLabel = document.getElementById("reader-category-label");
+
+        if (categoryView) categoryView.classList.add("hidden");
+        if (catLabel) catLabel.textContent = "کټګوري: " + poem.category;
+        if (titleEl) titleEl.textContent = poem.title;
+        if (contentEl) {
+          contentEl.textContent = poem.body;
+          contentEl.style.fontSize = fontSizePx + "px";
+        }
+        if (poemReader) {
+          poemReader.classList.remove("hidden");
+          poemReader.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }
+
+      /** @param {number} newSize */
+      function setPoemFontSize(newSize) {
+        fontSizePx = Math.min(34, Math.max(15, newSize));
+        const contentEl = document.getElementById("poem-content");
+        if (contentEl) {
+          contentEl.style.fontSize = fontSizePx + "px";
+        }
+      }
+
+      function renderPublicProfile() {
+        const profile = getProfile();
+        const nameEl = document.getElementById("public-profile-name");
+        const fatherEl = document.getElementById("public-profile-father");
+        const bioEl = document.getElementById("public-profile-bio");
+        const msgEl = document.getElementById("public-profile-message");
+        const photoEl = /** @type {HTMLImageElement | null} */ (document.getElementById("public-profile-photo"));
+
+        if (nameEl) nameEl.textContent = profile.name || DEFAULT_PROFILE.name;
+        if (fatherEl) fatherEl.textContent = profile.father || "";
+        if (bioEl) bioEl.textContent = profile.bio || DEFAULT_BIO;
+        if (msgEl) msgEl.textContent = profile.message || "";
+        if (photoEl) photoEl.src = profile.image || DEFAULT_PHOTO;
+      }
+
+      function renderPublicSocial() {
+        const social = getSocial();
+        const phoneText = document.getElementById("public-phone-number");
+        const phoneCall = /** @type {HTMLAnchorElement | null} */ (document.getElementById("public-phone-call"));
+        const container = document.getElementById("public-social-links");
+
+        const cleanPhone = (social.phone || "").trim();
+        if (phoneText) {
+          phoneText.textContent = cleanPhone || "نه ده ثبت شوې";
+        }
+        if (phoneCall) {
+          const digits = cleanPhone.replace(/[^+\d]/g, "");
+          phoneCall.href = digits ? "tel:" + digits : "#";
+        }
+
+        if (!container) return;
+        /** @type {{ key: keyof SocialData, label: string, icon: string }[]} */
+        const items = [
+          { key: "facebook", label: "Facebook", icon: "📘" },
+          { key: "youtube", label: "YouTube", icon: "▶️" },
+          { key: "tiktok", label: "TikTok", icon: "🎵" },
+          { key: "whatsapp", label: "WhatsApp", icon: "💬" },
+          { key: "other", label: "نورې اړیکې", icon: "🌐" }
+        ];
+
+        container.innerHTML = "";
+        let renderedCount = 0;
+
+        items.forEach(function (item) {
+          const url = (social[item.key] || "").trim();
+          if (!url || url === "#") return;
+          const a = document.createElement("a");
+          a.className = "social-link";
+          a.textContent = item.icon + "  " + item.label;
+          a.href = url;
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+          container.appendChild(a);
+          renderedCount++;
+        });
+
+        if (!renderedCount) {
+          const p = document.createElement("p");
+          p.className = "section-subtitle";
+          p.textContent = "تر اوسه ټولنیزې اړیکې نه دي ثبت شوې.";
+          container.appendChild(p);
+        }
+      }
+
+      function renderStatistics() {
+        const poems = getPoems();
+        const totalEl = document.getElementById("total-poems");
+        const statsEl = document.getElementById("category-statistics");
+
+        if (totalEl) {
+          totalEl.textContent = toPashtoDigits(poems.length);
+        }
+        if (statsEl) {
+          statsEl.innerHTML = "";
+          CATEGORIES.forEach(function (cat) {
+            const count = poems.filter(function (p) { return p.category === cat; }).length;
+            const line = document.createElement("div");
+            line.textContent = cat + ": " + toPashtoDigits(count) + " شعرونه";
+            statsEl.appendChild(line);
+          });
+          const fbLine = document.createElement("div");
+          fbLine.textContent = "ثبت شوي نظرونه: " + toPashtoDigits(getFeedbacks().length);
+          statsEl.appendChild(fbLine);
+        }
+      }
+
+      function renderAppInfo() {
+        const info = getAppInfo();
+        const titleEl = document.getElementById("app-info-title");
+        const descEl = document.getElementById("app-info-desc");
+        const creationEl = document.getElementById("app-info-creation");
+
+        if (titleEl) titleEl.textContent = info.title || DEFAULT_APP_INFO.title;
+        if (descEl) descEl.textContent = info.description || DEFAULT_APP_INFO.description;
+        if (creationEl) creationEl.textContent = info.creation || DEFAULT_APP_INFO.creation;
+      }
+
+      function resetAdminPoemForm() {
+        const idInput = /** @type {HTMLInputElement | null} */ (document.getElementById("admin-poem-id"));
+        const titleInput = /** @type {HTMLInputElement | null} */ (document.getElementById("admin-poem-title"));
+        const catSelect = /** @type {HTMLSelectElement | null} */ (document.getElementById("admin-poem-category"));
+        const bodyInput = /** @type {HTMLTextAreaElement | null} */ (document.getElementById("admin-poem-body"));
+        const heading = document.getElementById("admin-poem-form-title");
+
+        if (heading) heading.textContent = "نوی شعر اضافه کول";
+        if (idInput) idInput.value = "";
+        if (titleInput) titleInput.value = "";
+        if (catSelect) catSelect.value = "غزل";
+        if (bodyInput) bodyInput.value = "";
+      }
+
+      function renderAdminPanel() {
+        const profile = getProfile();
+        const social = getSocial();
+        const appInfo = getAppInfo();
+        const poems = getPoems();
+        const feedbacks = getFeedbacks();
+
+        const pName = /** @type {HTMLInputElement | null} */ (document.getElementById("admin-profile-name"));
+        const pFather = /** @type {HTMLInputElement | null} */ (document.getElementById("admin-profile-father"));
+        const pBio = /** @type {HTMLTextAreaElement | null} */ (document.getElementById("admin-profile-bio"));
+        const pMsg = /** @type {HTMLInputElement | null} */ (document.getElementById("admin-profile-message"));
+        const pPreview = /** @type {HTMLImageElement | null} */ (document.getElementById("admin-photo-preview"));
+
+        if (pName) pName.value = profile.name || "";
+        if (pFather) pFather.value = profile.father || "";
+        if (pBio) pBio.value = profile.bio || "";
+        if (pMsg) pMsg.value = profile.message || "";
+        if (pPreview) pPreview.src = pendingPhotoDataUrl || profile.image || DEFAULT_PHOTO;
+
+        const sPhone = /** @type {HTMLInputElement | null} */ (document.getElementById("admin-phone"));
+        const sFb = /** @type {HTMLInputElement | null} */ (document.getElementById("admin-facebook"));
+        const sYt = /** @type {HTMLInputElement | null} */ (document.getElementById("admin-youtube"));
+        const sTt = /** @type {HTMLInputElement | null} */ (document.getElementById("admin-tiktok"));
+        const sWa = /** @type {HTMLInputElement | null} */ (document.getElementById("admin-whatsapp"));
+        const sOt = /** @type {HTMLInputElement | null} */ (document.getElementById("admin-other-link"));
+
+        if (sPhone) sPhone.value = social.phone || "";
+        if (sFb) sFb.value = social.facebook || "";
+        if (sYt) sYt.value = social.youtube || "";
+        if (sTt) sTt.value = social.tiktok || "";
+        if (sWa) sWa.value = social.whatsapp || "";
+        if (sOt) sOt.value = social.other || "";
+
+        const aTitle = /** @type {HTMLInputElement | null} */ (document.getElementById("admin-app-title"));
+        const aDesc = /** @type {HTMLTextAreaElement | null} */ (document.getElementById("admin-app-desc"));
+        const aCreation = /** @type {HTMLTextAreaElement | null} */ (document.getElementById("admin-app-creation"));
+
+        if (aTitle) aTitle.value = appInfo.title || "";
+        if (aDesc) aDesc.value = appInfo.description || "";
+        if (aCreation) aCreation.value = appInfo.creation || "";
+
+        const poemListEl = document.getElementById("admin-poems-list");
+        if (poemListEl) {
+          poemListEl.innerHTML = "";
+          if (!poems.length) {
+            poemListEl.innerHTML = "<p class='status-note'>هیڅ شعر نشته.</p>";
+          } else {
+            poems.forEach(function (poem) {
+              const row = document.createElement("div");
+              row.className = "manage-row";
+
+              const meta = document.createElement("div");
+              meta.className = "manage-row-meta";
+              const strong = document.createElement("strong");
+              strong.textContent = poem.title;
+              const small = document.createElement("small");
+              small.textContent = "کټګوري: " + poem.category;
+              meta.appendChild(strong);
+              meta.appendChild(small);
+
+              const actions = document.createElement("div");
+              actions.className = "manage-row-actions";
+
+              const editBtn = document.createElement("button");
+              editBtn.type = "button";
+              editBtn.className = "outline-button";
+              editBtn.textContent = "سمول";
+              editBtn.addEventListener("click", function () {
+                const formHeading = document.getElementById("admin-poem-form-title");
+                const idInp = /** @type {HTMLInputElement | null} */ (document.getElementById("admin-poem-id"));
+                const titleInp = /** @type {HTMLInputElement | null} */ (document.getElementById("admin-poem-title"));
+                const catInp = /** @type {HTMLSelectElement | null} */ (document.getElementById("admin-poem-category"));
+                const bodyInp = /** @type {HTMLTextAreaElement | null} */ (document.getElementById("admin-poem-body"));
+
+                if (formHeading) formHeading.textContent = "د شعر سمول";
+                if (idInp) idInp.value = poem.id;
+                if (titleInp) titleInp.value = poem.title;
+                if (catInp) catInp.value = poem.category;
+                if (bodyInp) bodyInp.value = poem.body;
               });
-              return;
-            } catch (_) {}
+
+              const delBtn = document.createElement("button");
+              delBtn.type = "button";
+              delBtn.className = "danger-button";
+              delBtn.textContent = "حذف";
+              delBtn.addEventListener("click", function () {
+                if (!confirm("ایا دا شعر حذف کړئ؟")) return;
+                const updated = getPoems().filter(function (item) { return item.id !== poem.id; });
+                savePoems(updated);
+                renderAdminPanel();
+                renderCategoryCounts();
+              });
+
+              actions.appendChild(editBtn);
+              actions.appendChild(delBtn);
+              row.appendChild(meta);
+              row.appendChild(actions);
+              poemListEl.appendChild(row);
+            });
           }
-          try {
-            await navigator.clipboard.writeText(text);
-            sharePoemBtn.textContent = "لینک او شعر کاپي شو ✓";
-            setTimeout(() => (sharePoemBtn.textContent = "شریک یې کړئ"), 2000);
-          } catch (_) {}
-        });
-      }
+        }
 
-      if (searchInputEl) {
-        searchInputEl.addEventListener("input", renderPoems);
-      }
+        const fbListEl = document.getElementById("admin-feedback-list");
+        if (fbListEl) {
+          fbListEl.innerHTML = "";
+          if (!feedbacks.length) {
+            fbListEl.innerHTML = "<p class='status-note'>تر اوسه پیغامونه نشته.</p>";
+          } else {
+            feedbacks.forEach(function (fb) {
+              const row = document.createElement("div");
+              row.className = "manage-row";
 
-      if (categoryChipsEl) {
-        categoryChipsEl.querySelectorAll(".chip").forEach((chip) => {
-          chip.addEventListener("click", () => {
-            categoryChipsEl.querySelectorAll(".chip").forEach((c) => c.classList.remove("active"));
-            chip.classList.add("active");
-            selectedCategory = chip.dataset.category || "ټول";
-            renderPoems();
-          });
-        });
-      }
+              const meta = document.createElement("div");
+              meta.className = "manage-row-meta";
+              const strong = document.createElement("strong");
+              strong.textContent = (fb.name || "لوستونکی") + (fb.date ? " • " + fb.date : "");
+              const p = document.createElement("p");
+              p.textContent = fb.message || "";
+              meta.appendChild(strong);
+              meta.appendChild(p);
 
-      function getSupabaseClient() {
-        try {
-          if (window.supabaseClient) return window.supabaseClient;
-          if (window.sb) return window.sb;
-          const url =
-            window.SUPABASE_URL ||
-            (window.supabaseConfig && (window.supabaseConfig.url || window.supabaseConfig.SUPABASE_URL));
-          const key =
-            window.SUPABASE_ANON_KEY ||
-            (window.supabaseConfig &&
-              (window.supabaseConfig.anonKey ||
-                window.supabaseConfig.key ||
-                window.supabaseConfig.SUPABASE_ANON_KEY));
-          if (window.supabase && typeof window.supabase.createClient === "function" && url && key) {
-            window.supabaseClient = window.supabase.createClient(url, key);
-            return window.supabaseClient;
+              const delBtn = document.createElement("button");
+              delBtn.type = "button";
+              delBtn.className = "danger-button";
+              delBtn.textContent = "حذف";
+              delBtn.addEventListener("click", function () {
+                const updated = getFeedbacks().filter(function (item) { return item.id !== fb.id; });
+                saveFeedbacks(updated);
+                renderAdminPanel();
+              });
+
+              row.appendChild(meta);
+              row.appendChild(delBtn);
+              fbListEl.appendChild(row);
+            });
           }
-        } catch (_) {}
-        return null;
-      }
-
-      async function loadPoemsFromSupabase() {
-        try {
-          const client = getSupabaseClient();
-          if (!client) {
-            if (poemsStatusEl) poemsStatusEl.textContent = "له Supabase سره اړیکه نشته";
-            renderPoems();
-            return;
-          }
-
-          const { data, error } = await client
-            .from("poems")
-            .select("*")
-            .order("created_at", { ascending: false })
-            .limit(200);
-
-          if (!error && Array.isArray(data)) {
-            allPoems = data.map((row, index) => ({
-              id: row.id || `poem-${index}`,
-              title: row.title || "بې سرلیکه شعر",
-              category: row.category || "غزل",
-              content: row.content || "",
-              created_at: row.created_at
-                ? new Date(row.created_at).toLocaleDateString("ps-AF")
-                : ""
-            }));
-            renderPoems();
-            return;
-          }
-
-          renderPoems();
-        } catch (_) {
-          renderPoems();
         }
       }
 
-      if (feedbackFormEl) {
-        feedbackFormEl.addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const nameVal = readerNameEl
-            ? (readerNameEl.value || "").trim() || "ناڅرګند لوستونکی"
-            : "ناڅرګند لوستونکی";
-          const msgVal = readerMessageEl ? (readerMessageEl.value || "").trim() : "";
-          if (!msgVal) return;
+      document.getElementById("start-app")?.addEventListener("click", function () {
+        document.getElementById("welcome-screen")?.classList.add("hidden");
+        document.getElementById("app-content")?.classList.remove("hidden");
+        showPage("main-menu");
+      });
 
-          if (feedbackStatusEl) {
-            feedbackStatusEl.style.color = "#1b4d40";
-            feedbackStatusEl.textContent = "نظر لېږل کېږي...";
+      document.getElementById("brand-home")?.addEventListener("click", function () {
+        showPage("main-menu");
+      });
+
+      document.getElementById("theme-toggle")?.addEventListener("click", toggleTheme);
+      document.getElementById("admin-open-btn")?.addEventListener("click", handleAdminButton);
+      document.getElementById("admin-logout-btn")?.addEventListener("click", handleAdminLogout);
+
+      document.querySelectorAll("[data-open-page]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          const target = btn.getAttribute("data-open-page");
+          if (target) showPage(target);
+        });
+      });
+
+      document.querySelectorAll("[data-back]").forEach(function (btn) {
+        btn.addEventListener("click", goBack);
+      });
+
+      window.addEventListener("popstate", function () {
+        goBack();
+      });
+
+      document.querySelectorAll(".category-card").forEach(function (card) {
+        card.addEventListener("click", function () {
+          const cat = card.getAttribute("data-category");
+          if (cat) openCategory(cat);
+        });
+      });
+
+      document.getElementById("close-category-btn")?.addEventListener("click", function () {
+        document.getElementById("category-view")?.classList.add("hidden");
+        document.querySelectorAll(".category-card").forEach(function (c) { c.classList.remove("selected-cat"); });
+      });
+
+      document.getElementById("back-to-list-btn")?.addEventListener("click", function () {
+        document.getElementById("poem-reader")?.classList.add("hidden");
+        if (activeCategory) {
+          document.getElementById("category-view")?.classList.remove("hidden");
+        }
+      });
+
+      document.getElementById("font-plus")?.addEventListener("click", function () {
+        setPoemFontSize(fontSizePx + 2);
+      });
+
+      document.getElementById("font-minus")?.addEventListener("click", function () {
+        setPoemFontSize(fontSizePx - 2);
+      });
+
+      document.getElementById("font-reset")?.addEventListener("click", function () {
+        setPoemFontSize(20);
+      });
+
+      document.getElementById("feedback-form")?.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const nameInput = /** @type {HTMLInputElement | null} */ (document.getElementById("feedback-name"));
+        const msgInput = /** @type {HTMLTextAreaElement | null} */ (document.getElementById("feedback-message"));
+        const statusEl = document.getElementById("feedback-status");
+        if (!msgInput) return;
+
+        const message = msgInput.value.trim();
+        if (!message) return;
+
+        const list = getFeedbacks();
+        list.unshift({
+          id: "fb-" + Date.now(),
+          name: (nameInput?.value || "").trim() || "لوستونکی",
+          message: message,
+          date: new Date().toLocaleDateString("ps-AF")
+        });
+        saveFeedbacks(list);
+        if (nameInput) nameInput.value = "";
+        msgInput.value = "";
+        if (statusEl) statusEl.textContent = "ستاسو پیغام په بریالیتوب ثبت شو.";
+      });
+
+      document.getElementById("admin-poem-form")?.addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (!isAdminLoggedIn) return;
+
+        const idVal = (/** @type {HTMLInputElement | null} */ (document.getElementById("admin-poem-id"))?.value || "").trim();
+        const titleVal = (/** @type {HTMLInputElement | null} */ (document.getElementById("admin-poem-title"))?.value || "").trim();
+        const catVal = (/** @type {HTMLSelectElement | null} */ (document.getElementById("admin-poem-category"))?.value || "غزل").trim();
+        const bodyVal = (/** @type {HTMLTextAreaElement | null} */ (document.getElementById("admin-poem-body"))?.value || "").trim();
+        const statusEl = document.getElementById("admin-poem-status");
+
+        if (!titleVal || !bodyVal) return;
+
+        const poems = getPoems();
+        if (idVal) {
+          const idx = poems.findIndex(function (p) { return p.id === idVal; });
+          if (idx !== -1) {
+            poems[idx] = { id: idVal, title: titleVal, category: catVal, body: bodyVal };
           }
+          if (statusEl) statusEl.textContent = "شعر تازه شو.";
+        } else {
+          poems.unshift({
+            id: "poem-" + Date.now(),
+            title: titleVal,
+            category: catVal,
+            body: bodyVal
+          });
+          if (statusEl) statusEl.textContent = "نوی شعر اضافه شو.";
+        }
 
-          try {
-            const client = getSupabaseClient();
-            if (client) {
-              const { error } = await client
-                .from("feedback")
-                .insert([{ name: nameVal, message: msgVal }]);
-              if (!error) {
-                if (feedbackStatusEl) {
-                  feedbackStatusEl.textContent = "ستاسو نظر په بریالیتوب ثبت شو. مننه!";
-                }
-                feedbackFormEl.reset();
-                return;
-              }
-            }
-          } catch (_) {}
+        savePoems(poems);
+        resetAdminPoemForm();
+        renderAdminPanel();
+        renderCategoryCounts();
+      });
 
-          try {
-            const saved = JSON.parse(localStorage.getItem("qarawoon_feedback") || "[]");
-            saved.push({ name: nameVal, message: msgVal, date: new Date().toISOString() });
-            localStorage.setItem("qarawoon_feedback", JSON.stringify(saved));
-            if (feedbackStatusEl) {
-              feedbackStatusEl.textContent = "ستاسو نظر خوندي شو. مننه!";
-            }
-            feedbackFormEl.reset();
-          } catch (_) {
-            if (feedbackStatusEl) {
-              feedbackStatusEl.style.color = "#9e2a2b";
-              feedbackStatusEl 
+      document.getElementById("admin-poem-cancel")?.addEventListener("click", resetAdminPoemForm);
+
+      document.getElementById("admin-profile-photo-file")?.addEventListener("change", function (e) {
+        const input = /** @type {HTMLInputElement | null} */ (e.target);
+        const file = input?.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function () {
+          if (typeof reader.result === "string") {
+            pendingPhotoDataUrl = reader.result;
+            const preview = /** @type {HTMLImageElement | null} */ (document.getElementById("admin-photo-preview"));
+            if (preview) preview.src = pendingPhotoDataUrl;
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+
+      document.getElementById("admin-photo-clear")?.addEventListener("click", function () {
+        pendingPhotoDataUrl = DEFAULT_PHOTO;
+        const preview = /** @type {HTMLImageElement | null} */ (document.getElementById("admin-photo-preview"));
+        const fileInp = /** @type {HTMLInputElement | null} */ (document.getElementById("admin-profile-photo-file"));
+        if (preview) preview.src = DEFAULT_PHOTO;
+        if (fileInp) fileInp.value = "";
+      });
+
+      document.getElementById("admin-profile-form")?.addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (!isAdminLoggedIn) return;
+
+        const current = getProfile();
+        /** @type {ProfileData} */
+        const updated = {
+          name: (/** @type {HTMLInputElement | null} */ (document.getElementById("admin-profile-name"))?.value || "").trim() || DEFAULT_PROFILE.name,
+          father: (/** @type {HTMLInputElement | null} */ (document.getElementById("admin-profile-father"))?.value || "").trim(),
+          bio: (/** @type {HTMLTextAreaElement | null} */ (document.getElementById("admin-profile-bio"))?.value || "").trim() || DEFAULT_BIO,
+          message: (/** @type {HTMLInputElement | null} */ (document.getElementById("admin-profile-message"))?.value || "").trim(),
+          image: pendingPhotoDataUrl || current.image || DEFAULT_PHOTO
+        };
+
+        saveProfile(updated);
+        pendingPhotoDataUrl = null;
+        renderPublicProfile();
+        const statusEl = document.getElementById("admin-profile-status");
+        if (statusEl) statusEl.textContent = "پېژندنه او عکس خوندي شول.";
+      });
+
+      document.getElementById("admin-social-form")?.addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (!isAdminLoggedIn) return;
+
+        /** @type {SocialData} */
+        const updatedSocial = {
+          phone: (/** @type {HTMLInputElement | null} */ (document.getElementById("admin-phone"))?.value || "").trim(),
+          facebook: (/** @type {HTMLInputElement | null} */ (document.getElementById("admin-facebook"))?.value || "").trim(),
+          youtube: (/** @type {HTMLInputElement | null} */ (document.getElementById("admin-youtube"))?.value || "").trim(),
+          tiktok: (/** @type {HTMLInputElement | null} */ (document.getElementById("admin-tiktok"))?.value || "").trim(),
+          whatsapp: (/** @type {HTMLInputElement | null} */ (document.getElementById("admin-whatsapp"))?.value || "").trim(),
+          other: (/** @type {HTMLInputElement | null} */ (document.getElementById("admin-other-link"))?.value || "").trim()
+        };
+
+        saveSocial(updatedSocial);
+        renderPublicSocial();
+        const statusEl = document.getElementById("admin-social-status");
+        if (statusEl) statusEl.textContent = "ټولنیزې اړیکې او د موبایل شمېره خوندي شول.";
+      });
+
+      document.getElementById("admin-appinfo-form")?.addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (!isAdminLoggedIn) return;
+
+        /** @type {AppInfoData} */
+        const updatedInfo = {
+          title: (/** @type {HTMLInputElement | null} */ (document.getElementById("admin-app-title"))?.value || "").trim() || DEFAULT_APP_INFO.title,
+          description: (/** @type {HTMLTextAreaElement | null} */ (document.getElementById("admin-app-desc"))?.value || "").trim() || DEFAULT_APP_INFO.description,
+          creation: (/** @type {HTMLTextAreaElement | null} */ (document.getElementById("admin-app-creation"))?.value || "").trim() || DEFAULT_APP_INFO.creation
+        };
+
+        saveAppInfo(updatedInfo);
+        renderAppInfo();
+        const statusEl = document.getElementById("admin-appinfo-status");
+        if (statusEl) statusEl.textContent = "د کاریال معلومات خوندي شول.";
+      });
+
+      document.getElementById("admin-pin-form")?.addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (!isAdminLoggedIn) return;
+
+        const pinInput = /** @type {HTMLInputElement | null} */ (document.getElementById("admin-new-pin"));
+        const newPin = (pinInput?.value || "").trim();
+        if (newPin.length < 4) return;
+
+        setAdminPin(newPin);
+        if (pinInput) pinInput.value = "";
+        const statusEl = document.getElementById("admin-pin-status");
+        if (statusEl) statusEl.textContent = "د مدیر نوی پټ کوډ خوندي شو.";
+      });
+
+      applySavedTheme();
+      syncAdminHeaderUI();
+      renderCategoryCounts();
+      renderPublicProfile();
+      renderPublicSocial();
+      renderStatistics();
+      renderAppInfo();
+    });
+  </script>
+
+</body>
+</html> 
