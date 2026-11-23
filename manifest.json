@@ -1,15 +1,15 @@
 {
-  "name": "کړاوونه",
+  "name": "کړاوونه — د پښتو شعرونو ټولګه",
   "short_name": "کړاوونه",
-  "description": "د پښتو شعرونو، غزلونو او ادبي شېبو ټولګه — وړیا لوستل او نصبول",
-  "lang": "ps",
-  "dir": "rtl",
+  "description": "د پښتو شعرونو، غزلونو، نظمونو، ماهیې او ټپیزو ټولګه",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait-primary",
-  "background_color": "#0f2922",
+  "orientation": "portrait",
+  "background_color": "#fcf8ee",
   "theme_color": "#1b4d40",
+  "lang": "ps",
+  "dir": "rtl",
   "icons": [
     {
       "src": "./icons/icon-192.svg",
@@ -21,7 +21,7 @@
       "src": "./icons/icon-512.svg",
       "sizes": "512x512",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ]
 } 
