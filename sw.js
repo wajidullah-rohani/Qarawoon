@@ -1,62 +1,113 @@
-const CACHE_NAME = "qarawoon-pwa-v13";
-const STATIC_ASSETS = [
+"use strict";
+
+const CACHE_VERSION = "qarawoon-v1.0.2";
+const CORE_ASSETS = [
   "./",
   "./index.html",
-  "./admin.html",
-  "./supabase-config.js",
-  "./css/style.css",
-  "./js/app.js",
   "./manifest.json",
-  "./icons/icon-192.svg",
-  "./icons/icon-512.svg"
+  "./icon-192.png",
+  "./icon-512.png"
 ];
 
-self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches
-      .open(CACHE_NAME)
-      .then((cache) => cache.addAll(STATIC_ASSETS))
-      .catch(() => Promise.resolve())
-  );
+self.addEventListener("install", function (event) {
   self.skipWaiting();
-});
-
-self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys
-          .filter((key) => key !== CACHE_NAME)
-          .map((key) => caches.delete(key))
-      )
-    )
+    caches.open(CACHE_VERSION).then(async function (cache) {
+      for (let i = 0; i < CORE_ASSETS.length; i++) {
+        const assetUrl = CORE_ASSETS[i];
+        try {
+          const response = await fetch(assetUrl, { cache: "no-store" });
+          if (response && response.ok) {
+            await cache.put(assetUrl, response);
+          }
+        } catch {
+          // If an optional file is absent, continue caching available files
+        }
+      }
+    })
   );
-  self.clients.claim();
 });
 
-self.addEventListener("fetch", (event) => {
-  const { request } = event;
-  if (request.method !== "GET") return;
+self.addEventListener("activate", function (event) {
+  event.waitUntil(
+    caches.keys().then(function (keys) {
+      return Promise.all(
+        keys
+          .filter(function (key) {
+            return key !== CACHE_VERSION;
+          })
+          .map(function (key) {
+            return caches.delete(key);
+          })
+      );
+    }).then(function () {
+      return self.clients.claim();
+    })
+  );
+});
 
-  const url = new URL(request.url);
+self.addEventListener("fetch", function (event) {
+  if (event.request.method !== "GET") {
+    return;
+  }
 
-  if (url.origin !== self.location.origin || url.hostname.includes("supabase")) {
+  const requestUrl = new URL(event.request.url);
+  if (requestUrl.origin !== self.location.origin) {
+    return;
+  }
+
+  const isNavigation =
+    event.request.mode === "navigate" ||
+    requestUrl.pathname.endsWith(".html") ||
+    requestUrl.pathname.endsWith("/");
+
+  if (isNavigation) {
+    event.respondWith(
+      fetch(event.request)
+        .then(async function (networkResponse) {
+          if (networkResponse && networkResponse.status === 200) {
+            const cache = await caches.open(CACHE_VERSION);
+            await cache.put(event.request, networkResponse.clone());
+          }
+          return networkResponse;
+        })
+        .catch(async function () {
+          const cache = await caches.open(CACHE_VERSION);
+          return (
+            (await cache.match(event.request)) ||
+            (await cache.match("./index.html")) ||
+            (await cache.match("./")) ||
+            new Response("آفلاین حالت: مهرباني وکړئ لومړی یو ځل له انټرنیټ سره وصل شئ.", {
+              status: 503,
+              statusText: "Service Unavailable",
+              headers: { "Content-Type": "text/plain; charset=utf-8" }
+            })
+          );
+        })
+    );
     return;
   }
 
   event.respondWith(
-    fetch(request)
-      .then((response) => {
-        if (response && response.status === 200) {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
-        }
-        return response;
-      })
-      .catch(() =>
-        caches
-          .match(request)
-          .then((cached) => cached || caches.match("./index.html"))
-      )
+    caches.open(CACHE_VERSION).then(async function (cache) {
+      const cachedResponse = await cache.match(event.request);
+      const networkFetch = fetch(event.request)
+        .then(async function (networkResponse) {
+          if (networkResponse && networkResponse.status === 200) {
+            await cache.put(event.request, networkResponse.clone());
+          }
+          return networkResponse;
+        })
+        .catch(function () {
+          return null;
+        });
+
+      if (cachedResponse) {
+        return cachedResponse;
+      }
+
+      const freshResponse = await networkFetch;
+      return freshResponse || new Response("", { status: 504, statusText: "Gateway Timeout" });
+    })
   );
 }); 
