@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE_VERSION = "qarawoon-v1.0.3";
+const CACHE_VERSION = "qarawoon-v1.0.5";
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -10,7 +10,7 @@ const CORE_ASSETS = [
 ];
 
 /**
- * Caches core assets during service worker installation.
+ * Caches core and optional assets during service worker installation.
  * @returns {Promise<void>}
  */
 async function cacheInitialAssets() {
@@ -23,13 +23,13 @@ async function cacheInitialAssets() {
         await cache.put(assetUrl, response);
       }
     } catch {
-      // Skip optional assets if not present
+      // Skip optional assets if not present so installation never fails
     }
   }
 }
 
 /**
- * Removes old cache versions and claims active clients.
+ * Deletes outdated cache versions and takes control of open clients.
  * @returns {Promise<void>}
  */
 async function cleanupOldCaches() {
@@ -48,7 +48,7 @@ async function cleanupOldCaches() {
 }
 
 /**
- * Network-first strategy for HTML/navigation requests with offline fallback.
+ * Network-first strategy for HTML/navigation requests with offline cache fallback.
  * @param {Request} request
  * @returns {Promise<Response>}
  */
@@ -75,7 +75,7 @@ async function respondNavigation(request) {
 }
 
 /**
- * Cache-first strategy with background update for static and same-origin GET assets.
+ * Cache-first strategy with background update for same-origin static assets.
  * @param {Request} request
  * @returns {Promise<Response>}
  */
