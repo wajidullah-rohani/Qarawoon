@@ -335,8 +335,7 @@
       transition: .2s;
     }
 
-    .category-card:hover,
-    .category-card.selected-cat {
+    .category-card:hover {
       border-color: var(--gold);
       background: var(--surface2);
       transform: translateY(-2px);
@@ -364,10 +363,10 @@
       color: var(--muted);
     }
 
-    /* Poems */
+    /* Poems inside selected category */
 
     #category-view {
-      margin-top: 24px;
+      margin-top: 12px;
     }
 
     .category-banner {
@@ -376,21 +375,22 @@
       justify-content: space-between;
       gap: 12px;
       flex-wrap: wrap;
-      padding: 14px 18px;
+      padding: 16px 18px;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 14px;
+      box-shadow: var(--shadow);
     }
 
     .category-banner h3 {
       color: var(--gold);
-      font-size: 20px;
+      font-size: 21px;
     }
 
     .poem-list {
       display: grid;
       gap: 13px;
-      margin-top: 14px;
+      margin-top: 16px;
     }
 
     .poem-item {
@@ -400,11 +400,13 @@
       background: var(--surface);
       cursor: pointer;
       transition: .2s;
+      box-shadow: var(--shadow);
     }
 
     .poem-item:hover {
       border-color: var(--gold);
       background: var(--surface2);
+      transform: translateY(-2px);
     }
 
     .poem-item h3 {
@@ -416,12 +418,15 @@
     .poem-item p {
       color: var(--muted);
       font-size: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     /* Reader */
 
     #poem-reader {
-      margin-top: 22px;
+      margin-top: 12px;
       padding: 25px 18px;
       background: var(--surface);
       border: 1px solid var(--border);
@@ -842,61 +847,63 @@
         </div>
       </section>
 
-      <!-- Poetry categories -->
+      <!-- Poetry categories & isolated views -->
       <section data-page="poetry">
 
         <div class="page-actions">
           <button class="outline-button" data-back type="button">← بېرته</button>
         </div>
 
-        <h2 class="section-heading">د شعرونو نړۍ</h2>
-        <p class="section-subtitle">د خپلې خوښې ادبي صنف وټاکئ</p>
+        <div id="category-grid-wrap">
+          <h2 class="section-heading">د شعرونو نړۍ</h2>
+          <p class="section-subtitle">د خپلې خوښې ادبي صنف وټاکئ</p>
 
-        <div class="category-grid">
+          <div class="category-grid">
 
-          <button class="category-card" data-category="غزل" type="button">
-            <span class="category-icon">🌹</span>
-            <span><strong>غزل</strong><small id="count-غزل">د مینې او احساساتو ژبه</small></span>
-          </button>
+            <button class="category-card" data-category="غزل" type="button">
+              <span class="category-icon">🌹</span>
+              <span><strong>غزل</strong><small id="count-غزل">د مینې او احساساتو ژبه</small></span>
+            </button>
 
-          <button class="category-card" data-category="نظم" type="button">
-            <span class="category-icon">📖</span>
-            <span><strong>نظم</strong><small id="count-نظم">د فکر او خیال انځور</small></span>
-          </button>
+            <button class="category-card" data-category="نظم" type="button">
+              <span class="category-icon">📖</span>
+              <span><strong>نظم</strong><small id="count-نظم">د فکر او خیال انځور</small></span>
+            </button>
 
-          <button class="category-card" data-category="ماهیې" type="button">
-            <span class="category-icon">🌙</span>
-            <span><strong>ماهیې</strong><small id="count-ماهیې">د پښتني ادب ځانګړی رنګ</small></span>
-          </button>
+            <button class="category-card" data-category="ماهیې" type="button">
+              <span class="category-icon">🌙</span>
+              <span><strong>ماهیې</strong><small id="count-ماهیې">د پښتني ادب ځانګړی رنګ</small></span>
+            </button>
 
-          <button class="category-card" data-category="ټپیزې" type="button">
-            <span class="category-icon">🎶</span>
-            <span><strong>ټپیزې</strong><small id="count-ټپیزې">د ولسي ادب خوږه برخه</small></span>
-          </button>
+            <button class="category-card" data-category="ټپیزې" type="button">
+              <span class="category-icon">🎶</span>
+              <span><strong>ټپیزې</strong><small id="count-ټپیزې">د ولسي ادب خوږه برخه</small></span>
+            </button>
 
-          <button class="category-card" data-category="ټپې" type="button">
-            <span class="category-icon">🍃</span>
-            <span><strong>ټپې</strong><small id="count-ټپې">د ولسي احساساتو غږ</small></span>
-          </button>
+            <button class="category-card" data-category="ټپې" type="button">
+              <span class="category-icon">🍃</span>
+              <span><strong>ټپې</strong><small id="count-ټپې">د ولسي احساساتو غږ</small></span>
+            </button>
 
-          <button class="category-card" data-category="بیتونه" type="button">
-            <span class="category-icon">🖋</span>
-            <span><strong>بیتونه</strong><small id="count-بیتونه">لنډې خو ژورې خبرې</small></span>
-          </button>
+            <button class="category-card" data-category="بیتونه" type="button">
+              <span class="category-icon">🖋</span>
+              <span><strong>بیتونه</strong><small id="count-بیتونه">لنډې خو ژورې خبرې</small></span>
+            </button>
 
+          </div>
         </div>
 
         <div id="category-view" class="hidden">
           <div class="category-banner">
             <h3 id="active-category-heading">کټګوري</h3>
-            <button class="outline-button" id="close-category-btn" type="button">کټګورۍ پټول</button>
+            <button class="outline-button" id="close-category-btn" type="button">← ټولو کټګوریو ته</button>
           </div>
           <div id="poem-list" class="poem-list"></div>
         </div>
 
         <div id="poem-reader" class="hidden">
           <div class="reader-top-bar">
-            <button class="outline-button" id="back-to-list-btn" type="button">← شعرونو لست ته</button>
+            <button class="outline-button" id="back-to-list-btn" type="button">← د کټګورۍ شعرونو ته</button>
             <span class="status-note" id="reader-category-label"></span>
           </div>
 
@@ -1258,6 +1265,15 @@
         pin: "QarawoonAdminPin"
       };
 
+      const LEGACY_POEM_KEYS = [
+        "QarawoonPoems",
+        "qarawoon_poems",
+        "qarawoonPoems",
+        "poems",
+        "qarawoon_store",
+        "qarawoonStore"
+      ];
+
       const DEFAULT_PHOTO = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Crect width='150' height='150' rx='75' fill='%23222222'/%3E%3Ctext x='75' y='95' font-size='65' text-anchor='middle' fill='%23d6ad55'%3E✒%3C/text%3E%3C/svg%3E";
 
       const DEFAULT_BIO = `واجدالله روحاني، د مامور صاحب مارزک زوی، په ۱۳۸۲ هجري لمریز کال کې زېږېدلی دی. نوموړي خپلې لومړنۍ زده‌کړې د منګلیو په ابتدایه ښوونځي او د خپل کلي په جومات کې پیل کړې. وروسته یې د انصارالمؤمنین عالي لېسې د زده‌کړو دوره په بریالیتوب بشپړه کړه.
@@ -1345,14 +1361,91 @@
       /** @type {string | null} */
       let pendingPhotoDataUrl = null;
 
+      /** @param {string} rawCat @returns {string} */
+      function normalizeCategory(rawCat) {
+        const clean = String(rawCat || "").trim();
+        if (CATEGORIES.includes(clean)) return clean;
+        if (clean.includes("غزل")) return "غزل";
+        if (clean.includes("نظم")) return "نظم";
+        if (clean.includes("ماهی")) return "ماهیې";
+        if (clean.includes("ټپیز")) return "ټپیزې";
+        if (clean.includes("ټپ")) return "ټپې";
+        if (clean.includes("بیت")) return "بیتونه";
+        return "غزل";
+      }
+
+      /** @param {unknown} rawList @returns {PoemItem[]} */
+      function sanitizePoemArray(rawList) {
+        if (!Array.isArray(rawList)) return [];
+        /** @type {PoemItem[]} */
+        const out = [];
+        rawList.forEach(function (item, index) {
+          if (!item || typeof item !== "object") return;
+          const rec = /** @type {Record<string, unknown>} */ (item);
+          const title = String(rec.title || rec.name || "").trim();
+          const body = String(rec.body || rec.content || rec.text || "").trim();
+          if (!title && !body) return;
+          const id = String(rec.id || ("imported-" + index + "-" + title.slice(0, 12)));
+          const category = normalizeCategory(String(rec.category || rec.type || "غزل"));
+          out.push({
+            id: id,
+            title: title || "بې سرلیکه شعر",
+            category: category,
+            body: body
+          });
+        });
+        return out;
+      }
+
       /** @returns {PoemItem[]} */
       function getPoems() {
         try {
-          const raw = localStorage.getItem(STORAGE_KEYS.poems);
-          if (!raw) return DEFAULT_POEMS.slice();
-          /** @type {unknown} */
-          const parsed = JSON.parse(raw);
-          return Array.isArray(parsed) ? /** @type {PoemItem[]} */ (parsed) : DEFAULT_POEMS.slice();
+          const primaryRaw = localStorage.getItem(STORAGE_KEYS.poems);
+          if (primaryRaw) {
+            const parsedPrimary = JSON.parse(primaryRaw);
+            const cleanPrimary = sanitizePoemArray(parsedPrimary);
+            if (cleanPrimary.length > 0) {
+              return cleanPrimary;
+            }
+          }
+
+          /** @type {PoemItem[]} */
+          const recovered = [];
+          const seenKeys = new Set();
+
+          LEGACY_POEM_KEYS.forEach(function (key) {
+            const raw = localStorage.getItem(key);
+            if (!raw) return;
+            const parsed = JSON.parse(raw);
+            if (Array.isArray(parsed)) {
+              sanitizePoemArray(parsed).forEach(function (p) {
+                const sig = p.title + "::" + p.category + "::" + p.body.slice(0, 40);
+                if (!seenKeys.has(sig)) {
+                  seenKeys.add(sig);
+                  recovered.push(p);
+                }
+              });
+            } else if (parsed && typeof parsed === "object" && Array.isArray(parsed.poems)) {
+              sanitizePoemArray(parsed.poems).forEach(function (p) {
+                const sig = p.title + "::" + p.category + "::" + p.body.slice(0, 40);
+                if (!seenKeys.has(sig)) {
+                  seenKeys.add(sig);
+                  recovered.push(p);
+                }
+              });
+            }
+          });
+
+          if (recovered.length > 0) {
+            savePoems(recovered);
+            return recovered;
+          }
+
+          if (primaryRaw) {
+            return [];
+          }
+
+          return DEFAULT_POEMS.slice();
         } catch {
           return DEFAULT_POEMS.slice();
         }
@@ -1483,6 +1576,14 @@
         }
       }
 
+      function showCategoriesGridOnly() {
+        activeCategory = null;
+        document.getElementById("category-view")?.classList.add("hidden");
+        document.getElementById("poem-reader")?.classList.add("hidden");
+        document.getElementById("category-grid-wrap")?.classList.remove("hidden");
+        renderCategoryCounts();
+      }
+
       /** @param {string} pageName @param {boolean} [pushToHistory] */
       function showPage(pageName, pushToHistory) {
         if (pageName === "admin" && !isAdminLoggedIn) {
@@ -1504,7 +1605,7 @@
         }
 
         if (pageName === "poetry") {
-          renderCategoryCounts();
+          showCategoriesGridOnly();
         } else if (pageName === "about") {
           renderPublicProfile();
         } else if (pageName === "social") {
@@ -1525,10 +1626,20 @@
         const categoryView = document.getElementById("category-view");
         const currentPage = pageHistory[pageHistory.length - 1] || "main-menu";
 
-        if (currentPage === "poetry" && poemReader && !poemReader.classList.contains("hidden")) {
-          poemReader.classList.add("hidden");
-          if (categoryView) categoryView.classList.remove("hidden");
-          return;
+        if (currentPage === "poetry") {
+          if (poemReader && !poemReader.classList.contains("hidden")) {
+            poemReader.classList.add("hidden");
+            if (categoryView && activeCategory) {
+              categoryView.classList.remove("hidden");
+            } else {
+              showCategoriesGridOnly();
+            }
+            return;
+          }
+          if (categoryView && !categoryView.classList.contains("hidden")) {
+            showCategoriesGridOnly();
+            return;
+          }
         }
 
         if (pageHistory.length > 1) {
@@ -1580,15 +1691,13 @@
       function openCategory(categoryName) {
         activeCategory = categoryName;
         const poems = getPoems().filter(function (p) { return p.category === categoryName; });
+        const categoryGridWrap = document.getElementById("category-grid-wrap");
         const categoryView = document.getElementById("category-view");
         const poemReader = document.getElementById("poem-reader");
         const listEl = document.getElementById("poem-list");
         const headingEl = document.getElementById("active-category-heading");
 
-        document.querySelectorAll(".category-card").forEach(function (card) {
-          card.classList.toggle("selected-cat", card.getAttribute("data-category") === categoryName);
-        });
-
+        if (categoryGridWrap) categoryGridWrap.classList.add("hidden");
         if (poemReader) poemReader.classList.add("hidden");
         if (headingEl) headingEl.textContent = "د «" + categoryName + "» شعرونه";
         if (categoryView) categoryView.classList.remove("hidden");
@@ -1600,14 +1709,15 @@
           empty.className = "poem-item";
           empty.innerHTML = "<h3>په دې کټګورۍ کې اوس مهال شعر نشته</h3><p>د مدیر له برخې څخه نوی شعر اضافه کولی شئ.</p>";
           listEl.appendChild(empty);
+          window.scrollTo({ top: 0, behavior: "smooth" });
           return;
         }
 
-        poems.forEach(function (poem) {
+        poems.forEach(function (poem, idx) {
           const row = document.createElement("div");
           row.className = "poem-item";
           const titleH3 = document.createElement("h3");
-          titleH3.textContent = poem.title;
+          titleH3.textContent = toPashtoDigits(idx + 1) + ". " + poem.title;
           const previewP = document.createElement("p");
           const firstLine = (poem.body || "").split("\n")[0] || "";
           previewP.textContent = firstLine;
@@ -1618,16 +1728,20 @@
           });
           listEl.appendChild(row);
         });
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
       /** @param {PoemItem} poem */
       function openPoem(poem) {
+        const categoryGridWrap = document.getElementById("category-grid-wrap");
         const categoryView = document.getElementById("category-view");
         const poemReader = document.getElementById("poem-reader");
         const titleEl = document.getElementById("poem-title");
         const contentEl = document.getElementById("poem-content");
         const catLabel = document.getElementById("reader-category-label");
 
+        if (categoryGridWrap) categoryGridWrap.classList.add("hidden");
         if (categoryView) categoryView.classList.add("hidden");
         if (catLabel) catLabel.textContent = "کټګوري: " + poem.category;
         if (titleEl) titleEl.textContent = poem.title;
@@ -1637,7 +1751,7 @@
         }
         if (poemReader) {
           poemReader.classList.remove("hidden");
-          poemReader.scrollIntoView({ behavior: "smooth", block: "start" });
+          window.scrollTo({ top: 0, behavior: "smooth" });
         }
       }
 
@@ -1937,14 +2051,16 @@
       });
 
       document.getElementById("close-category-btn")?.addEventListener("click", function () {
-        document.getElementById("category-view")?.classList.add("hidden");
-        document.querySelectorAll(".category-card").forEach(function (c) { c.classList.remove("selected-cat"); });
+        showCategoriesGridOnly();
       });
 
       document.getElementById("back-to-list-btn")?.addEventListener("click", function () {
         document.getElementById("poem-reader")?.classList.add("hidden");
         if (activeCategory) {
           document.getElementById("category-view")?.classList.remove("hidden");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+          showCategoriesGridOnly();
         }
       });
 
@@ -1989,7 +2105,7 @@
 
         const idVal = (/** @type {HTMLInputElement | null} */ (document.getElementById("admin-poem-id"))?.value || "").trim();
         const titleVal = (/** @type {HTMLInputElement | null} */ (document.getElementById("admin-poem-title"))?.value || "").trim();
-        const catVal = (/** @type {HTMLSelectElement | null} */ (document.getElementById("admin-poem-category"))?.value || "غزل").trim();
+        const catVal = normalizeCategory((/** @type {HTMLSelectElement | null} */ (document.getElementById("admin-poem-category"))?.value || "غزل").trim());
         const bodyVal = (/** @type {HTMLTextAreaElement | null} */ (document.getElementById("admin-poem-body"))?.value || "").trim();
         const statusEl = document.getElementById("admin-poem-status");
 
