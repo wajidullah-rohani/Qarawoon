@@ -503,38 +503,13 @@
       margin-top: 18px;
     }
 
-    /* Social & Phone */
+    /* Social */
 
     .social-list {
       display: grid;
       gap: 13px;
       max-width: 550px;
       margin: auto;
-    }
-
-    .phone-card {
-      padding: 16px 18px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .phone-card strong {
-      color: var(--gold);
-      display: block;
-      font-size: 15px;
-    }
-
-    .phone-card span {
-      color: var(--text);
-      font-size: 17px;
-      direction: ltr;
-      display: inline-block;
     }
 
     .social-link {
@@ -743,7 +718,7 @@
           <button class="menu-card" data-open-page="social" type="button">
             <span class="menu-icon">🌐</span>
             <strong>ټولنیزې اړیکې</strong>
-            <small>لینکونه او د موبایل شمېره</small>
+            <small>لینکونه او د اړیکې لارې</small>
           </button>
 
           <button class="menu-card" data-open-page="feedback" type="button">
@@ -889,19 +864,9 @@
         </div>
 
         <h2 class="section-heading">ټولنیزې اړیکې</h2>
-        <p class="section-subtitle">له لیکوال سره د اړیکې لارې او د موبایل شمېره</p>
+        <p class="section-subtitle">له لیکوال سره د اړیکې لارې</p>
 
-        <div class="social-list">
-          <div class="phone-card" id="public-phone-box">
-            <div>
-              <strong>د موبایل شمېره</strong>
-              <span id="public-phone-number">0783795384 - 0795421643</span>
-            </div>
-            <a class="gold-button" id="public-phone-call" href="tel:0783795384">زنګ وهل</a>
-          </div>
-        </div>
-
-        <div id="public-social-links" class="social-list" style="margin-top: 13px;">
+        <div id="public-social-links" class="social-list">
           <a class="social-link" href="https://www.facebook.com/wajidullah.rohani" id="default-facebook" target="_blank" rel="noopener noreferrer">📘  Facebook</a>
           <a class="social-link" href="https://www.tiktok.com/@wajidullahrohani" id="default-tiktok" target="_blank" rel="noopener noreferrer">🎵  TikTok</a>
           <a class="social-link" href="https://wa.me/93783795384" id="default-whatsapp" target="_blank" rel="noopener noreferrer">💬  WhatsApp</a>
@@ -1023,7 +988,6 @@
 
     /**
      * @typedef {Object} SocialData
-     * @property {string} phone
      * @property {string} facebook
      * @property {string} youtube
      * @property {string} tiktok
@@ -1664,7 +1628,7 @@
           "id": "poem-1795525698887",
           "title": "خونکاره",
           "category": "غزل",
-          "body": "بیا د څـــوکې د بڼــو ســـرې دي په وینـــو \nبیـا د څــوک ویشتــي بڼـو باندې خونــکارې \n\nستا تصویر مې په زړګي پورې را جوخت کړ\nپـه زاړه زخــم مې ښـخـې کـــړې نــوکارې \n\nد لاس نښــه مــې د جیـب نه را بـهــر کــړه \nورته ومـې کـړې بـې دریغــه ښــې کــوکارې \n\nزمـا رنــګ دی د غـربـت پـه اور سـوزلـــــی \nدې کــې ستــا څــه ګنــاه نشتـه ده هنـدارې \n\nژونـــده زه خنــدا تـه نـه یـم پیــدا شــوی \nزمـا له شـونــډو څخـه وینـې وهــي دارې \n\nتـــه به لاس مروړې خو نه به وي شیـرینـه \nپـه واجــد بانـدې بـه وي خـاورې امبــارې \n\n1401/7/11\n03:47"
+          "body": "بیا د څـــوکې د بڼــو ســـرې دي په وینـــو \nبیـا د څــوک ویشتــي بڼـو باندې خونــکارې \n\nستا تصویر مې په زړګي پورې را جوخت کړ\nپـه زاړه زخــم مې ښـخـې کـــړې نــوکارې \n\nد لاس نښــه مــې د جیـب نه را بـهــر کــړه \nورته ومـې کـړې بـې دریغــه ښــې کــوکارې \n\nزمـا رنــګ دی د غـربـت پـه اور سـوزلــــی \nدې کــې ستــا څــه ګنــاه نشتـه ده هنـدارې \n\nژونـــده زه خنــدا تـه نـه یـم پیــدا شــوی \nزمـا له شـونــډو څخـه وینـې وهــي دارې \n\nتـــه به لاس مروړې خو نه به وي شیـرینـه \nپـه واجــد بانـدې بـه وي خـاورې امبــارې \n\n1401/7/11\n03:47"
         },
         {
           "id": "poem-1795525688303",
@@ -1946,7 +1910,7 @@
           "id": "poem-1795524773084",
           "title": "تصویرونه",
           "category": "غزل",
-          "body": "په خړ دیوال باندې راځوړند تصویرونه مې خوري\nراپسې شوي د کوټې ټول دیوالونه مې خوري \n\nتا چې وَیلی وو د خدای پامان ښه وخت ولرې \nستا هغه دوه وروستي نیمګړي مسیجونه مې خوري\n\nد جانان غم د غریبۍ پیغور زړه ډک له درده \nد بدن غوښې مې تویګي دا غمونه مې خوري \n\nیادګار د شته دی خو ته نشته یې عجب عذاب دی\nجانانه یوسه ستا راکړي یادګارونه مــــې خـــــوري\n\nمور وَیل زویه ورځ په ورځ د رنګ توریګي ولې؟\nځان سره ورو مې وویِل مورې شبګیـرونه مې خوري\n\nد ارمـانـونـو قتـل عـام مـې شـوی ډله پــــــراته \nد قـتل شـویـو ارمـانـونـو مــړه لاشـــونه مـې خـوري\n\nبې له یارانـو بې له تانه چــې تېـریګـي ګلــې\nد بل وطـن په ویـر لړلي ماښامـــونه مې خوري \n\nزهن کې راشي تا وَیل زه به یم ستا واجـــده \nستا د درواغـو ډک قـولونه او لفظــونه مـې خـوري\n\n1401/5/27\n12:19 پنچشنبې ورځ"
+          "body": "په خړ دیوال باندې راځوړند تصویرونه مې خوري\nراپسې شوي د کوټې ټول دیوالونه مې خوري \n\nتا چې وَیلی وو د خدای پامان ښه وخت ولرې \nستا هغه دوه وروستي نیمګړي مسیجونه مې خوري \n\nد جانان غم د غریبۍ پیغور زړه ډک له درده \nد بدن غوښې مې تویګي دا غمونه مې خوري \n\nیادګار د شته دی خو ته نشته یې عجب عذاب دی\nجانانه یوسه ستا راکړي یادګارونه مــــې خـــــوري\n\nمور وَیل زویه ورځ په ورځ د رنګ توریګي ولې؟\nځان سره ورو مې وویِل مورې شبګیـرونه مې خوري\n\nد ارمـانـونـو قتـل عـام مـې شـوی ډله پــــــراته \nد قـتل شـویـو ارمـانـونـو مــړه لاشـــونه مـې خـوري\n\nبې له یارانـو بې له تانه چــې تېـریګـي ګلــې\nد بل وطـن په ویـر لړلي ماښامـــونه مې خوري \n\nزهن کې راشي تا وَیل زه به یم ستا واجـــده \nستا د درواغـو ډک قـولونه او لفظــونه مـې خـوري\n\n1401/5/27\n12:19 پنچشنبې ورځ"
         },
         {
           "id": "poem-1795524763256",
@@ -1979,7 +1943,6 @@
 
       /** @type {SocialData} */
       const DEFAULT_SOCIAL = {
-        phone: "0783795384 - 0795421643",
         facebook: "https://www.facebook.com/wajidullah.rohani",
         youtube: "",
         tiktok: "https://www.tiktok.com/@wajidullahrohani",
@@ -2240,27 +2203,59 @@
           const n = poems.filter(function (p) {
             return p.category === cat;
           }).length;
-          el.textContent = n + (n === 1 ? " شعر" : " شعرونه");
+          el.textContent = n + " شعرونه ثبت شوي";
         });
       }
 
       /**
-       * @param {string} category
+       * @param {string} categoryName
        * @param {boolean} [skipPushState=false]
        */
-      function openCategory(category, skipPushState = false) {
-        activeCategory = category;
+      function openCategory(categoryName, skipPushState = false) {
+        activeCategory = categoryName;
         activePoem = null;
 
-        const headingEl = document.getElementById("active-category-heading");
-        if (headingEl) headingEl.textContent = category;
-
         setPoetrySubView("category-poems");
-        renderCategoryPoems(category);
-        window.scrollTo({ top: 0, behavior: "smooth" });
 
+        const heading = document.getElementById("active-category-heading");
+        if (heading) heading.textContent = categoryName;
+
+        const listEl = document.getElementById("poem-list");
+        if (!listEl) return;
+        listEl.innerHTML = "";
+
+        const poems = getPoems().filter(function (p) {
+          return p.category === categoryName;
+        });
+
+        if (poems.length === 0) {
+          const empty = document.createElement("div");
+          empty.className = "poem-item";
+          empty.innerHTML = "<h3>په دې کټګورۍ کې لا شعر نشته</h3><p>د مدیریت له لارې شعر اضافه کړئ.</p>";
+          listEl.appendChild(empty);
+        } else {
+          poems.forEach(function (poem) {
+            const item = document.createElement("div");
+            item.className = "poem-item";
+
+            const h3 = document.createElement("h3");
+            h3.textContent = poem.title || "بې سرلیکه";
+
+            const p = document.createElement("p");
+            p.textContent = (poem.body || "").replace(/\n+/g, " / ");
+
+            item.appendChild(h3);
+            item.appendChild(p);
+            item.addEventListener("click", function () {
+              openPoemReader(poem);
+            });
+            listEl.appendChild(item);
+          });
+        }
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
         if (!skipPushState) {
-          pushAppHistory("category:" + category);
+          pushAppHistory("category:" + categoryName);
         }
       }
 
@@ -2270,69 +2265,22 @@
         activePoem = null;
         setPoetrySubView("categories");
         renderCategoryCounts();
-        window.scrollTo({ top: 0, behavior: "smooth" });
-
         if (!skipPushState) {
-          pushAppHistory("categories");
+          pushAppHistory("categories-list");
         }
       }
 
-      document.querySelectorAll("[data-category]").forEach(function (card) {
-        card.addEventListener("click", function () {
-          const cat = card.getAttribute("data-category");
+      document.querySelectorAll(".category-card[data-category]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          const cat = btn.getAttribute("data-category");
           if (cat) openCategory(cat);
         });
       });
 
-      const closeCategoryBtn = document.getElementById("close-category-btn");
-      if (closeCategoryBtn) {
-        closeCategoryBtn.addEventListener("click", function () {
+      const closeCatBtn = document.getElementById("close-category-btn");
+      if (closeCatBtn) {
+        closeCatBtn.addEventListener("click", function () {
           closeCategoryView(false);
-        });
-      }
-
-      /** @param {string} category */
-      function renderCategoryPoems(category) {
-        const list = document.getElementById("poem-list");
-        if (!list) return;
-        list.innerHTML = "";
-
-        const poems = getPoems().filter(function (p) {
-          return p.category === category;
-        });
-
-        if (poems.length === 0) {
-          const emptyCard = document.createElement("div");
-          emptyCard.className = "poem-item";
-          const h3 = document.createElement("h3");
-          h3.textContent = "په دې برخه کې لا شعر نه دی ثبت شوی";
-          const p = document.createElement("p");
-          p.textContent = "کولی شئ بله کټګوري وټاکئ.";
-          emptyCard.appendChild(h3);
-          emptyCard.appendChild(p);
-          list.appendChild(emptyCard);
-          return;
-        }
-
-        poems.forEach(function (poem) {
-          const item = document.createElement("div");
-          item.className = "poem-item";
-
-          const titleEl = document.createElement("h3");
-          titleEl.textContent = poem.title;
-
-          const previewEl = document.createElement("p");
-          const cleanBody = (poem.body || "").replace(/\s+/g, " ").trim();
-          previewEl.textContent = cleanBody.slice(0, 90) + (cleanBody.length > 90 ? "..." : "");
-
-          item.appendChild(titleEl);
-          item.appendChild(previewEl);
-
-          item.addEventListener("click", function () {
-            openPoem(poem, false);
-          });
-
-          list.appendChild(item);
         });
       }
 
@@ -2340,23 +2288,21 @@
        * @param {PoemItem} poem
        * @param {boolean} [skipPushState=false]
        */
-      function openPoem(poem, skipPushState = false) {
+      function openPoemReader(poem, skipPushState = false) {
         activePoem = poem;
-        if (!activeCategory) {
-          activeCategory = poem.category || "غزل";
-        }
+        setPoetrySubView("reader");
 
         const titleEl = document.getElementById("poem-title");
-        const contentEl = document.getElementById("poem-content");
+        const bodyEl = document.getElementById("poem-content");
         const catLabel = document.getElementById("reader-category-label");
         const shareStatus = document.getElementById("reader-share-status");
 
-        if (titleEl) titleEl.textContent = poem.title;
-        if (contentEl) contentEl.textContent = poem.body;
-        if (catLabel) catLabel.textContent = "کټګوري: " + (poem.category || "");
+        if (titleEl) titleEl.textContent = poem.title || "بې سرلیکه";
+        if (bodyEl) bodyEl.textContent = poem.body || "";
+        if (catLabel) catLabel.textContent = "کټګوري: " + (poem.category || activeCategory || "");
         if (shareStatus) shareStatus.textContent = "";
 
-        setPoetrySubView("reader");
+        applyFontSize(fontSizePx);
         window.scrollTo({ top: 0, behavior: "smooth" });
 
         if (!skipPushState) {
@@ -2368,14 +2314,10 @@
       function backToCategoryList(skipPushState = false) {
         activePoem = null;
         if (activeCategory) {
-          setPoetrySubView("category-poems");
-          renderCategoryPoems(activeCategory);
+          openCategory(activeCategory, true);
         } else {
           setPoetrySubView("categories");
-          renderCategoryCounts();
         }
-        window.scrollTo({ top: 0, behavior: "smooth" });
-
         if (!skipPushState) {
           pushAppHistory("back-to-category-list");
         }
@@ -2395,19 +2337,20 @@
       }
 
       const fontPlusBtn = document.getElementById("font-plus");
-      const fontMinusBtn = document.getElementById("font-minus");
-      const fontResetBtn = document.getElementById("font-reset");
-
       if (fontPlusBtn) {
         fontPlusBtn.addEventListener("click", function () {
           applyFontSize(fontSizePx + 2);
         });
       }
+
+      const fontMinusBtn = document.getElementById("font-minus");
       if (fontMinusBtn) {
         fontMinusBtn.addEventListener("click", function () {
           applyFontSize(fontSizePx - 2);
         });
       }
+
+      const fontResetBtn = document.getElementById("font-reset");
       if (fontResetBtn) {
         fontResetBtn.addEventListener("click", function () {
           applyFontSize(20);
@@ -2417,27 +2360,21 @@
       const sharePoemBtn = document.getElementById("share-poem-btn");
       if (sharePoemBtn) {
         sharePoemBtn.addEventListener("click", function () {
-          const shareStatus = document.getElementById("reader-share-status");
+          const statusEl = document.getElementById("reader-share-status");
           if (!activePoem) return;
-          const shareText =
-            activePoem.title +
-            " (" +
-            activePoem.category +
-            ")\n\n" +
-            activePoem.body +
-            "\n\n— د «کړاوونه» ادبي ټولګې څخه";
+          const shareText = (activePoem.title || "") + "\n\n" + (activePoem.body || "") + "\n\n— کړاوونه";
 
           if (navigator.share) {
             navigator.share({
-              title: activePoem.title,
+              title: activePoem.title || "کړاوونه",
               text: shareText
             }).then(function () {
-              if (shareStatus) shareStatus.textContent = "شعر شریک شو.";
+              if (statusEl) statusEl.textContent = "شعر شریک شو.";
             }).catch(function () {
-              copyToClipboardFallback(shareText, shareStatus);
+              copyFallback(shareText, statusEl);
             });
           } else {
-            copyToClipboardFallback(shareText, shareStatus);
+            copyFallback(shareText, statusEl);
           }
         });
       }
@@ -2446,104 +2383,71 @@
        * @param {string} text
        * @param {HTMLElement | null} statusEl
        */
-      function copyToClipboardFallback(text, statusEl) {
+      function copyFallback(text, statusEl) {
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(text).then(function () {
-            if (statusEl) statusEl.textContent = "شعر کاپي شو؛ اوس یې هر چیرې شریکولی شئ.";
+            if (statusEl) statusEl.textContent = "شعر کاپي شو؛ اوس یې هر چېرې شریکولای شئ.";
           }).catch(function () {
-            if (statusEl) statusEl.textContent = "شریکول ونه شول.";
+            if (statusEl) statusEl.textContent = "د شریکولو امکان ونه موندل شو.";
           });
         } else {
-          if (statusEl) statusEl.textContent = "شریکول ونه شول.";
+          if (statusEl) statusEl.textContent = "د شریکولو امکان ونه موندل شو.";
         }
       }
 
       function renderProfilePublic() {
-        const profile = getProfile();
-        const photoEl = /** @type {HTMLImageElement | null} */ (document.getElementById("public-profile-photo"));
+        const p = getProfile();
         const nameEl = document.getElementById("public-profile-name");
         const fatherEl = document.getElementById("public-profile-father");
         const bioEl = document.getElementById("public-profile-bio");
         const msgEl = document.getElementById("public-profile-message");
+        const photoEl = /** @type {HTMLImageElement | null} */ (document.getElementById("public-profile-photo"));
 
-        if (photoEl) {
-          const fallbackSvg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Crect width='150' height='150' rx='75' fill='%23222222'/%3E%3Ctext x='75' y='95' font-size='65' text-anchor='middle' fill='%23d6ad55'%3E✒%3C/text%3E%3C/svg%3E";
-          photoEl.onerror = function () {
-            photoEl.onerror = null;
-            photoEl.src = fallbackSvg;
-          };
-          photoEl.src = profile.image || DEFAULT_PHOTO;
+        if (nameEl) nameEl.textContent = p.name || DEFAULT_PROFILE.name;
+        if (fatherEl) fatherEl.textContent = p.father || DEFAULT_PROFILE.father;
+        if (bioEl) bioEl.textContent = p.bio || DEFAULT_PROFILE.bio;
+        if (msgEl) msgEl.textContent = p.message || "";
+        if (photoEl && p.image) {
+          photoEl.src = p.image;
         }
-        if (nameEl) nameEl.textContent = profile.name || "واجدالله روحاني";
-        if (fatherEl) fatherEl.textContent = profile.father || "د مامور صاحب مارزک زوی";
-        if (bioEl) bioEl.textContent = profile.bio || DEFAULT_BIO;
-        if (msgEl) msgEl.textContent = profile.message || "";
-      }
-
-      /** @param {string} url */
-      function isSafeUrl(url) {
-        if (!url) return false;
-        const trimmed = url.trim();
-        return /^https?:\/\//i.test(trimmed) || /^tel:/i.test(trimmed);
       }
 
       function renderSocialPublic() {
-        const social = getSocial();
+        const s = getSocial();
         const container = document.getElementById("public-social-links");
-        const phoneBox = document.getElementById("public-phone-box");
-        const phoneNumEl = document.getElementById("public-phone-number");
-        const phoneCallEl = /** @type {HTMLAnchorElement | null} */ (document.getElementById("public-phone-call"));
-
-        if (phoneBox && phoneNumEl && phoneCallEl) {
-          const phoneText = (social.phone || "").trim();
-          if (phoneText) {
-            phoneBox.classList.remove("hidden");
-            phoneNumEl.textContent = phoneText;
-            const digitsMatch = phoneText.match(/\d+/);
-            const primaryNum = digitsMatch ? digitsMatch[0] : "";
-            if (primaryNum) {
-              phoneCallEl.href = "tel:" + primaryNum;
-              phoneCallEl.classList.remove("hidden");
-            } else {
-              phoneCallEl.href = "#";
-              phoneCallEl.classList.add("hidden");
-            }
-          } else {
-            phoneBox.classList.add("hidden");
-          }
-        }
-
         if (!container) return;
-        container.innerHTML = "";
 
-        const links = [
-          { label: "📘  Facebook", url: social.facebook },
-          { label: "▶  YouTube", url: social.youtube },
-          { label: "🎵  TikTok", url: social.tiktok },
-          { label: "💬  WhatsApp", url: social.whatsapp },
-          { label: "🔗  نوره اړیکه", url: social.other }
+        /** @type {Array<{key: keyof SocialData, label: string, icon: string}>} */
+        const linksConfig = [
+          { key: "facebook", label: "Facebook", icon: "📘" },
+          { key: "youtube", label: "YouTube", icon: "🎬" },
+          { key: "tiktok", label: "TikTok", icon: "🎵" },
+          { key: "whatsapp", label: "WhatsApp", icon: "💬" },
+          { key: "other", label: "نور لینک", icon: "🔗" }
         ];
 
-        let added = 0;
-        links.forEach(function (item) {
-          if (item.url && isSafeUrl(item.url)) {
+        container.innerHTML = "";
+        let anyAdded = false;
+
+        linksConfig.forEach(function (item) {
+          const val = (s[item.key] || "").trim();
+          if (val) {
+            anyAdded = true;
             const a = document.createElement("a");
             a.className = "social-link";
-            a.href = item.url.trim();
+            a.href = val;
             a.target = "_blank";
             a.rel = "noopener noreferrer";
-            a.textContent = item.label;
+            a.textContent = item.icon + "  " + item.label;
             container.appendChild(a);
-            added += 1;
           }
         });
 
-        if (added === 0 && !(social.phone || "").trim()) {
-          const p = document.createElement("p");
-          p.style.textAlign = "center";
-          p.style.color = "var(--muted)";
-          p.textContent = "تر اوسه ټولنیز لینکونه نه دي اضافه شوي.";
-          container.appendChild(p);
+        if (!anyAdded) {
+          const note = document.createElement("p");
+          note.className = "section-subtitle";
+          note.textContent = "تر اوسه ټولنیز لینکونه نه دي اضافه شوي.";
+          container.appendChild(note);
         }
       }
 
@@ -2566,9 +2470,9 @@
           const list = getFeedbacks();
           list.unshift({
             id: "fb-" + Date.now(),
-            name: name || "نامعلوم لوستونکی",
+            name: name || "ناڅرګند لوستونکی",
             message: message,
-            date: new Date().toLocaleString("ps-AF")
+            date: new Date().toLocaleDateString("fa-AF")
           });
           saveFeedbacks(list);
 
@@ -2581,21 +2485,20 @@
       function renderStatistics() {
         const poems = getPoems();
         const totalEl = document.getElementById("total-poems");
-        const catStatsEl = document.getElementById("category-statistics");
+        const breakdownEl = document.getElementById("category-statistics");
 
         if (totalEl) totalEl.textContent = String(poems.length);
+        if (!breakdownEl) return;
 
-        if (catStatsEl) {
-          catStatsEl.innerHTML = "";
-          CATEGORIES.forEach(function (cat) {
-            const count = poems.filter(function (p) {
-              return p.category === cat;
-            }).length;
-            const row = document.createElement("div");
-            row.textContent = "• " + cat + ": " + count + (count === 1 ? " شعر" : " شعرونه");
-            catStatsEl.appendChild(row);
-          });
-        }
+        breakdownEl.innerHTML = "";
+        CATEGORIES.forEach(function (cat) {
+          const count = poems.filter(function (p) {
+            return p.category === cat;
+          }).length;
+          const row = document.createElement("div");
+          row.textContent = "• " + cat + ": " + count + " شعرونه";
+          breakdownEl.appendChild(row);
+        });
       }
 
       function renderAppInfoPublic() {
@@ -2610,15 +2513,12 @@
       }
 
       applyTheme(false);
+      renderCategoryCounts();
+      renderProfilePublic();
+      renderSocialPublic();
+      renderAppInfoPublic();
+      renderStatistics();
     });
-  </script>
-
-  <script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", function () {
-        navigator.serviceWorker.register("sw.js").catch(function () {});
-      });
-    }
   </script>
 </body>
 </html> 
