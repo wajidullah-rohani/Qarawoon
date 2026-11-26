@@ -19,7 +19,7 @@
       --muted: #aaa49a;
       --border: rgba(214,173,85,.25);
       --shadow: 0 12px 35px rgba(0,0,0,.3);
-      --poem-size: 20px;
+      --poem-size: 16px;
     }
 
     * {
@@ -30,14 +30,19 @@
 
     html {
       scroll-behavior: smooth;
+      overflow-x: hidden;
+      max-width: 100%;
     }
 
     body {
       background: var(--bg);
       color: var(--text);
       font-family: "Noto Naskh Arabic", "Noto Sans Arabic", Tahoma, sans-serif;
+      font-size: 16px;
       line-height: 1.9;
       min-height: 100vh;
+      overflow-x: hidden;
+      max-width: 100%;
     }
 
     body.light-theme {
@@ -68,6 +73,7 @@
     .container {
       width: min(1100px, 92%);
       margin: auto;
+      max-width: 100%;
     }
 
     .hidden {
@@ -75,7 +81,6 @@
     }
 
     /* Welcome screen */
-
     #welcome-screen {
       min-height: 100vh;
       display: flex;
@@ -121,7 +126,6 @@
     }
 
     /* Buttons */
-
     .gold-button {
       border: 1px solid var(--gold);
       background: var(--gold);
@@ -151,7 +155,6 @@
     }
 
     /* Header */
-
     .site-header {
       background: var(--surface);
       border-bottom: 1px solid var(--border);
@@ -197,15 +200,16 @@
     }
 
     /* Main */
-
     main {
       min-height: 75vh;
       padding: 28px 0 45px;
+      overflow-x: hidden;
     }
 
     [data-page] {
       display: none;
       animation: appear .25s ease;
+      max-width: 100%;
     }
 
     [data-page].active-page {
@@ -237,7 +241,6 @@
     }
 
     /* Main menu */
-
     .hero {
       text-align: center;
       padding: 35px 15px 28px;
@@ -297,27 +300,29 @@
       margin-top: 5px;
     }
 
-    /* Category cards */
-
+    /* Category cards matching screenshot */
     .category-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
-      margin-top: 25px;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 20px;
     }
 
     .category-card {
       display: flex;
       align-items: center;
-      gap: 15px;
-      min-height: 85px;
-      padding: 16px;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 108px;
+      padding: 18px 22px;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 15px;
+      border-radius: 16px;
       color: var(--text);
       text-align: right;
       transition: .2s;
+      box-shadow: var(--shadow);
+      width: 100%;
     }
 
     .category-card:hover {
@@ -326,32 +331,41 @@
       transform: translateY(-2px);
     }
 
-    .category-icon {
-      width: 48px;
-      height: 48px;
-      flex-shrink: 0;
-      display: grid;
-      place-items: center;
-      background: var(--surface2);
-      border-radius: 13px;
-      color: var(--gold);
-      font-size: 24px;
+    .category-text {
+      flex: 1;
+      min-width: 0;
     }
 
     .category-card strong {
+      display: block;
       color: var(--gold);
-      font-size: 17px;
+      font-size: 20px;
+      line-height: 1.5;
+      margin-bottom: 4px;
     }
 
     .category-card small {
       display: block;
       color: var(--muted);
+      font-size: 15px;
+      line-height: 1.6;
     }
 
-    /* Poems inside selected category */
+    .category-icon {
+      width: 56px;
+      height: 56px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      background: var(--surface2);
+      border-radius: 14px;
+      font-size: 30px;
+    }
 
+    /* Poems inside selected category in matching clean cards (no icon, no number) */
     #category-view {
       margin-top: 12px;
+      max-width: 100%;
     }
 
     .category-banner {
@@ -360,10 +374,10 @@
       justify-content: space-between;
       gap: 12px;
       flex-wrap: wrap;
-      padding: 16px 18px;
+      padding: 16px 20px;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 14px;
+      border-radius: 16px;
       box-shadow: var(--shadow);
     }
 
@@ -374,18 +388,28 @@
 
     .poem-list {
       display: grid;
-      gap: 13px;
+      grid-template-columns: 1fr;
+      gap: 14px;
       margin-top: 16px;
+      max-width: 100%;
     }
 
     .poem-item {
-      padding: 17px;
+      padding: 18px 22px;
+      min-height: 92px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
       border: 1px solid var(--border);
-      border-radius: 14px;
+      border-radius: 16px;
       background: var(--surface);
       cursor: pointer;
       transition: .2s;
       box-shadow: var(--shadow);
+      max-width: 100%;
+      overflow: hidden;
+      text-align: right;
+      width: 100%;
     }
 
     .poem-item:hover {
@@ -397,19 +421,28 @@
     .poem-item h3 {
       color: var(--gold);
       font-size: 18px;
+      font-weight: 700;
+      line-height: 1.5;
       margin-bottom: 4px;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
 
     .poem-item p {
       color: var(--muted);
-      font-size: 14px;
-      white-space: nowrap;
+      font-size: 15px;
+      line-height: 1.7;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
       overflow: hidden;
-      text-overflow: ellipsis;
     }
 
     /* Reader */
-
     #poem-reader {
       margin-top: 12px;
       padding: 25px 18px;
@@ -417,6 +450,7 @@
       border: 1px solid var(--border);
       border-radius: 18px;
       box-shadow: var(--shadow);
+      max-width: 100%;
     }
 
     .reader-top-bar {
@@ -431,17 +465,20 @@
     #poem-title {
       color: var(--gold);
       text-align: center;
-      font-size: 25px;
-      margin-bottom: 22px;
+      font-size: 22px;
+      margin-bottom: 20px;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
 
     #poem-content {
       color: var(--text);
       font-size: var(--poem-size);
-      line-height: 2.4;
+      line-height: 1.9;
       text-align: center;
       white-space: pre-wrap;
       overflow-wrap: anywhere;
+      word-break: break-word;
       padding: 10px 0 25px;
     }
 
@@ -460,7 +497,6 @@
     }
 
     /* About */
-
     .profile-card {
       max-width: 760px;
       margin: auto;
@@ -494,8 +530,9 @@
 
     #public-profile-bio {
       text-align: justify;
-      line-height: 2.2;
+      line-height: 2;
       white-space: pre-wrap;
+      overflow-wrap: anywhere;
     }
 
     #public-profile-message {
@@ -504,7 +541,6 @@
     }
 
     /* Social */
-
     .social-list {
       display: grid;
       gap: 13px;
@@ -529,7 +565,6 @@
     }
 
     /* Feedback */
-
     .form-card {
       max-width: 680px;
       margin: 0 auto 22px;
@@ -577,7 +612,6 @@
     }
 
     /* Statistics */
-
     .stats-card {
       padding: 25px;
       background: var(--surface);
@@ -602,11 +636,10 @@
     }
 
     /* Back and footer */
-
     .page-actions {
       display: flex;
       justify-content: flex-start;
-      margin-bottom: 22px;
+      margin-bottom: 18px;
     }
 
     .site-footer {
@@ -632,8 +665,13 @@
         padding: 17px 8px;
       }
 
-      .category-grid {
-        grid-template-columns: 1fr;
+      .category-card {
+        min-height: 102px;
+        padding: 16px 18px;
+      }
+
+      .poem-item {
+        padding: 16px 18px;
       }
 
       .header-inner {
@@ -756,33 +794,51 @@
           <div class="category-grid">
 
             <button class="category-card" data-category="غزل" type="button">
+              <span class="category-text">
+                <strong>غزل</strong>
+                <small id="count-غزل">۰ شعرونه</small>
+              </span>
               <span class="category-icon">🌹</span>
-              <span><strong>غزل</strong><small id="count-غزل">د مینې او احساساتو ژبه</small></span>
             </button>
 
             <button class="category-card" data-category="نظم" type="button">
+              <span class="category-text">
+                <strong>نظم</strong>
+                <small id="count-نظم">۰ شعرونه</small>
+              </span>
               <span class="category-icon">📖</span>
-              <span><strong>نظم</strong><small id="count-نظم">د فکر او خیال انځور</small></span>
             </button>
 
             <button class="category-card" data-category="ماهیې" type="button">
+              <span class="category-text">
+                <strong>ماهیې</strong>
+                <small id="count-ماهیې">۰ شعرونه</small>
+              </span>
               <span class="category-icon">🌙</span>
-              <span><strong>ماهیې</strong><small id="count-ماهیې">د پښتني ادب ځانګړی رنګ</small></span>
             </button>
 
             <button class="category-card" data-category="ټپیزې" type="button">
+              <span class="category-text">
+                <strong>ټپیزې</strong>
+                <small id="count-ټپیزې">۰ شعرونه</small>
+              </span>
               <span class="category-icon">🎶</span>
-              <span><strong>ټپیزې</strong><small id="count-ټپیزې">د ولسي ادب خوږه برخه</small></span>
             </button>
 
             <button class="category-card" data-category="ټپې" type="button">
+              <span class="category-text">
+                <strong>ټپې</strong>
+                <small id="count-ټپې">۰ شعرونه</small>
+              </span>
               <span class="category-icon">🍃</span>
-              <span><strong>ټپې</strong><small id="count-ټپې">د ولسي احساساتو غږ</small></span>
             </button>
 
             <button class="category-card" data-category="بیتونه" type="button">
+              <span class="category-text">
+                <strong>بیتونه</strong>
+                <small id="count-بیتونه">۰ شعرونه</small>
+              </span>
               <span class="category-icon">🖋</span>
-              <span><strong>بیتونه</strong><small id="count-بیتونه">لنډې خو ژورې خبرې</small></span>
             </button>
 
           </div>
@@ -1112,7 +1168,7 @@
           "id": "poem-1795527128188",
           "title": "ولې د نن هغسې په خوله باندې خندا نشته؟",
           "category": "نظم",
-          "body": "ولې د نن هغسې په خوله باندې خندا نشته ؟\nولې د ښایسته حُسن کې هغسې ځلا نشته ؟\nولې داسې ژیړه لکه پاڼه د خزان یې نن ؟\nولې داسې مړاوې ته د تږي ګل په شان یې نن ؟\n\nوخانده له هر غم او خفګانه بې پروا شه \nهله زر زري وزرې وکړه په هوا شه \n\nژوند دی خامخا لوړې ژورې خو پکې وي\nڅه ناڅه د خپل پردو خبرې خو پکې وي\nوزغمه هر څو که شپه اوږده وي نو سبا راځي\nهرې یوې تیارې پسې به خامخا رڼا راځي\n\nوخانده د هر یو درد له قصده په خندا شه \nهله زر زري وزرې وکړه په هوا شه \n\nستا په خاموشۍ باندې تمام جهان ویران ښکاري\nهر څه راته بل شانتې ګډوډ او پریشان ښکاري \nنشم د زغملی دا سکوت او خاموشي یاره \nسخته ده قسم دی رانه نکیږي بیخي یاره\n\nمات کړه دا سکوت او د طوطي په شان ګویا شه\nهله زر زري وزرې وکړه په هوا شه \n\nتور رانجه په سترګو کړه ګلان د په اوربل کیږده\nڅو رنګه، رنګه ګلان او څو نور د سنبل کیږده \nژوند څخه قصات واخله خفه ماحول خوشاله کړه\nځان د ښه سینګار کړه رقیبان د په بد حاله کړه \n\nنن د هر یو غم له قصده مسته په ګډا شه \nهله زر زري وزرې وکړه په هوا شه \n\nنن درپسې ډیر خراب یم نن مې ډیر یادیږې\nسم لکه باران مې په زړګي باندې وریږې \nراشه ستا د یوې غیږې اشدِ ضرورت دی \nراشه د کافرې تنهایی بیخي شدت دی \n\nراشه غیږه راکړه د واجد د زړه دوا شه \nهله زر زري وزرې وکړه په هوا شه \n\n1404/6/27\n01:55 ماسښین"
+          "body": "ولې د نن هغسې په خوله باندې خندا نشته ؟\nولې د ښایسته حُسن کې هغسې ځلا نشته ؟\nولې داسې ژیړه لکه پاڼه د خزان یې نن ؟\nولې داسې مړاوې ته د تږي ګل په شان یې نن ؟\n\nوخانده له هر غم او خفګانه بې پروا شه \nهله زر زري وزرې وکړه په هوا شه \n\nژوند دی خامخا لوړې ژورې خو پکې وي\nڅه ناڅه د خپل پردو خبرې خو پکې وي\nوزغمه هر څو که شپه اوږده وي نو سبا راځي\nهرې یوې تیارې پسې به خامخا رڼا راځي\n\nوخانده د هر یو درد له قصده په خندا شه \nهله زر زري وزرې وکړه په هوا شه \n\nستا په خاموشۍ باندې تمام جهان ویران ښکاري\nهر څه راته بل شانتې ګډوډ او پریشان ښکاري \nنشم د زغملی دا سکوت او خاموشي یاره \nسخته ده قسم دی رانه نکیږي بیخي یاره\n\nمات کړه دا سکوت او د طوطي په شان ګویا شه \nهله زر زري وزرې وکړه په هوا شه \n\nتور رانجه په سترګو کړه ګلان د په اوربل کیږده\nڅو رنګه، رنګه ګلان او څو نور د سنبل کیږده \nژوند څخه قصات واخله خفه ماحول خوشاله کړه\nځان د ښه سینګار کړه رقیبان د په بد حاله کړه \n\nنن د هر یو غم له قصده مسته په ګډا شه \nهله زر زري وزرې وکړه په هوا شه \n\nنن درپسې ډیر خراب یم نن مې ډیر یادیږې\nسم لکه باران مې په زړګي باندې وریږې \nراشه ستا د یوې غیږې اشدِ ضرورت دی \nراشه د کافرې تنهایی بیخي شدت دی \n\nراشه غیږه راکړه د واجد د زړه دوا شه \nهله زر زري وزرې وکړه په هوا شه \n\n1404/6/27\n01:55 ماسښین"
         },
         {
           "id": "poem-1795527101111",
@@ -1124,7 +1180,7 @@
           "id": "poem-1795527089842",
           "title": "ادې مورې",
           "category": "غزل",
-          "body": "خپل لالی رانه پردی دی، ادې مورې\nخفه ځکه مې زړګی دی، ادې مورې \n\nچې اوبه په لاس کې واخلم راته اور شي\nدا زما څنګه تندی دی، ادې مورې \n\nله ما مه پوښته چې ولې غلی ناست یې\nزړه مې سل ځایه سوری دی، ادې مورې\n\nچې یو وخت مې په خبرو پسې مړ وو \nرانه موړ هغه سړی دی، ادې مورې \n\nبیا که سل پیونده ورکړي نه جوړیګي \nباور دومره نازک شی دی، ادې مورې\n\nواجد وایي زړګی مه خوره خدای به خیر کړي\nمهربانه زما خدای دی، ادې مورې \n\n1404/5/21\n01:04 غرمه \nغزني قلعه قدم"
+          "body": "خپل لالی رانه پردی دی، ادې مورې\nخفه ځکه مې زړګی دی، ادې مورې \n\nچې اوبه په لاس کې واخلم راته اور شي\nدا زما څنګه تندی دی، ادې مورې \n\nله ما مه پوښته چې ولې غلی ناست یې\nزړه مې سل ځایه سوری دی، ادې مورې \n\nچې یو وخت مې په خبرو پسې مړ وو \nرانه موړ هغه سړی دی، ادې مورې \n\nبیا که سل پیونده ورکړي نه جوړیګي \nباور دومره نازک شی دی، ادې مورې\n\nواجد وایي زړګی مه خوره خدای به خیر کړي\nمهربانه زما خدای دی، ادې مورې \n\n1404/5/21\n01:04 غرمه \nغزني قلعه قدم"
         },
         {
           "id": "poem-1795527076570",
@@ -1244,7 +1300,7 @@
           "id": "poem-1795526787031",
           "title": "د مازیګر ټپې",
           "category": "ټپې",
-          "body": "هېڅوک دې بد راسره نه کړي\nعمر د ژمي مازیګر دی تیر به شینه\n\nیار خو مې شته بې یاره نۀ یم\nد مازیګر په لوبو ورک دی رابه شینه\n\nپه مازیګر دې کډې لاړې\nپه مازیګر د مرورو کډې ځينه\n\nد مازیګر زیړی لمره \nته لا ولا‌ړ یې په ما پرېوتل ګردونه\n\n یو مازیګر نه دی چې تېر شي\nهر مازیګر دې نوی نوی غم راځینه \n\nمازيګرئ ده ښېرې مه کړه\nته به د ناز ښېرې کوې رښتيا به شينه\n\nمازيګر تېر شو ماښام راغلو \nنه جانان راغلو نه مې وکړل ديدنونه\n\nمازیګر هغه وې چې نه وې \nخورې ورې زلفې په بام واړه ومه\n\nد مازیګر زېړیه لمره\nپه نا خبره یار مې وایه سلامونه\n\nمازیګر لمونځ دې قبول مه شه\nدیدن دې پرېښود د ایمان کوې سوالونه\n\nمازيګر لمونځ رانه قضا شو\nنوى مين وم په ديدن نه مړيدمه\n\nچې به په کوم حال وې لالیه\nماته زیړی مازیګر تا رایادوینه\n\nڅنګه چې نن مازیګر تېر شو\nداسې به تېره شي دا ستا لېونۍ مینه\n\nد مازیګر زیړیه لمره\nپه چا ولاړ یې په چا ولویدې په غرونه\n\nد مازیګر زیړیه لمره\nته به ولاړ وې زه به تورې خاورې ومه\n\nد مازيګر زيړيه لمره\nزر پناہ کېږه چی د یار دیدن ته ځمه\n\nزېړه په زېړ مازیګر راغله\nزېړې په زېړه زنه درې ايښي خالونه\n\nهر مازیګر چې سترګه لویږي\nد تنارۀ پاستی وېشه کۀ خاورې ومه\n\nمازیګر ښه وي دیدن وشي\nورکه غرمه شه لیلا کور کوي خوبونه\n\nمازیګر تیر شو سترګه لاړه\nزړګیه ژاړه ودې نکړل دیدنونه"
+          "body": "هېڅوک دې بد راسره نه کړي\nعمر د ژمي مازیګر دی تیر به شینه\n\nیار خو مې شته بې یاره نۀ یم\nد مازیګر په لوبو ورک دی رابه شینه\n\nپه مازیګر دې کډې لاړې\nپه مازیګر د مرورو کډې ځينه\n\nد مازیګر زیړی لمره \nته لا ولا‌ړ یې په ما پرېوتل ګردونه\n\n یو مازیګر نه دی چې تېر شي\nهر مازیګر دې نوی نوی غم راځینه \n\nمازيګرئ ده ښېرې مه کړه\nته به د ناز ښېرې کوې رښتيا به شينه\n\nمازيګر تېر شو ماښام راغلو \nنه جانان راغلو نه مې وکړل ديدنونه\n\nمازیګر هغه وې چې نه وې \nخورې ورې زلفې په بام واړه ومه\n\nد مازیګر زېړیه لمره\nپه نا خبره یار مې وایه سلامونه\n\nمازیګر لمونځ دې قبول مه شه\nدیدن دې پرېښود د ایمان کوې سوالونه\n\nمازیګر لمونځ رانه قضا شو\nنوى مين وم په ديدن نه مړيدمه\n\nچې به په کوم حال وې لالیه\nماته زیړی مازیګر تا رایادوینه\n\nڅنګه چې نن مازیګر تېر شو\nداسې به تېره شي دا ستا لېونۍ مینه\n\nد مازیګر زیړیه لمره\nپه چا ولاړ یې په چا ولویدې په غرونه\n\nد مازیګر زیړیه لمره\nته به ولاړ وې زه به تورې خاورې ومه\n\nد مازيګر زيړيه لمره\nزر پناہ کېږه چی د یار دیدن ته ځمه\n\nزېړه په زېړ مازیګر راغله\nزېړې په زېړه زنه درې ايښي خالونه\n\nهر مازیګر چې سترګه لویږي\nد تنارۀ پاستی وېشه کۀ خاورې ومه\n\nمازیګر ښه وي دیدن وشي\nورکه غرمه شه لیلا کور کوي خوبونه\n\nمازیګر تیر شو سترګه لاړه\nزړګیه ژاړه ودې نکړل دیدنونه"
         },
         {
           "id": "poem-1795526765068",
@@ -1598,7 +1654,7 @@
           "id": "poem-1795525764580",
           "title": "باران",
           "category": "غزل",
-          "body": "توره شپه ده زړه مې وران دی او باران دی\nبې له تانه سخت ګوزران دی او باران دی\n\nاې نن بیا په زړه تنګون باندی اخته یم \nکور نن بیا راته زندان دی او باران دی \n\nد باران د څاڅکو شړکنده آواز دی \nپه رڼاوو ډک آسمان دی او باران دی\n\nد زړه زخم مې بیا ورو ورو تازه کیږي\nکرن خان راته چالان دی او باران دی\n\nستا راکړی لیک تل جیب کې ګرزومه \nکټ مټ خوږ دا ستا په شان دی او باران دی\n\nچې مې بیا د یار جونګړه ورانه نه کړي \nخړ سیلاب بیا را راون دی او باران دی \n\nمینه نوره سخته نه ده ښه خوږه ده\nدروند الزام او سخت هجران دی او باران دی\n\nیو انسان دی نوم یې نشم اخیستلی \nپه《واجد》تر ځان هم ګران دی او باران دی\n\n1401/1/7\nد دوشنبې شپه 10:28 دقیقې"
+          "body": "توره شپه ده زړه مې وران دی او باران دی\nبې له تانه سخت ګوزران دی او باران دی\n\nاې نن بیا په زړه تنګون باندی اخته یم \nکور نن بیا راته زندان دی او باران دی \n\nد باران د څاڅکو شړکنده آواز دی \nپه رڼاوو ډک آسمان دی او باران دی \n\nد زړه زخم مې بیا ورو ورو تازه کیږي\nکرن خان راته چالان دی او باران دی\n\nستا راکړی لیک تل جیب کې ګرزومه \nکټ مټ خوږ دا ستا په شان دی او باران دی\n\nچې مې بیا د یار جونګړه ورانه نه کړي \nخړ سیلاب بیا را راون دی او باران دی \n\nمینه نوره سخته نه ده ښه خوږه ده\nدروند الزام او سخت هجران دی او باران دی\n\nیو انسان دی نوم یې نشم اخیستلی \nپه《واجد》تر ځان هم ګران دی او باران دی\n\n1401/1/7\nد دوشنبې شپه 10:28 دقیقې"
         },
         {
           "id": "poem-1795525754038",
@@ -1634,7 +1690,7 @@
           "id": "poem-1795525688303",
           "title": "فاصلې",
           "category": "غزل",
-          "body": "غټې غټې لویې فاصلې منځ کې\nجوړې شوې زما او د هغې منځ کې \n\nڅوک چې د نوم واخلي بې وفا یاره\nڅړیکه مې شي تیره د سینې منځ کې \n\nخــدایـه! نــور د رحــم تـه اړتیــا لــــرم \nټول عمر مې تیر شو د شکنجې منځ کې \n\nخوله باندې خواږه، په زړه کې تور خلک  \n وي لـکه تــور مــرچ د پتــاسـې منـځ کې \n\nاو که زه شوم مړ ګورئ ما خښ کړئ بیا\nبس د خپل ارمــان د هــدیــرې مــنځ کــې \n\nنه مې خپلېدای شې نه زړه صبر کړي\nبنــد یـمه د داسـې حادثــې منـــځ کـــې \n\nزه واجد پاګل وړیا یاران غواړم \nنه مې شته شینکی لوټ د بټوې منځ کې\n\n1401/7/17\n07:28"
+          "body": "غټې غټې لویې فاصلې منځ کې\nجوړې شوې زما او د هغې منځ کې \n\nڅوک چې د نوم واخلي بې وفا یاره\nڅړیکه مې شي تیره د سینې منځ کې \n\nخــدایـه! نــور د رحــم تـه اړتیــا لــــرم \nټول عمر مې تیر شو د شکنجې منځ کې \n\nخوله باندې خواږه، په زړه کې تور خلک  \n وي لـکه تــور مــرچ د پتــاسـې منـځ کې \n\nاو که زه شوم مړ ګورئ ما خښ کړئ بیا\nبس د خپل ارمــان د هــدیــرې مــنځ کــې \n\nنه مې خپلېدای شې نه زړه صبر کړي\nبنــد یـمه د داسـې حادثــې منـــځ کـــې \n\nزه واجد پاګل وړیا یاران غواړم \nنه مې شته شینکی لوټ د بټوې منځ کې \n\n1401/7/17\n07:28"
         },
         {
           "id": "poem-1795525672293",
@@ -1892,7 +1948,7 @@
           "id": "poem-1795524810106",
           "title": "جیګرخون",
           "category": "غزل",
-          "body": "یوازې ناست، فول جیګرخون، یم غم درون لالیه\nدرد دی د حــد، له دایـــــرې ، څـخه بیـــرون لالیه \n\nکه ته راځې، سد مې په تلـو، دی نور له سـره څخه \nشــوم دیــوانه، ګــد په جنـون، شـومه مجنون لالیه \n\nیمه مانده، ناست په صحــرا، ستا جستجــو کومــه \nپښـې مـې میـده، شـوې تاپسـې، ستـا په لټون لالیه \n\nدی زړه تنګـون، د ویـر ماښـام، ستـا د نشتون کلیزه \nمات مې دی زړه، راغلې تر خوله، له ځیګر خون لالیه\n\nغـم د غُـربت، ګـڼ مشـکلات، ستـا څخـه دُور ګـلابه \nزه تیـروم، لـه ګـړاو ډک، او سـخت ژونـدون لالیه \n\nلمر په لویدو، ماښام شروع، سترګې مې ډکې له نم\nایښـی مـې دی، سـر په زنګـون، له زړه تنګـون لالیه \n\nنیـولـی دی، واجـد لاسـو، کــې د عکسـونو البــوم \nکــوي ژړا، دیـه اختـه، پـه زړه چـودون لالیــه \n\n1401/6/14\n08:44 سه شنبه شپه"
+          "body": "یوازې ناست، فول جیګرخون، یم غم درون لالیه\nدرد دی د حــد، له دایـــــرې ، څـخه بیـــرون لالیه \n\nکه ته راځې، سد مې په تلـو، دی نور له سـره څخه \nشــوم دیــوانه، ګــد په جنـون، شـومه مجنون لالیه \n\nیمه مانده، ناست په صحــرا، ستا جستجــو کومــه \nپښـې مـې میـده، شـوې تاپسـې، ستـا په لټون لالیه \n\nدی زړه تنګـون، د ویـر ماښـام، ستـا د نشتون کلیزه \nمات مې دی زړه، راغلې تر خوله، له ځیګر خون لالیه\n\nغـم د غُـربت، ګـڼ مشـکلات، ستـا څخـه دُور ګـلابه \nزه تیـروم، لـه ګـړاو ډک، او سـخت ژونـدون لالیه \n\nلمر په لویدو، ماښام شروع، سترګې مې ډکې له نم\nایښـی مـې دی، سـر په زنګون، له زړه تنګون لالیه \n\nنیـولـی دی، واجـد لاسـو، کــې د عکسـونو البــوم \nکــوي ژړا، دیـه اختـه، پـه زړه چـودون لالیــه \n\n1401/6/14\n08:44 سه شنبه شپه"
         },
         {
           "id": "poem-1795524799062",
@@ -1977,7 +2033,7 @@
       let activeCategory = null;
       /** @type {PoemItem | null} */
       let activePoem = null;
-      let fontSizePx = 20;
+      let fontSizePx = 16;
       let isHandlingPopstate = false;
       let historySeq = 0;
 
@@ -2065,6 +2121,7 @@
         if (welcome) welcome.classList.add("hidden");
         if (app) app.classList.remove("hidden");
 
+        pageHistory = ["main-menu"];
         renderCategoryCounts();
         renderProfilePublic();
         renderSocialPublic();
@@ -2076,7 +2133,10 @@
 
       const startAppBtn = document.getElementById("start-app");
       if (startAppBtn) {
-        startAppBtn.addEventListener("click", enterMainApp);
+        startAppBtn.addEventListener("click", function (e) {
+          e.preventDefault();
+          enterMainApp();
+        });
       }
 
       /** @param {"categories" | "category-poems" | "reader"} viewName */
@@ -2137,11 +2197,19 @@
           const readerEl = document.getElementById("poem-reader");
           const catViewEl = document.getElementById("category-view");
           if (readerEl && !readerEl.classList.contains("hidden")) {
-            backToCategoryList(true);
+            activePoem = null;
+            setPoetrySubView("category-poems");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            pushAppHistory("back-to-category-list");
             return;
           }
           if (catViewEl && !catViewEl.classList.contains("hidden")) {
-            closeCategoryView(true);
+            activeCategory = null;
+            activePoem = null;
+            setPoetrySubView("categories");
+            renderCategoryCounts();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            pushAppHistory("back-to-categories");
             return;
           }
         }
@@ -2149,10 +2217,10 @@
         if (pageHistory.length > 1) {
           pageHistory.pop();
           const prevPage = pageHistory[pageHistory.length - 1] || "main-menu";
-          showPage(prevPage, false, true);
+          showPage(prevPage, false, false);
         } else {
           pageHistory = ["main-menu"];
-          showPage("main-menu", false, true);
+          showPage("main-menu", false, false);
         }
       }
 
@@ -2164,7 +2232,6 @@
         isHandlingPopstate = true;
         try {
           handleBackNavigation();
-          pushAppHistory("keep-in-app");
         } finally {
           isHandlingPopstate = false;
         }
@@ -2173,332 +2240,312 @@
       document.querySelectorAll("[data-open-page]").forEach(function (btn) {
         btn.addEventListener("click", function () {
           const target = btn.getAttribute("data-open-page");
-          if (target) showPage(target);
+          if (target) {
+            showPage(target, true, false);
+          }
         });
       });
 
       document.querySelectorAll("[data-back]").forEach(function (btn) {
-        btn.addEventListener("click", handleBackNavigation);
+        btn.addEventListener("click", function () {
+          handleBackNavigation();
+        });
       });
 
-      const brandHome = document.getElementById("brand-home");
-      if (brandHome) {
-        brandHome.addEventListener("click", function () {
-          showPage("main-menu");
+      const brandHomeBtn = document.getElementById("brand-home");
+      if (brandHomeBtn) {
+        brandHomeBtn.addEventListener("click", function () {
+          pageHistory = ["main-menu"];
+          showPage("main-menu", false, false);
         });
       }
 
-      const themeToggleBtn = document.getElementById("theme-toggle");
-      if (themeToggleBtn) {
-        themeToggleBtn.addEventListener("click", function () {
+      const themeBtn = document.getElementById("theme-toggle");
+      if (themeBtn) {
+        themeBtn.addEventListener("click", function () {
           applyTheme(!isLightTheme);
         });
+      }
+
+      /** @param {number} n */
+      function formatPashtoNumber(n) {
+        const pashtoDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
+        return String(n).replace(/\d/g, function (d) {
+          return pashtoDigits[Number(d)];
+        });
+      }
+
+      /** @param {number} count */
+      function formatPoemCountLabel(count) {
+        const numText = formatPashtoNumber(count);
+        return count === 1 ? numText + " شعر" : numText + " شعرونه";
       }
 
       function renderCategoryCounts() {
         const poems = getPoems();
         CATEGORIES.forEach(function (cat) {
-          const el = document.getElementById("count-" + cat);
-          if (!el) return;
-          const n = poems.filter(function (p) {
+          const count = poems.filter(function (p) {
             return p.category === cat;
           }).length;
-          el.textContent = n + " شعرونه ثبت شوي";
+          const el = document.getElementById("count-" + cat);
+          if (el) {
+            el.textContent = formatPoemCountLabel(count);
+          }
         });
       }
 
-      /**
-       * @param {string} categoryName
-       * @param {boolean} [skipPushState=false]
-       */
-      function openCategory(categoryName, skipPushState = false) {
+      /** @param {string} categoryName */
+      function openCategory(categoryName) {
         activeCategory = categoryName;
         activePoem = null;
 
-        setPoetrySubView("category-poems");
-
-        const heading = document.getElementById("active-category-heading");
-        if (heading) heading.textContent = categoryName;
+        const headingEl = document.getElementById("active-category-heading");
+        if (headingEl) {
+          headingEl.textContent = categoryName;
+        }
 
         const listEl = document.getElementById("poem-list");
-        if (!listEl) return;
-        listEl.innerHTML = "";
-
         const poems = getPoems().filter(function (p) {
           return p.category === categoryName;
         });
 
-        if (poems.length === 0) {
-          const empty = document.createElement("div");
-          empty.className = "poem-item";
-          empty.innerHTML = "<h3>په دې کټګورۍ کې لا شعر نشته</h3><p>د مدیریت له لارې شعر اضافه کړئ.</p>";
-          listEl.appendChild(empty);
-        } else {
-          poems.forEach(function (poem) {
-            const item = document.createElement("div");
-            item.className = "poem-item";
+        if (listEl) {
+          listEl.innerHTML = "";
+          if (poems.length === 0) {
+            const emptyMsg = document.createElement("p");
+            emptyMsg.style.cssText = "text-align:center;color:var(--muted);padding:30px;";
+            emptyMsg.textContent = "په دې برخه کې اوس مهال شعر نشته.";
+            listEl.appendChild(emptyMsg);
+          } else {
+            poems.forEach(function (poem) {
+              const card = document.createElement("button");
+              card.type = "button";
+              card.className = "poem-item";
 
-            const h3 = document.createElement("h3");
-            h3.textContent = poem.title || "بې سرلیکه";
+              const title = document.createElement("h3");
+              title.textContent = poem.title;
 
-            const p = document.createElement("p");
-            p.textContent = (poem.body || "").replace(/\n+/g, " / ");
+              const snippet = document.createElement("p");
+              const lines = String(poem.body || "").split(/\r?\n/).filter(function (line) {
+                return line.trim() !== "";
+              });
+              snippet.textContent = lines.slice(0, 2).join(" / ");
 
-            item.appendChild(h3);
-            item.appendChild(p);
-            item.addEventListener("click", function () {
-              openPoemReader(poem);
+              card.appendChild(title);
+              card.appendChild(snippet);
+
+              card.addEventListener("click", function () {
+                openPoem(poem.id);
+              });
+
+              listEl.appendChild(card);
             });
-            listEl.appendChild(item);
-          });
+          }
         }
 
+        setPoetrySubView("category-poems");
         window.scrollTo({ top: 0, behavior: "smooth" });
-        if (!skipPushState) {
-          pushAppHistory("category:" + categoryName);
-        }
+        pushAppHistory("category:" + categoryName);
       }
 
-      /** @param {boolean} [skipPushState=false] */
-      function closeCategoryView(skipPushState = false) {
-        activeCategory = null;
-        activePoem = null;
-        setPoetrySubView("categories");
-        renderCategoryCounts();
-        if (!skipPushState) {
-          pushAppHistory("categories-list");
-        }
-      }
-
-      document.querySelectorAll(".category-card[data-category]").forEach(function (btn) {
-        btn.addEventListener("click", function () {
-          const cat = btn.getAttribute("data-category");
-          if (cat) openCategory(cat);
+      document.querySelectorAll(".category-card[data-category]").forEach(function (card) {
+        card.addEventListener("click", function () {
+          const cat = card.getAttribute("data-category");
+          if (cat) {
+            openCategory(cat);
+          }
         });
       });
 
-      const closeCatBtn = document.getElementById("close-category-btn");
-      if (closeCatBtn) {
-        closeCatBtn.addEventListener("click", function () {
-          closeCategoryView(false);
+      const closeCategoryBtn = document.getElementById("close-category-btn");
+      if (closeCategoryBtn) {
+        closeCategoryBtn.addEventListener("click", function () {
+          activeCategory = null;
+          activePoem = null;
+          setPoetrySubView("categories");
+          renderCategoryCounts();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          pushAppHistory("close-category");
         });
       }
 
-      /**
-       * @param {PoemItem} poem
-       * @param {boolean} [skipPushState=false]
-       */
-      function openPoemReader(poem, skipPushState = false) {
+      /** @param {string} poemId */
+      function openPoem(poemId) {
+        const poem = getPoems().find(function (p) {
+          return p.id === poemId;
+        });
+        if (!poem) return;
+
         activePoem = poem;
-        setPoetrySubView("reader");
+        activeCategory = poem.category;
 
         const titleEl = document.getElementById("poem-title");
-        const bodyEl = document.getElementById("poem-content");
-        const catLabel = document.getElementById("reader-category-label");
-        const shareStatus = document.getElementById("reader-share-status");
+        const contentEl = document.getElementById("poem-content");
+        const catLabelEl = document.getElementById("reader-category-label");
+        const shareStatusEl = document.getElementById("reader-share-status");
 
-        if (titleEl) titleEl.textContent = poem.title || "بې سرلیکه";
-        if (bodyEl) bodyEl.textContent = poem.body || "";
-        if (catLabel) catLabel.textContent = "کټګوري: " + (poem.category || activeCategory || "");
-        if (shareStatus) shareStatus.textContent = "";
+        if (titleEl) titleEl.textContent = poem.title;
+        if (contentEl) contentEl.textContent = poem.body;
+        if (catLabelEl) catLabelEl.textContent = "برخه: " + poem.category;
+        if (shareStatusEl) shareStatusEl.textContent = "";
 
-        applyFontSize(fontSizePx);
+        setPoetrySubView("reader");
         window.scrollTo({ top: 0, behavior: "smooth" });
-
-        if (!skipPushState) {
-          pushAppHistory("poem:" + poem.id);
-        }
-      }
-
-      /** @param {boolean} [skipPushState=false] */
-      function backToCategoryList(skipPushState = false) {
-        activePoem = null;
-        if (activeCategory) {
-          openCategory(activeCategory, true);
-        } else {
-          setPoetrySubView("categories");
-        }
-        if (!skipPushState) {
-          pushAppHistory("back-to-category-list");
-        }
+        pushAppHistory("poem:" + poem.id);
       }
 
       const backToListBtn = document.getElementById("back-to-list-btn");
       if (backToListBtn) {
         backToListBtn.addEventListener("click", function () {
-          backToCategoryList(false);
+          const catToReturn = activeCategory;
+          activePoem = null;
+          if (catToReturn) {
+            openCategory(catToReturn);
+          } else {
+            setPoetrySubView("categories");
+          }
         });
       }
 
       /** @param {number} px */
-      function applyFontSize(px) {
-        fontSizePx = Math.max(15, Math.min(36, px));
+      function setPoemFontSize(px) {
+        fontSizePx = Math.max(13, Math.min(34, px));
         document.documentElement.style.setProperty("--poem-size", fontSizePx + "px");
       }
 
-      const fontPlusBtn = document.getElementById("font-plus");
-      if (fontPlusBtn) {
-        fontPlusBtn.addEventListener("click", function () {
-          applyFontSize(fontSizePx + 2);
-        });
-      }
-
       const fontMinusBtn = document.getElementById("font-minus");
+      const fontResetBtn = document.getElementById("font-reset");
+      const fontPlusBtn = document.getElementById("font-plus");
+
       if (fontMinusBtn) {
         fontMinusBtn.addEventListener("click", function () {
-          applyFontSize(fontSizePx - 2);
+          setPoemFontSize(fontSizePx - 2);
         });
       }
-
-      const fontResetBtn = document.getElementById("font-reset");
       if (fontResetBtn) {
         fontResetBtn.addEventListener("click", function () {
-          applyFontSize(20);
+          setPoemFontSize(16);
+        });
+      }
+      if (fontPlusBtn) {
+        fontPlusBtn.addEventListener("click", function () {
+          setPoemFontSize(fontSizePx + 2);
         });
       }
 
       const sharePoemBtn = document.getElementById("share-poem-btn");
       if (sharePoemBtn) {
-        sharePoemBtn.addEventListener("click", function () {
-          const statusEl = document.getElementById("reader-share-status");
+        sharePoemBtn.addEventListener("click", async function () {
           if (!activePoem) return;
-          const shareText = (activePoem.title || "") + "\n\n" + (activePoem.body || "") + "\n\n— کړاوونه";
+          const shareStatus = document.getElementById("reader-share-status");
+          const shareText =
+            activePoem.title +
+            " (" +
+            activePoem.category +
+            ")\n\n" +
+            activePoem.body +
+            "\n\n— کړاوونه؛ د شعر او ادب کور";
 
-          if (navigator.share) {
-            navigator.share({
-              title: activePoem.title || "کړاوونه",
-              text: shareText
-            }).then(function () {
-              if (statusEl) statusEl.textContent = "شعر شریک شو.";
-            }).catch(function () {
-              copyFallback(shareText, statusEl);
-            });
-          } else {
-            copyFallback(shareText, statusEl);
+          try {
+            if (navigator.share) {
+              await navigator.share({
+                title: activePoem.title + " | کړاوونه",
+                text: shareText
+              });
+              if (shareStatus) shareStatus.textContent = "شعر په بریالیتوب شریک شو.";
+            } else if (navigator.clipboard && navigator.clipboard.writeText) {
+              await navigator.clipboard.writeText(shareText);
+              if (shareStatus) shareStatus.textContent = "شعر کاپي شو؛ اوس یې هر چېرې شریکولی شئ.";
+            } else {
+              if (shareStatus) shareStatus.textContent = "شریکول په دې براوزر کې ملاتړ نه لري.";
+            }
+          } catch (err) {
+            if (shareStatus) shareStatus.textContent = "شریکول لغوه یا نیمګړی پاتې شو.";
           }
         });
       }
 
-      /**
-       * @param {string} text
-       * @param {HTMLElement | null} statusEl
-       */
-      function copyFallback(text, statusEl) {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(text).then(function () {
-            if (statusEl) statusEl.textContent = "شعر کاپي شو؛ اوس یې هر چېرې شریکولای شئ.";
-          }).catch(function () {
-            if (statusEl) statusEl.textContent = "د شریکولو امکان ونه موندل شو.";
-          });
-        } else {
-          if (statusEl) statusEl.textContent = "د شریکولو امکان ونه موندل شو.";
-        }
-      }
-
       function renderProfilePublic() {
-        const p = getProfile();
+        const profile = getProfile();
+        const photoEl = document.getElementById("public-profile-photo");
         const nameEl = document.getElementById("public-profile-name");
         const fatherEl = document.getElementById("public-profile-father");
         const bioEl = document.getElementById("public-profile-bio");
         const msgEl = document.getElementById("public-profile-message");
-        const photoEl = /** @type {HTMLImageElement | null} */ (document.getElementById("public-profile-photo"));
 
-        if (nameEl) nameEl.textContent = p.name || DEFAULT_PROFILE.name;
-        if (fatherEl) fatherEl.textContent = p.father || DEFAULT_PROFILE.father;
-        if (bioEl) bioEl.textContent = p.bio || DEFAULT_PROFILE.bio;
-        if (msgEl) msgEl.textContent = p.message || "";
-        if (photoEl && p.image) {
-          photoEl.src = p.image;
+        if (photoEl) {
+          const imgSrc = profile.image || DEFAULT_PHOTO;
+          photoEl.setAttribute("src", imgSrc);
+          photoEl.onerror = function () {
+            photoEl.onerror = null;
+            photoEl.setAttribute(
+              "src",
+              "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Crect width='150' height='150' rx='75' fill='%23222222'/%3E%3Ctext x='75' y='95' font-size='65' text-anchor='middle' fill='%23d6ad55'%3E✒%3C/text%3E%3C/svg%3E"
+            );
+          };
+        }
+        if (nameEl) nameEl.textContent = profile.name || DEFAULT_PROFILE.name;
+        if (fatherEl) fatherEl.textContent = profile.father || DEFAULT_PROFILE.father;
+        if (bioEl) bioEl.textContent = profile.bio || DEFAULT_BIO;
+        if (msgEl) {
+          msgEl.textContent = profile.message || "";
+          msgEl.classList.toggle("hidden", !profile.message);
         }
       }
 
+      /**
+       * @param {string} rawUrl
+       * @returns {string}
+       */
+      function sanitizeUrl(rawUrl) {
+        const trimmed = String(rawUrl || "").trim();
+        if (!trimmed) return "";
+        if (/^(https?:\/\/|mailto:|tel:)/i.test(trimmed)) {
+          return trimmed;
+        }
+        if (/^[\w.-]+\.[a-z]{2,}/i.test(trimmed)) {
+          return "https://" + trimmed;
+        }
+        return "";
+      }
+
       function renderSocialPublic() {
-        const s = getSocial();
+        const social = getSocial();
         const container = document.getElementById("public-social-links");
         if (!container) return;
 
-        /** @type {Array<{key: keyof SocialData, label: string, icon: string}>} */
-        const linksConfig = [
+        /** @type {{key: keyof SocialData, label: string, icon: string}[]} */
+        const items = [
           { key: "facebook", label: "Facebook", icon: "📘" },
-          { key: "youtube", label: "YouTube", icon: "🎬" },
+          { key: "youtube", label: "YouTube", icon: "▶️" },
           { key: "tiktok", label: "TikTok", icon: "🎵" },
           { key: "whatsapp", label: "WhatsApp", icon: "💬" },
-          { key: "other", label: "نور لینک", icon: "🔗" }
+          { key: "other", label: "نور لینکونه", icon: "🔗" }
         ];
 
         container.innerHTML = "";
         let anyAdded = false;
 
-        linksConfig.forEach(function (item) {
-          const val = (s[item.key] || "").trim();
-          if (val) {
+        items.forEach(function (item) {
+          const safeUrl = sanitizeUrl(social[item.key]);
+          if (safeUrl) {
             anyAdded = true;
-            const a = document.createElement("a");
-            a.className = "social-link";
-            a.href = val;
-            a.target = "_blank";
-            a.rel = "noopener noreferrer";
-            a.textContent = item.icon + "  " + item.label;
-            container.appendChild(a);
+            const link = document.createElement("a");
+            link.className = "social-link";
+            link.href = safeUrl;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            link.textContent = item.icon + "  " + item.label;
+            container.appendChild(link);
           }
         });
 
         if (!anyAdded) {
-          const note = document.createElement("p");
-          note.className = "section-subtitle";
-          note.textContent = "تر اوسه ټولنیز لینکونه نه دي اضافه شوي.";
-          container.appendChild(note);
+          const emptyNote = document.createElement("p");
+          emptyNote.style.cssText = "text-align:center;color:var(--muted);padding:20px;";
+          emptyNote.textContent = "تر اوسه کوم ټولنیز لینک نه دی ثبت شوی.";
+          container.appendChild(emptyNote);
         }
-      }
-
-      const feedbackForm = document.getElementById("feedback-form");
-      if (feedbackForm) {
-        feedbackForm.addEventListener("submit", function (e) {
-          e.preventDefault();
-          const nameInput = /** @type {HTMLInputElement | null} */ (document.getElementById("feedback-name"));
-          const msgInput = /** @type {HTMLTextAreaElement | null} */ (document.getElementById("feedback-message"));
-          const statusEl = document.getElementById("feedback-status");
-
-          const name = nameInput ? nameInput.value.trim() : "";
-          const message = msgInput ? msgInput.value.trim() : "";
-
-          if (!message) {
-            if (statusEl) statusEl.textContent = "مهرباني وکړئ خپل پیغام ولیکئ.";
-            return;
-          }
-
-          const list = getFeedbacks();
-          list.unshift({
-            id: "fb-" + Date.now(),
-            name: name || "ناڅرګند لوستونکی",
-            message: message,
-            date: new Date().toLocaleDateString("fa-AF")
-          });
-          saveFeedbacks(list);
-
-          if (nameInput) nameInput.value = "";
-          if (msgInput) msgInput.value = "";
-          if (statusEl) statusEl.textContent = "مننه! ستاسې نظر په بریالیتوب ثبت شو.";
-        });
-      }
-
-      function renderStatistics() {
-        const poems = getPoems();
-        const totalEl = document.getElementById("total-poems");
-        const breakdownEl = document.getElementById("category-statistics");
-
-        if (totalEl) totalEl.textContent = String(poems.length);
-        if (!breakdownEl) return;
-
-        breakdownEl.innerHTML = "";
-        CATEGORIES.forEach(function (cat) {
-          const count = poems.filter(function (p) {
-            return p.category === cat;
-          }).length;
-          const row = document.createElement("div");
-          row.textContent = "• " + cat + ": " + count + " شعرونه";
-          breakdownEl.appendChild(row);
-        });
       }
 
       function renderAppInfoPublic() {
@@ -2512,13 +2559,81 @@
         if (creationEl) creationEl.textContent = info.creation || DEFAULT_APP_INFO.creation;
       }
 
+      function renderStatistics() {
+        const poems = getPoems();
+        const totalEl = document.getElementById("total-poems");
+        const catStatsEl = document.getElementById("category-statistics");
+
+        if (totalEl) {
+          totalEl.textContent = formatPashtoNumber(poems.length);
+        }
+
+        if (catStatsEl) {
+          catStatsEl.innerHTML = "";
+          CATEGORIES.forEach(function (cat) {
+            const count = poems.filter(function (p) {
+              return p.category === cat;
+            }).length;
+            const row = document.createElement("div");
+            row.style.cssText =
+              "display:flex;justify-content:space-between;align-items:center;padding:8px 4px;border-bottom:1px solid var(--border);";
+
+            const catName = document.createElement("strong");
+            catName.style.color = "var(--gold)";
+            catName.textContent = cat;
+
+            const catCount = document.createElement("span");
+            catCount.textContent = formatPoemCountLabel(count);
+
+            row.appendChild(catName);
+            row.appendChild(catCount);
+            catStatsEl.appendChild(row);
+          });
+        }
+      }
+
+      const feedbackForm = document.getElementById("feedback-form");
+      if (feedbackForm) {
+        feedbackForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+          const nameInput = /** @type {HTMLInputElement | null} */ (document.getElementById("feedback-name"));
+          const msgInput = /** @type {HTMLTextAreaElement | null} */ (document.getElementById("feedback-message"));
+          const statusEl = document.getElementById("feedback-status");
+
+          const nameVal = nameInput ? nameInput.value.trim() : "";
+          const msgVal = msgInput ? msgInput.value.trim() : "";
+
+          if (!msgVal) {
+            if (statusEl) statusEl.textContent = "مهرباني وکړئ خپل پیغام ولیکئ.";
+            return;
+          }
+
+          const list = getFeedbacks();
+          list.unshift({
+            id: "fb-" + Date.now(),
+            name: nameVal || "ورور / خور لوستونکی",
+            message: msgVal,
+            date: new Date().toLocaleDateString("ps-AF")
+          });
+          saveFeedbacks(list);
+
+          if (nameInput) nameInput.value = "";
+          if (msgInput) msgInput.value = "";
+          if (statusEl) {
+            statusEl.textContent = "مننه! ستاسې نظر یا وړاندیز په بریالیتوب ثبت شو.";
+          }
+        });
+      }
+
       applyTheme(false);
       renderCategoryCounts();
       renderProfilePublic();
       renderSocialPublic();
       renderAppInfoPublic();
       renderStatistics();
+      showPage("main-menu", false, true);
     });
   </script>
+
 </body>
 </html> 
