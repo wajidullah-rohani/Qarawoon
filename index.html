@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#101010">
   <meta name="description" content="کړاوونه؛ د پښتو شعر او ادب ادبي ټولګه">
-  <link rel="manifest" href="manifest.json">
   <title>کړاوونه | د شعر او ادب کور</title>
 
   <style>
@@ -1066,6 +1065,14 @@
      * @property {string} creation
      */
 
+    /**
+     * @typedef {Object} NavStep
+     * @property {"welcome" | "main-menu" | "page" | "category" | "poem"} kind
+     * @property {string} [page]
+     * @property {string | null} [category]
+     * @property {string | null} [poemId]
+     */
+
     document.addEventListener("DOMContentLoaded", function () {
       /** @type {string[]} */
       const CATEGORIES = ["غزل", "نظم", "ماهیې", "ټپیزې", "ټپې", "بیتونه"];
@@ -1480,7 +1487,7 @@
           "id": "poem-1795526270294",
           "title": "د سګرت نشه",
           "category": "غزل",
-          "body": "لکــه نشــه د سګــرټ، وې راســره څــو شېــبې\nدربانــدې زړه مــې ولــو، تازه، تازه څــو شېــبې  \n\nچې مې لالی تر څنګ وي، وخت څومره زر تیریګي\nاوږدې د کال غوندې شي، د بیلتانه څو شېبې \n\nد بعضــو، بعضــو یاري، لکــه د ژاولـو غــوندې \nفقـط یــو څــو دقیـقې، یې وي مزه څو شېبې\n\nما پــه هـــوا کـړه یــو وار، مــاتـه وزرې راکـــړه \nله سَره پړوني سپین مخ، کړه راښکاره څو شېبې\n\nنن مې بیخي یادیدې، خو کاش چې لرې نه وای\nنن اوریدلې مـې بیــا، بیخي په زړه څــو شــېبې\n\n ستا سترګې یاد باندې رانه وړې لعنت،بیا لعنت شه \nنن مې ډېر زور راوړ، پخــپله حافظــه څــو شېبې\n\nزه ستړی شوی یم، ډیر ستړی یم، دمه مې کړه لږ \nواجد مړوند باندې مې کړه چیرته ویده څو شېبې\n\n1402/2/8\n09:49"
+          "body": "لکــه نشــه د سګــرټ، وې راســره څــو شېــبې\nدربانــدې زړه مــې ولــو، تازه، تازه څــو شېــبې  \n\nچې مې لالی تر څنګ وي، وخت څومره زر تیریګي\nاوږدې د کال غوندې شي، د بیلتانه څو شېبې \n\nد بعضــو، بعضــو یاري، لکــه د ژاولـو غــوندې \nفقـط یــو څــو دقیـقې، یې وي مزه څو شېبې\n\nما پــه هـــوا کـړه یــو وار، مــاتـه وزرې راکـــړه \nله سَره پړوني سپین مخ، کړه راښکاره څو شېبې\n\nنن مې بیخي یادیدې، خو کاش چې لرې نه وای\nنن اوریدلې مـې بیــا، بیخي په زړه څــو شېــبې\n\n ستا سترګې یاد باندې رانه وړې لعنت،بیا لعنت شه \nنن مې ډېر زور راوړ، پخــپله حافظــه څــو شېبې\n\nزه ستړی شوی یم، ډیر ستړی یم، دمه مې کړه لږ \nواجد مړوند باندې مې کړه چیرته ویده څو شېبې\n\n1402/2/8\n09:49"
         },
         {
           "id": "poem-1795526253626",
@@ -1828,7 +1835,7 @@
           "id": "poem-1795525058830",
           "title": "اوښکې",
           "category": "غزل",
-          "body": "زما په مخکې اوښکې مه تویوه ته لالیه\nګوره نرۍ دی اوس وچوي زما زړه لالیه \n\nپه زړه کې دومره مې ساتلې درته مینه ده چې\nحیران یم څنګه یې بیان کړمه په خوله لالیه\n\nخوږو کتو د راله ژوند په سره تنور بدل دی \nپریږده سوزیږم دې راګوره تل خواږه لالیه \n\nتا رانه پوښتي وو چې څومره به وم ګران درباندې\nراشه اوس شګې د صحرا حسابوه لالیه\n\nزه چې هر څومره وم خفه ستا په یو غږ داسې شم\n لکه په اور باندې چې تویې کړې اوبه لالیه\n\nستا خوږه ژبه ستا خواږه الفاظ د جان او قربان\nواجد یې کړ ستي ستي لمبه لمبه لالیه \n\n1401/9/16\n08:47"
+          "body": "زما په مخکې اوښکې مه تویوه ته لالیه\nګوره نرۍ دی اوس وچوي زما زړه لالیه \n\nپه زړه کې دومره مې ساتلې درته مینه ده چې\nحیران یم څنګه یې بیان کړمه په خوله لالیه\n\nخوږو کتو د راله ژوند په سره تنور بدل دی \nپریږده سوزیږم دې راګوره تل خواږه لالیه \n\nتا رانه پوښتي وو چې څومره به وم ګران درباندې\nراشه اوس شګې د صحرا حسابوه لالیه \n\nزه چې هر څومره وم خفه ستا په یو غږ داسې شم\n لکه په اور باندې چې تویې کړې اوبه لالیه\n\nستا خوږه ژبه ستا خواږه الفاظ د جان او قربان\nواجد یې کړ ستي ستي لمبه لمبه لالیه \n\n1401/9/16\n08:47"
         },
         {
           "id": "poem-1795525045193",
@@ -2013,6 +2020,32 @@
         creation: "په دې کاریال کې غزلونه، نظمونه، ماهیې، ټپیزې، ټپې او بیتونه په جلا جلا برخو کې تنظیم شوي او د پښتو ژبې او ادب د خدمت په موخه جوړ شوي دي."
       };
 
+      const STORAGE_KEYS = {
+        theme: "karawona_offline_theme",
+        feedbacks: "karawona_offline_feedbacks",
+        photoDataUrl: "karawona_offline_photo_dataurl",
+        fontSize: "karawona_offline_fontsize"
+      };
+
+      /** @param {string} key @param {string} fallback */
+      function readLocal(key, fallback) {
+        try {
+          const val = window.localStorage.getItem(key);
+          return val !== null ? val : fallback;
+        } catch (err) {
+          return fallback;
+        }
+      }
+
+      /** @param {string} key @param {string} val */
+      function writeLocal(key, val) {
+        try {
+          window.localStorage.setItem(key, val);
+        } catch (err) {
+          // Ignore storage errors
+        }
+      }
+
       /** @type {PoemItem[]} */
       const sessionPoems = DEFAULT_POEMS.map(function (p) {
         return Object.assign({}, p);
@@ -2022,20 +2055,26 @@
       /** @type {SocialData} */
       const sessionSocial = Object.assign({}, DEFAULT_SOCIAL);
       /** @type {FeedbackItem[]} */
-      let sessionFeedbacks = [];
+      let sessionFeedbacks = (function () {
+        try {
+          const parsed = JSON.parse(readLocal(STORAGE_KEYS.feedbacks, "[]"));
+          return Array.isArray(parsed) ? parsed : [];
+        } catch (err) {
+          return [];
+        }
+      })();
       /** @type {AppInfoData} */
       const sessionAppInfo = Object.assign({}, DEFAULT_APP_INFO);
-      let isLightTheme = false;
+      let isLightTheme = readLocal(STORAGE_KEYS.theme, "0") === "1";
 
-      /** @type {string[]} */
-      let pageHistory = ["main-menu"];
+      /** @type {NavStep[]} */
+      let navStack = [{ kind: "welcome" }];
       /** @type {string | null} */
       let activeCategory = null;
       /** @type {PoemItem | null} */
       let activePoem = null;
-      let fontSizePx = 16;
-      let isHandlingPopstate = false;
-      let historySeq = 0;
+      let fontSizePx = Math.min(30, Math.max(13, Number(readLocal(STORAGE_KEYS.fontSize, "16")) || 16));
+      let isHandlingPopState = false;
 
       /** @returns {PoemItem[]} */
       function getPoems() {
@@ -2060,6 +2099,7 @@
       /** @param {FeedbackItem[]} list */
       function saveFeedbacks(list) {
         sessionFeedbacks = list.slice();
+        writeLocal(STORAGE_KEYS.feedbacks, JSON.stringify(sessionFeedbacks));
       }
 
       /** @returns {AppInfoData} */
@@ -2071,72 +2111,11 @@
       function applyTheme(light) {
         isLightTheme = Boolean(light);
         document.body.classList.toggle("light-theme", isLightTheme);
+        writeLocal(STORAGE_KEYS.theme, isLightTheme ? "1" : "0");
         const toggleBtn = document.getElementById("theme-toggle");
         if (toggleBtn) {
           toggleBtn.textContent = isLightTheme ? "☾" : "☼";
         }
-        const metaTheme = document.querySelector('meta[name="theme-color"]');
-        if (metaTheme) {
-          metaTheme.setAttribute("content", isLightTheme ? "#f4f0e7" : "#101010");
-        }
-      }
-
-      /** @returns {string} */
-      function getCurrentPageName() {
-        const activeEl = document.querySelector("[data-page].active-page");
-        return activeEl ? (activeEl.getAttribute("data-page") || "main-menu") : "main-menu";
-      }
-
-      /** @returns {{page: string, category: string | null, poemId: string | null}} */
-      function captureViewState() {
-        return {
-          page: getCurrentPageName(),
-          category: activeCategory,
-          poemId: activePoem ? activePoem.id : null
-        };
-      }
-
-      /** @param {string} reason */
-      function pushAppHistory(reason) {
-        if (isHandlingPopstate) return;
-        const welcomeEl = document.getElementById("welcome-screen");
-        if (welcomeEl && !welcomeEl.classList.contains("hidden")) return;
-        try {
-          historySeq += 1;
-          const stateObj = {
-            karawonaApp: true,
-            seq: historySeq,
-            reason: reason,
-            view: captureViewState()
-          };
-          window.history.pushState(stateObj, "", window.location.href);
-        } catch (err) {
-          // Ignore pushState errors in restricted contexts
-        }
-      }
-
-      function enterMainApp() {
-        const welcome = document.getElementById("welcome-screen");
-        const app = document.getElementById("app-content");
-        if (welcome) welcome.classList.add("hidden");
-        if (app) app.classList.remove("hidden");
-
-        pageHistory = ["main-menu"];
-        renderCategoryCounts();
-        renderProfilePublic();
-        renderSocialPublic();
-        renderAppInfoPublic();
-        renderStatistics();
-        showPage("main-menu", false, true);
-        pushAppHistory("enter-app");
-      }
-
-      const startAppBtn = document.getElementById("start-app");
-      if (startAppBtn) {
-        startAppBtn.addEventListener("click", function (e) {
-          e.preventDefault();
-          enterMainApp();
-        });
       }
 
       /** @param {"categories" | "category-poems" | "reader"} viewName */
@@ -2149,107 +2128,455 @@
         if (readerView) readerView.classList.toggle("hidden", viewName !== "reader");
       }
 
-      /**
-       * @param {string} pageName
-       * @param {boolean} [recordHistory=true]
-       * @param {boolean} [skipPushState=false]
-       */
-      function showPage(pageName, recordHistory = true, skipPushState = false) {
-        const currentActive = getCurrentPageName();
+      /** @param {NavStep} step */
+      function renderStepView(step) {
+        const welcomeEl = document.getElementById("welcome-screen");
+        const appEl = document.getElementById("app-content");
 
-        document.querySelectorAll("[data-page]").forEach(function (sec) {
-          const secName = sec.getAttribute("data-page");
-          sec.classList.toggle("active-page", secName === pageName);
-        });
-
-        if (recordHistory && currentActive !== pageName) {
-          if (pageHistory[pageHistory.length - 1] !== pageName) {
-            pageHistory.push(pageName);
-          }
-        }
-
-        if (pageName === "poetry") {
+        if (!step || step.kind === "welcome") {
           activeCategory = null;
           activePoem = null;
+          if (welcomeEl) welcomeEl.classList.remove("hidden");
+          if (appEl) appEl.classList.add("hidden");
+          document.querySelectorAll("[data-page]").forEach(function (sec) {
+            sec.classList.toggle("active-page", sec.getAttribute("data-page") === "main-menu");
+          });
           setPoetrySubView("categories");
-          renderCategoryCounts();
-        } else if (pageName === "statistics") {
-          renderStatistics();
-        } else if (pageName === "about") {
-          renderProfilePublic();
-        } else if (pageName === "social") {
-          renderSocialPublic();
-        } else if (pageName === "app-info") {
-          renderAppInfoPublic();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          return;
         }
 
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        if (welcomeEl) welcomeEl.classList.add("hidden");
+        if (appEl) appEl.classList.remove("hidden");
 
-        if (!skipPushState && recordHistory && currentActive !== pageName) {
-          pushAppHistory("page:" + pageName);
-        }
-      }
+        if (step.kind === "main-menu" || step.kind === "page") {
+          const targetPage = step.kind === "main-menu" ? "main-menu" : (step.page || "main-menu");
+          activeCategory = null;
+          activePoem = null;
 
-      function handleBackNavigation() {
-        const currentPage = getCurrentPageName();
+          document.querySelectorAll("[data-page]").forEach(function (sec) {
+            sec.classList.toggle("active-page", sec.getAttribute("data-page") === targetPage);
+          });
 
-        if (currentPage === "poetry") {
-          const readerEl = document.getElementById("poem-reader");
-          const catViewEl = document.getElementById("category-view");
-          if (readerEl && !readerEl.classList.contains("hidden")) {
-            activePoem = null;
-            setPoetrySubView("category-poems");
-            if (activeCategory) {
-              renderCategoryPoems(activeCategory);
-            }
-            window.scrollTo({ top: 0, behavior: "smooth" });
-            pushAppHistory("back-to-category-poems");
-            return;
-          }
-          if (catViewEl && !catViewEl.classList.contains("hidden")) {
-            activeCategory = null;
-            activePoem = null;
+          if (targetPage === "poetry") {
+            updateCategoryCounts();
             setPoetrySubView("categories");
-            renderCategoryCounts();
-            window.scrollTo({ top: 0, behavior: "smooth" });
-            pushAppHistory("back-to-categories");
-            return;
+          } else if (targetPage === "about") {
+            renderProfile();
+          } else if (targetPage === "social") {
+            renderSocial();
+          } else if (targetPage === "statistics") {
+            renderStatistics();
+          } else if (targetPage === "app-info") {
+            renderAppInfo();
           }
+
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          return;
         }
 
-        if (pageHistory.length > 1) {
-          pageHistory.pop();
-          const prevPage = pageHistory[pageHistory.length - 1] || "main-menu";
-          showPage(prevPage, false, true);
-          pushAppHistory("back-to:" + prevPage);
-        } else {
-          showPage("main-menu", false, true);
-          pushAppHistory("back-to:main-menu");
+        if (step.kind === "category") {
+          const cat = step.category || CATEGORIES[0];
+          activeCategory = cat;
+          activePoem = null;
+
+          document.querySelectorAll("[data-page]").forEach(function (sec) {
+            sec.classList.toggle("active-page", sec.getAttribute("data-page") === "poetry");
+          });
+
+          const heading = document.getElementById("active-category-heading");
+          if (heading) heading.textContent = cat;
+
+          const poems = getPoems().filter(function (p) {
+            return p.category === cat;
+          });
+          renderPoemList(poems);
+          setPoetrySubView("category-poems");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          return;
+        }
+
+        if (step.kind === "poem") {
+          const poems = getPoems();
+          let poem = null;
+          if (step.poemId) {
+            poem = poems.find(function (p) {
+              return String(p.id) === String(step.poemId);
+            }) || null;
+          }
+          if (!poem && step.category) {
+            poem = poems.find(function (p) {
+              return p.category === step.category;
+            }) || null;
+          }
+          if (!poem && poems.length > 0) {
+            poem = poems[0];
+          }
+
+          activePoem = poem;
+          activeCategory = poem ? poem.category : (step.category || null);
+
+          document.querySelectorAll("[data-page]").forEach(function (sec) {
+            sec.classList.toggle("active-page", sec.getAttribute("data-page") === "poetry");
+          });
+
+          if (poem) {
+            const titleEl = document.getElementById("poem-title");
+            const bodyEl = document.getElementById("poem-content");
+            const catLabelEl = document.getElementById("reader-category-label");
+            const shareStatus = document.getElementById("reader-share-status");
+            if (titleEl) titleEl.textContent = poem.title;
+            if (bodyEl) bodyEl.textContent = poem.body;
+            if (catLabelEl) catLabelEl.textContent = poem.category || "";
+            if (shareStatus) shareStatus.textContent = "";
+          }
+
+          setPoetrySubView("reader");
+          window.scrollTo({ top: 0, behavior: "smooth" });
         }
       }
 
-      document.querySelectorAll("[data-open-page]").forEach(function (btn) {
-        btn.addEventListener("click", function () {
-          const target = btn.getAttribute("data-open-page");
-          if (target) showPage(target, true, false);
-        });
+      function syncBrowserHistory() {
+        if (isHandlingPopState) return;
+        try {
+          window.history.pushState(
+            { karawonaStack: navStack.slice() },
+            "",
+            window.location.href
+          );
+        } catch (err) {
+          // Ignore history pushState errors
+        }
+      }
+
+      /** @param {NavStep} nextStep */
+      function pushNavStep(nextStep) {
+        const current = navStack[navStack.length - 1];
+        const sameAsCurrent =
+          current &&
+          current.kind === nextStep.kind &&
+          (current.page || null) === (nextStep.page || null) &&
+          (current.category || null) === (nextStep.category || null) &&
+          (current.poemId || null) === (nextStep.poemId || null);
+
+        if (!sameAsCurrent) {
+          navStack.push(nextStep);
+          syncBrowserHistory();
+        }
+        renderStepView(nextStep);
+      }
+
+      function goBackStep() {
+        if (navStack.length > 1) {
+          navStack.pop();
+          syncBrowserHistory();
+          renderStepView(navStack[navStack.length - 1]);
+          return;
+        }
+
+        const current = navStack[0];
+        if (!current || current.kind === "welcome") {
+          renderStepView({ kind: "welcome" });
+          return;
+        }
+        if (current.kind === "poem") {
+          const targetCat = activeCategory || current.category || CATEGORIES[0];
+          const fallback = { kind: "category", category: targetCat };
+          navStack = [fallback];
+          syncBrowserHistory();
+          renderStepView(fallback);
+          return;
+        }
+        if (current.kind === "category") {
+          const fallback = { kind: "page", page: "poetry" };
+          navStack = [fallback];
+          syncBrowserHistory();
+          renderStepView(fallback);
+          return;
+        }
+        if (current.kind === "page") {
+          const fallback = { kind: "main-menu" };
+          navStack = [fallback];
+          syncBrowserHistory();
+          renderStepView(fallback);
+          return;
+        }
+        renderStepView({ kind: "main-menu" });
+      }
+
+      window.addEventListener("popstate", function (event) {
+        isHandlingPopState = true;
+        try {
+          if (
+            event.state &&
+            Array.isArray(event.state.karawonaStack) &&
+            event.state.karawonaStack.length > 0
+          ) {
+            navStack = event.state.karawonaStack.slice();
+            renderStepView(navStack[navStack.length - 1]);
+          } else if (navStack.length > 1) {
+            navStack.pop();
+            renderStepView(navStack[navStack.length - 1]);
+          }
+        } finally {
+          isHandlingPopState = false;
+        }
       });
 
-      document.querySelectorAll("[data-back]").forEach(function (btn) {
-        btn.addEventListener("click", function () {
-          handleBackNavigation();
+      function updateCategoryCounts() {
+        const poems = getPoems();
+        CATEGORIES.forEach(function (cat) {
+          const el = document.getElementById("count-" + cat);
+          if (el) {
+            const c = poems.filter(function (p) {
+              return p.category === cat;
+            }).length;
+            el.textContent = c + " شعرونه";
+          }
         });
-      });
+      }
 
+      /** @param {string} category */
+      function openCategory(category) {
+        pushNavStep({ kind: "category", category: category });
+      }
+
+      /** @param {PoemItem[]} poems */
+      function renderPoemList(poems) {
+        const list = document.getElementById("poem-list");
+        if (!list) return;
+
+        if (!poems.length) {
+          list.innerHTML = "<p class='section-subtitle'>په دې برخه کې لا شعرونه نشته</p>";
+          return;
+        }
+
+        list.innerHTML = "";
+        poems.forEach(function (poem) {
+          const card = document.createElement("button");
+          card.type = "button";
+          card.className = "poem-item";
+
+          const h3 = document.createElement("h3");
+          h3.textContent = poem.title;
+
+          const p = document.createElement("p");
+          p.textContent = poem.body;
+
+          card.appendChild(h3);
+          card.appendChild(p);
+          card.addEventListener("click", function () {
+            openPoem(poem);
+          });
+          list.appendChild(card);
+        });
+      }
+
+      /** @param {PoemItem} poem */
+      function openPoem(poem) {
+        pushNavStep({
+          kind: "poem",
+          poemId: poem.id,
+          category: poem.category
+        });
+      }
+
+      /** @param {number} size */
+      function setFontSize(size) {
+        fontSizePx = Math.min(30, Math.max(13, size));
+        document.documentElement.style.setProperty("--poem-size", fontSizePx + "px");
+        writeLocal(STORAGE_KEYS.fontSize, String(fontSizePx));
+      }
+
+      const FALLBACK_PHOTO_SVG =
+        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Crect width='150' height='150' rx='75' fill='%23222222'/%3E%3Ctext x='75' y='95' font-size='65' text-anchor='middle' fill='%23d6ad55'%3E✒%3C/text%3E%3C/svg%3E";
+
+      function cacheProfilePhotoOffline() {
+        const cachedDataUrl = readLocal(STORAGE_KEYS.photoDataUrl, "");
+        if (cachedDataUrl && cachedDataUrl.startsWith("data:image/")) {
+          return;
+        }
+        try {
+          const loaderImg = new Image();
+          loaderImg.crossOrigin = "anonymous";
+          loaderImg.onload = function () {
+            try {
+              const canvas = document.createElement("canvas");
+              canvas.width = loaderImg.naturalWidth || 150;
+              canvas.height = loaderImg.naturalHeight || 150;
+              const ctx = canvas.getContext("2d");
+              if (ctx) {
+                ctx.drawImage(loaderImg, 0, 0);
+                const dataUrl = canvas.toDataURL("image/jpeg", 0.85);
+                if (dataUrl && dataUrl.startsWith("data:image/")) {
+                  writeLocal(STORAGE_KEYS.photoDataUrl, dataUrl);
+                }
+              }
+            } catch (e) {
+              // Ignore canvas taint/storage errors
+            }
+          };
+          loaderImg.src = DEFAULT_PHOTO;
+        } catch (err) {
+          // Ignore image load errors
+        }
+      }
+
+      function renderProfile() {
+        const p = getProfile();
+        const nameEl = document.getElementById("public-profile-name");
+        const fatherEl = document.getElementById("public-profile-father");
+        const bioEl = document.getElementById("public-profile-bio");
+        const msgEl = document.getElementById("public-profile-message");
+        const imgEl = /** @type {HTMLImageElement | null} */ (document.getElementById("public-profile-photo"));
+
+        if (nameEl) nameEl.textContent = p.name;
+        if (fatherEl) fatherEl.textContent = p.father;
+        if (bioEl) bioEl.textContent = p.bio;
+        if (msgEl) msgEl.textContent = p.message;
+
+        if (imgEl) {
+          const cachedPhoto = readLocal(STORAGE_KEYS.photoDataUrl, "");
+          const preferredSrc =
+            cachedPhoto && cachedPhoto.startsWith("data:image/")
+              ? cachedPhoto
+              : (p.image || DEFAULT_PHOTO);
+
+          imgEl.onerror = function () {
+            if (cachedPhoto && cachedPhoto.startsWith("data:image/") && imgEl.src !== cachedPhoto) {
+              imgEl.src = cachedPhoto;
+            } else if (imgEl.src !== FALLBACK_PHOTO_SVG) {
+              imgEl.src = FALLBACK_PHOTO_SVG;
+            }
+          };
+
+          if (imgEl.getAttribute("src") !== preferredSrc) {
+            imgEl.src = preferredSrc;
+          }
+        }
+      }
+
+      function renderSocial() {
+        const s = getSocial();
+        const box = document.getElementById("public-social-links");
+        if (!box) return;
+
+        const links = [
+          { name: "📘  Facebook", url: s.facebook },
+          { name: "▶  YouTube", url: s.youtube },
+          { name: "🎵  TikTok", url: s.tiktok },
+          { name: "💬  WhatsApp", url: s.whatsapp },
+          { name: "🔗  نور لینکونه", url: s.other }
+        ].filter(function (item) {
+          return item.url && item.url.trim();
+        });
+
+        box.innerHTML = "";
+        links.forEach(function (item) {
+          const a = document.createElement("a");
+          a.className = "social-link";
+          a.href = item.url.trim();
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+          a.textContent = item.name;
+          box.appendChild(a);
+        });
+      }
+
+      function renderStatistics() {
+        const poems = getPoems();
+        const totalEl = document.getElementById("total-poems");
+        const catBox = document.getElementById("category-statistics");
+
+        if (totalEl) totalEl.textContent = String(poems.length);
+
+        if (catBox) {
+          catBox.innerHTML = CATEGORIES.map(function (cat) {
+            const count = poems.filter(function (p) {
+              return p.category === cat;
+            }).length;
+            return "<div><strong>" + cat + ":</strong> " + count + " شعرونه</div>";
+          }).join("");
+        }
+      }
+
+      function renderAppInfo() {
+        const info = getAppInfo();
+        const titleEl = document.getElementById("app-info-title");
+        const descEl = document.getElementById("app-info-desc");
+        const creationEl = document.getElementById("app-info-creation");
+
+        if (titleEl) titleEl.textContent = info.title;
+        if (descEl) descEl.textContent = info.description;
+        if (creationEl) creationEl.textContent = info.creation;
+      }
+
+      function registerOfflineServiceWorker() {
+        if (!("serviceWorker" in navigator)) return;
+        if (window.location.protocol !== "https:" && window.location.protocol !== "http:") return;
+
+        const swCode = `
+          const CACHE_NAME = "karawona-offline-v1";
+          self.addEventListener("install", (event) => {
+            event.waitUntil(
+              caches.open(CACHE_NAME).then((cache) => {
+                const urls = [self.location.href];
+                return cache.addAll(urls).catch(() => {});
+              }).then(() => self.skipWaiting())
+            );
+          });
+          self.addEventListener("activate", (event) => {
+            event.waitUntil(
+              caches.keys().then((keys) =>
+                Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
+              ).then(() => self.clients.claim())
+            );
+          });
+          self.addEventListener("fetch", (event) => {
+            if (event.request.method !== "GET") return;
+            event.respondWith(
+              caches.match(event.request).then((cached) => {
+                if (cached) return cached;
+                return fetch(event.request).then((networkRes) => {
+                  if (networkRes && networkRes.status === 200 && networkRes.type === "basic") {
+                    const clone = networkRes.clone();
+                    caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone)).catch(() => {});
+                  }
+                  return networkRes;
+                }).catch(() => cached || caches.match(self.location.href));
+              })
+            );
+          });
+        `;
+
+        try {
+          const blob = new Blob([swCode], { type: "application/javascript" });
+          const swUrl = URL.createObjectURL(blob);
+          navigator.serviceWorker.register(swUrl).catch(function () {
+            // Ignore service worker registration restrictions in embedded previews
+          });
+        } catch (err) {
+          // Ignore blob URL errors
+        }
+      }
+
+      // Start button
+      const startBtn = document.getElementById("start-app");
+      if (startBtn) {
+        startBtn.addEventListener("click", function () {
+          pushNavStep({ kind: "main-menu" });
+        });
+      }
+
+      // Brand click
       const brandHome = document.getElementById("brand-home");
       if (brandHome) {
         brandHome.addEventListener("click", function () {
-          pageHistory = ["main-menu"];
-          showPage("main-menu", false, true);
-          pushAppHistory("brand-home");
+          pushNavStep({ kind: "main-menu" });
         });
       }
 
+      // Theme toggle
       const themeToggle = document.getElementById("theme-toggle");
       if (themeToggle) {
         themeToggle.addEventListener("click", function () {
@@ -2257,407 +2584,134 @@
         });
       }
 
-      /**
-       * @param {string} categoryName
-       * @param {boolean} [skipPushState=false]
-       */
-      function openCategory(categoryName, skipPushState = false) {
-        activeCategory = categoryName;
-        activePoem = null;
-        showPage("poetry", false, true);
-        setPoetrySubView("category-poems");
-        renderCategoryPoems(categoryName);
-        window.scrollTo({ top: 0, behavior: "smooth" });
-        if (!skipPushState) {
-          pushAppHistory("category:" + categoryName);
-        }
-      }
-
-      document.querySelectorAll(".category-card[data-category]").forEach(function (card) {
-        card.addEventListener("click", function () {
-          const cat = card.getAttribute("data-category");
-          if (cat) openCategory(cat, false);
+      // Menu buttons
+      document.querySelectorAll("[data-open-page]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          const targetPage = btn.getAttribute("data-open-page");
+          if (targetPage) {
+            pushNavStep({ kind: "page", page: targetPage });
+          }
         });
       });
 
-      const closeCategoryBtn = document.getElementById("close-category-btn");
-      if (closeCategoryBtn) {
-        closeCategoryBtn.addEventListener("click", function () {
-          activeCategory = null;
-          activePoem = null;
-          setPoetrySubView("categories");
-          renderCategoryCounts();
-          window.scrollTo({ top: 0, behavior: "smooth" });
-          pushAppHistory("close-category");
+      // Back buttons (step-by-step)
+      document.querySelectorAll("[data-back]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          goBackStep();
+        });
+      });
+
+      // Category cards
+      document.querySelectorAll(".category-card[data-category]").forEach(function (card) {
+        card.addEventListener("click", function () {
+          const cat = card.getAttribute("data-category");
+          if (cat) openCategory(cat);
+        });
+      });
+
+      // Close category view -> back to all categories
+      const closeCatBtn = document.getElementById("close-category-btn");
+      if (closeCatBtn) {
+        closeCatBtn.addEventListener("click", function () {
+          goBackStep();
         });
       }
 
-      /** @param {string} categoryName */
-      function renderCategoryPoems(categoryName) {
-        const heading = document.getElementById("active-category-heading");
-        const listEl = document.getElementById("poem-list");
-        if (heading) heading.textContent = categoryName;
-        if (!listEl) return;
-
-        const poems = getPoems().filter(function (p) {
-          return p.category === categoryName;
-        });
-
-        listEl.innerHTML = "";
-        if (!poems.length) {
-          const emptyP = document.createElement("p");
-          emptyP.style.color = "var(--muted)";
-          emptyP.style.textAlign = "center";
-          emptyP.style.padding = "20px";
-          emptyP.textContent = "په دې کټګورۍ کې لا شعرونه نه دي ثبت شوي.";
-          listEl.appendChild(emptyP);
-          return;
-        }
-
-        poems.forEach(function (poem) {
-          const card = document.createElement("button");
-          card.type = "button";
-          card.className = "poem-item";
-
-          const h3 = document.createElement("h3");
-          h3.textContent = poem.title || "بې سرلیکه";
-
-          const preview = document.createElement("p");
-          const lines = String(poem.body || "")
-            .split(/\r?\n/)
-            .map(function (s) {
-              return s.trim();
-            })
-            .filter(Boolean);
-          preview.textContent = lines.slice(0, 2).join(" • ") || "...";
-
-          card.appendChild(h3);
-          card.appendChild(preview);
-
-          card.addEventListener("click", function () {
-            openPoemReader(poem, false);
-          });
-
-          listEl.appendChild(card);
-        });
-      }
-
-      /**
-       * @param {PoemItem} poem
-       * @param {boolean} [skipPushState=false]
-       */
-      function openPoemReader(poem, skipPushState = false) {
-        activePoem = poem;
-        activeCategory = poem.category;
-        showPage("poetry", false, true);
-        setPoetrySubView("reader");
-
-        const titleEl = document.getElementById("poem-title");
-        const contentEl = document.getElementById("poem-content");
-        const catLabel = document.getElementById("reader-category-label");
-        const shareStatus = document.getElementById("reader-share-status");
-
-        if (titleEl) titleEl.textContent = poem.title || "";
-        if (contentEl) contentEl.textContent = poem.body || "";
-        if (catLabel) catLabel.textContent = "کټګوري: " + poem.category;
-        if (shareStatus) shareStatus.textContent = "";
-
-        applyPoemFontSize();
-        window.scrollTo({ top: 0, behavior: "smooth" });
-        if (!skipPushState) {
-          pushAppHistory("poem:" + poem.id);
-        }
-      }
-
-      function applyPoemFontSize() {
-        document.documentElement.style.setProperty("--poem-size", fontSizePx + "px");
-      }
-
-      const fontMinus = document.getElementById("font-minus");
-      const fontReset = document.getElementById("font-reset");
-      const fontPlus = document.getElementById("font-plus");
-
-      if (fontMinus) {
-        fontMinus.addEventListener("click", function () {
-          fontSizePx = Math.max(13, fontSizePx - 2);
-          applyPoemFontSize();
-        });
-      }
-      if (fontReset) {
-        fontReset.addEventListener("click", function () {
-          fontSizePx = 16;
-          applyPoemFontSize();
-        });
-      }
-      if (fontPlus) {
-        fontPlus.addEventListener("click", function () {
-          fontSizePx = Math.min(30, fontSizePx + 2);
-          applyPoemFontSize();
-        });
-      }
-
+      // Back from reader to category poems list
       const backToListBtn = document.getElementById("back-to-list-btn");
       if (backToListBtn) {
         backToListBtn.addEventListener("click", function () {
-          activePoem = null;
-          setPoetrySubView("category-poems");
-          if (activeCategory) {
-            renderCategoryPoems(activeCategory);
-          }
-          window.scrollTo({ top: 0, behavior: "smooth" });
-          pushAppHistory("back-to-list");
+          goBackStep();
         });
       }
 
+      // Font controls
+      const fontPlus = document.getElementById("font-plus");
+      const fontMinus = document.getElementById("font-minus");
+      const fontReset = document.getElementById("font-reset");
+
+      if (fontPlus) fontPlus.addEventListener("click", function () { setFontSize(fontSizePx + 2); });
+      if (fontMinus) fontMinus.addEventListener("click", function () { setFontSize(fontSizePx - 2); });
+      if (fontReset) fontReset.addEventListener("click", function () { setFontSize(16); });
+
+      // Share poem
       const sharePoemBtn = document.getElementById("share-poem-btn");
       if (sharePoemBtn) {
         sharePoemBtn.addEventListener("click", function () {
           if (!activePoem) return;
           const shareStatus = document.getElementById("reader-share-status");
-          const textToShare =
-            (activePoem.title ? activePoem.title + "\n\n" : "") +
-            (activePoem.body || "") +
-            "\n\n— کړاوونه | د شعر او ادب کور";
+          const shareText = activePoem.title + "\n\n" + activePoem.body + "\n\n— کړاوونه";
 
           if (navigator.share) {
-            navigator
-              .share({
-                title: activePoem.title || "کړاوونه",
-                text: textToShare
-              })
-              .then(function () {
-                if (shareStatus) shareStatus.textContent = "شعر شریک شو.";
-              })
-              .catch(function () {});
+            navigator.share({
+              title: activePoem.title,
+              text: shareText
+            }).catch(function () {});
           } else if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard
-              .writeText(textToShare)
-              .then(function () {
-                if (shareStatus) shareStatus.textContent = "شعر کاپي شو.";
-              })
-              .catch(function () {
-                if (shareStatus) shareStatus.textContent = "کاپي ونه شوه.";
-              });
+            navigator.clipboard.writeText(shareText).then(function () {
+              if (shareStatus) shareStatus.textContent = "شعر کاپي شو";
+            }).catch(function () {
+              if (shareStatus) shareStatus.textContent = "شعر د شریکولو لپاره چمتو دی";
+            });
           } else {
-            if (shareStatus) shareStatus.textContent = "شریکول په دې وسیله کې ملاتړ نه لري.";
+            if (shareStatus) shareStatus.textContent = "شعر د شریکولو لپاره چمتو دی";
           }
         });
       }
 
-      function renderCategoryCounts() {
-        const poems = getPoems();
-        CATEGORIES.forEach(function (cat) {
-          const el = document.getElementById("count-" + cat);
-          if (!el) return;
-          const c = poems.filter(function (p) {
-            return p.category === cat;
-          }).length;
-          el.textContent = c === 1 ? "۱ شعر" : c + " شعرونه";
-        });
-      }
-
-      const FALLBACK_SVG =
-        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Crect width='150' height='150' rx='75' fill='%23222222'/%3E%3Ctext x='75' y='95' font-size='65' text-anchor='middle' fill='%23d6ad55'%3E✒%3C/text%3E%3C/svg%3E";
-
-      function renderProfilePublic() {
-        const prof = getProfile();
-        const photoEl = /** @type {HTMLImageElement | null} */ (document.getElementById("public-profile-photo"));
-        const nameEl = document.getElementById("public-profile-name");
-        const fatherEl = document.getElementById("public-profile-father");
-        const bioEl = document.getElementById("public-profile-bio");
-        const msgEl = document.getElementById("public-profile-message");
-
-        if (photoEl) {
-          photoEl.onerror = function () {
-            photoEl.onerror = null;
-            photoEl.src = FALLBACK_SVG;
-          };
-          photoEl.src = prof.image || DEFAULT_PHOTO;
-        }
-        if (nameEl) nameEl.textContent = prof.name || DEFAULT_PROFILE.name;
-        if (fatherEl) fatherEl.textContent = prof.father || DEFAULT_PROFILE.father;
-        if (bioEl) bioEl.textContent = prof.bio || DEFAULT_BIO;
-        if (msgEl) msgEl.textContent = prof.message || "";
-      }
-
-      /**
-       * @param {string} url
-       * @returns {string}
-       */
-      function safeUrl(url) {
-        const trimmed = String(url || "").trim();
-        if (!trimmed) return "";
-        if (/^(https?:\/\/|mailto:|tel:)/i.test(trimmed)) return trimmed;
-        if (/^(www\.|facebook\.com|fb\.com|youtube\.com|youtu\.be|tiktok\.com|wa\.me|t\.me|instagram\.com)/i.test(trimmed)) {
-          return "https://" + trimmed;
-        }
-        return "";
-      }
-
-      function renderSocialPublic() {
-        const soc = getSocial();
-        const container = document.getElementById("public-social-links");
-        if (!container) return;
-
-        const items = [
-          { key: "facebook", label: "📘  Facebook" },
-          { key: "youtube", label: "▶  YouTube" },
-          { key: "tiktok", label: "🎵  TikTok" },
-          { key: "whatsapp", label: "💬  WhatsApp" },
-          { key: "other", label: "🔗  نور لینکونه" }
-        ];
-
-        container.innerHTML = "";
-        let anyAdded = false;
-
-        items.forEach(function (item) {
-          const href = safeUrl(/** @type {Record<string, string>} */ (soc)[item.key]);
-          if (href) {
-            anyAdded = true;
-            const a = document.createElement("a");
-            a.className = "social-link";
-            a.href = href;
-            a.target = "_blank";
-            a.rel = "noopener noreferrer";
-            a.textContent = item.label;
-            container.appendChild(a);
-          }
-        });
-
-        if (!anyAdded) {
-          const p = document.createElement("p");
-          p.style.textAlign = "center";
-          p.style.color = "var(--muted)";
-          p.textContent = "تر اوسه ټولنیز لینکونه نه دي اضافه شوي.";
-          container.appendChild(p);
-        }
-      }
-
+      // Feedback form
       const feedbackForm = document.getElementById("feedback-form");
       if (feedbackForm) {
         feedbackForm.addEventListener("submit", function (e) {
           e.preventDefault();
           const nameInput = /** @type {HTMLInputElement | null} */ (document.getElementById("feedback-name"));
           const msgInput = /** @type {HTMLTextAreaElement | null} */ (document.getElementById("feedback-message"));
-          const statusEl = document.getElementById("feedback-status");
+          const status = document.getElementById("feedback-status");
 
-          const name = nameInput ? nameInput.value.trim() : "";
+          const name = nameInput && nameInput.value.trim() ? nameInput.value.trim() : "ناڅرګند لوستونکی";
           const message = msgInput ? msgInput.value.trim() : "";
 
           if (!message) {
-            if (statusEl) statusEl.textContent = "مهرباني وکړئ پیغام ولیکئ.";
+            if (status) status.textContent = "مهرباني وکړئ خپل پیغام ولیکئ";
             return;
           }
 
           const list = getFeedbacks();
           list.unshift({
             id: "fb-" + Date.now(),
-            name: name || "ورور / خور لوستونکی",
+            name: name,
             message: message,
             date: new Date().toLocaleDateString("ps-AF")
           });
           saveFeedbacks(list);
 
-          if (nameInput) nameInput.value = "";
-          if (msgInput) msgInput.value = "";
-          if (statusEl) {
-            statusEl.textContent = "ستاسې نظر په بریالیتوب ثبت شو. له ګډون څخه مو مننه!";
-          }
+          if (status) status.textContent = "ستاسې نظر په بریالیتوب ثبت شو، مننه!";
+          feedbackForm.reset();
         });
       }
 
-      function renderStatistics() {
-        const poems = getPoems();
-        const totalEl = document.getElementById("total-poems");
-        const catStatsEl = document.getElementById("category-statistics");
-
-        if (totalEl) totalEl.textContent = String(poems.length);
-        if (!catStatsEl) return;
-
-        catStatsEl.innerHTML = "";
-        CATEGORIES.forEach(function (cat) {
-          const c = poems.filter(function (p) {
-            return p.category === cat;
-          }).length;
-          const row = document.createElement("div");
-          row.style.display = "flex";
-          row.style.justifyContent = "space-between";
-          row.style.padding = "6px 0";
-          row.style.borderBottom = "1px solid var(--border)";
-
-          const labelSpan = document.createElement("span");
-          labelSpan.textContent = cat;
-          labelSpan.style.color = "var(--text)";
-
-          const valSpan = document.createElement("strong");
-          valSpan.textContent = c + " شعرونه";
-          valSpan.style.color = "var(--gold)";
-
-          row.appendChild(labelSpan);
-          row.appendChild(valSpan);
-          catStatsEl.appendChild(row);
-        });
-      }
-
-      function renderAppInfoPublic() {
-        const info = getAppInfo();
-        const titleEl = document.getElementById("app-info-title");
-        const descEl = document.getElementById("app-info-desc");
-        const creationEl = document.getElementById("app-info-creation");
-
-        if (titleEl) titleEl.textContent = info.title || DEFAULT_APP_INFO.title;
-        if (descEl) descEl.textContent = info.description || DEFAULT_APP_INFO.description;
-        if (creationEl) creationEl.textContent = info.creation || DEFAULT_APP_INFO.creation;
-      }
-
-      window.addEventListener("popstate", function (event) {
-        const welcomeEl = document.getElementById("welcome-screen");
-        if (welcomeEl && !welcomeEl.classList.contains("hidden")) {
-          return;
-        }
-
-        isHandlingPopstate = true;
-        try {
-          const st = event.state;
-          if (st && st.karawonaApp && st.view) {
-            const v = st.view;
-            if (v.page === "poetry" && v.poemId) {
-              const foundPoem = getPoems().find(function (p) {
-                return p.id === v.poemId;
-              });
-              if (foundPoem) {
-                openPoemReader(foundPoem, true);
-                return;
-              }
-            }
-            if (v.page === "poetry" && v.category) {
-              openCategory(v.category, true);
-              return;
-            }
-            if (v.page) {
-              showPage(v.page, false, true);
-              return;
-            }
-          }
-          handleBackNavigation();
-        } finally {
-          isHandlingPopstate = false;
-        }
-      });
-
-      applyTheme(false);
-      renderCategoryCounts();
-      renderProfilePublic();
-      renderSocialPublic();
-      renderAppInfoPublic();
+      // Initial render
+      applyTheme(isLightTheme);
+      setFontSize(fontSizePx);
+      cacheProfilePhotoOffline();
+      updateCategoryCounts();
+      renderProfile();
+      renderSocial();
       renderStatistics();
+      renderAppInfo();
+      registerOfflineServiceWorker();
 
-      // Offline Service Worker registration (بشپړ افلاین ملاتړ)
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", function () {
-          navigator.serviceWorker.register("./sw.js").catch(function () {});
-        });
+      navStack = [{ kind: "welcome" }];
+      try {
+        window.history.replaceState(
+          { karawonaStack: navStack.slice() },
+          "",
+          window.location.href
+        );
+      } catch (err) {
+        // Ignore replaceState errors
       }
+      renderStepView(navStack[0]);
     });
   </script>
 </body>
